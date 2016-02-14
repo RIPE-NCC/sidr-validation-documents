@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC3779 PUBLIC "" "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3779.xml">
+<!ENTITY RFC5280 PUBLIC "" "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5280.xml">
+<!ENTITY RFC6482 PUBLIC "" "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6482.xml">
+<!ENTITY RFC6492 PUBLIC "" "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6492.xml">
+<!ENTITY RFC6487 PUBLIC "" "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6487.xml">
+]>
+
+<rfc category="info" docName="draft-ietf-sidr-rpki-validation-reconsidered-03.txt"
+     ipr="trust200902" >
+  <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+  <?rfc toc="yes" ?>
+  <?rfc compact="yes" ?>
+  <?rfc subcompact="no" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc iprnotified="no" ?>
+
+  <front>
+    <title abbrev="RPKI Validation">RPKI Validation Reconsidered</title>
+
+    <author fullname="Geoff Huston" initials="G." surname="Huston">
+      <organization abbrev="APNIC">Asia Pacific Network Information Centre</organization>
+      <address>
+        <postal>
+          <street>6 Cordelia St</street>
+          <city>South Brisbane</city> <region>QLD</region> <code>4101</code>
+          <country>Australia</country>
+        </postal>
+        <phone>+61 7 3858 3100</phone>
+        <email>gih@apnic.net</email>
+      </address>
+    </author>
+
+    <author fullname="George Michaelson" initials="G." surname="Michaelson">
+      <organization abbrev="APNIC">Asia Pacific Network Information Centre</organization>
+      <address>
+        <postal>
+          <street>6 Cordelia St</street>
+          <city>South Brisbane</city> <region>QLD</region> <code>4101</code>
+          <country>Australia</country>
+        </postal>
+        <phone>+61 7 3858 3100</phone>
+        <email>ggm@apnic.net</email>
+      </address>
+    </author>
+
+    <author fullname="Carlos M. Martinez" initials="C.M." surname="Martinez">
+      <organization abbrev="LACNIC">Latin American and Caribbean IP Address Regional Registry</organization>
+      <address>
+        <postal>
+          <street>Rambla Mexico 6125</street>
+          <city>Montevideo</city><code>11400</code>
+          <country>Uruguay</country>
+        </postal>
+        <phone>+598 2604 2222</phone>
+        <email>carlos@lacnic.net</email>
+      </address>
+    </author>
+
+    <author fullname="Tim Bruijnzeels" initials="T" surname="Bruijnzeels">
+      <organization abbrev="RIPE NCC">RIPE Network Coordination Centre</organization>
+      <address>
+        <postal>
+          <street>Singel 258</street>
+          <city>Amsterdam</city><code>1016 AB</code>
+          <country>The Netherlands</country>
+        </postal>
+        <email>tim@ripe.net</email>
+      </address>
+    </author>
+
+    <author fullname="Andrew Lee Newton" initials="A.L." surname="Newton">
+      <organization abbrev="ARIN">American Registry for Internet Numbers</organization>
+      <address>
+        <postal>
+          <street>3635 Concorde Parkway</street>
+          <city>Chantilly</city> <region>VA</region><code>20151</code>
+          <country>USA</country>
+        </postal>
+        <email>andy@arin.net</email>
+      </address>
+    </author>
+
+    <author fullname="Alain Aina" initials="A." surname="Aina">
+      <organization abbrev="AFRINIC">African Network Information Centre (AFRINIC)</organization>
+      <address>
+        <postal>
+          <street>11th Floor, Raffles Tower</street>
+          <city>Cybercity</city> <region>Ebene</region>
+          <country>Mauritius</country>
+        </postal>
+        <phone>+230 403 51 00</phone>
+        <email>aalain@afrinic.net</email>
+      </address>
+    </author>
+    
+    <date year="2016" month="February"/>
+    
+    <abstract>
+    
+      <t>This document proposes and alternative to the certificate
+      validation procedure specified in RFC6487 that reduces aspects of
+      operational fragility in the management of certificates in the
+      RPKI.</t>
+
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+
+      <t>This document proposes and alternative to the certificate
+      validation procedure specified in RFC6487 that reduces aspects of
+      operational fragility in the management of certificates in the
+      RPKI.</t>
+
+    </section>
+    <section title="Certificate Validation in the RPKI">
+    
+      <t>As currently defined in section 7.2 of <xref target="RFC6487"
+      />, validation of PKIX certificates that conform to the RPKI
+      profile relies on the use of a path validation process where
+      each certificate in the validation path is required to meet the
+      certificate validation criteria.</t>
+      
+      <t>These criteria require in particular that the resources on each
+      certificate in the validation path are “encompassed” by the
+      resources on the issuing certificate. The first certificate in
+      the path is required to be a trust anchor, and its resources are
+      considered valid by definition.</t>
+
+      <t>For example, in the following sequence:</t>
+<figure><artwork><![CDATA[ 
+  Certificate 1 (trust anchor):
+    Issuer TA, Subject TA, Resources 192.0.2.0/24, AS64496-AS64500
+
+  Certificate 2: 
+    Issuer TA, Subject CA1, Resources 192.0.2.0/24, AS64496-AS64500
+
+  Certificate 3: 
+    Issuer CA1, Subject CA2, Resources 192.0.2.0/24, AS64496-AS64500
+
+  ROA 1:
+     Embedded Certificate 4 (EE certificate): 
+     Issuer CA2, Subject R1, Resources 192.0.2.0/24
+     
+     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+]]></artwork></figure>
+
+      <t>All certificates in this scenario are considered valid in that
+      the resources on each certificate are encompassed by the issuing
+      certificate. The roa "ROA1" is also considered valid here in this
+      regard - the prefix is encompassed by the embedded EE
+      certificate.</t>
+      
+    </section>
+      
+    <section title="Operational Considerations">
+      
+      <t>Resource allocations can change in the RPKI. And this
+      can lead to situations where an "over-claiming" certificate is
+      introduced.</t>
+      <t>Consider the following sequence:</t>
+<figure><artwork><![CDATA[ 
+  Certificate 1 (trust anchor):
+    Issuer TA, Subject TA, Resources 192.0.2.0/24, AS64496-AS64500
+
+  Certificate 2: 
+    Issuer TA, Subject CA1, Resources 192.0.2.0/24
+
+  Certificate 3: 
+    Issuer CA1, Subject CA2, Resources 192.0.2.0/24, AS64496-AS64500
+
+  ROA 1:
+     Embedded Certificate 4 (EE certificate): 
+     Issuer CA2, Subject R1, Resources 192.0.2.0/24
+     
+     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+]]></artwork></figure>
+
+      <t>Here Certificate 2 from the previous example was re-issued by
+      TA to CA1 and certain AS resources were removed. However, CA1
+      failed to re-issue a new Certificate 3 to CA2. As a result
+      Certificate 3 is now over-claiming and considered invalid, and
+      by recursion ROA1 issued by CA2 is also invalid.</t>
+      
+      <t>It should be noted that CA2 is not claiming any resources on
+      ROA1 that it cannot receive on a new Certificate 3. If CA1 would
+      only re-issue a Certificate 3 without the AS resources to CA2,
+      then ROA1 would be considered valid without the need for any
+      further action by CA2.</t>
+      
+      <t><xref target="RFC6492" /> describes the protocol for
+      provisioning resource certificates. In this protocol new
+      resource certificates are always issued by request of a child. If
+      that protocol were strictly followed then CA1 would have known
+      that its resource set was about to shrink, and it would have known
+      that it issued some of those resources to its child CA2.</t>
+      
+      <t>The protocol currently lacks normative wording on how CAs
+      should deal with this situation, but one can imagine amending the
+      protocol with normative instructions that would require CA1 to
+      refuse to request a certificate with a shrunk resource set until
+      all of its children would have requested new shrunk certificates
+      where applicable. And that would forbid any parent CA to
+      pro-actively re-issue a certificate with shrunk resource set before
+      receiving a certificate re-issuance request from its child CA.</t>
+      
+      <t>In practice such a model is unworkable for the CA higher in the
+      path, because it has no control over if and when it can shrink a
+      certificate for its children. Therefore higher level CAs, such as
+      the ones operated by Regional Internet Registries (RIRs) will
+      pro-actively re-issue shrunk resource certificates when resources
+      are no longer validly held by a child.</t>
+            
+      <t>The question here is whether the impact of such a re-issuance
+      should be limited to just the resources that seem to be under
+      dispute between TA and CA1, or all resources issued to CA2.</t>
+        
+    </section>
+    
+    <section title="An Amended RPKI Certification Validation Process">
+
+    <t>The following is a amended specification of certificate
+    validation as described in section 7.2 item number 6 of certificate
+    validation in <xref target="RFC6487" /> that describes the
+    validation of resources in the RPKI path:<list>
+    	<t>The Relying Party MUST keep a set of verified resources for
+    	the certificate independent of the RFC3779 extension itself,
+    	that is built up using the following approach:<list>
+    	  <t>For any of the resource extensions that use the "inherit"
+    	  element as described in sections 2.2.3.5 and 3.2.3.3 of
+    	  <xref target="RFC3779" />, the corresponding resources of this
+    	  type should be taken from the parent certificate, where this
+    	  issuer is the subject.</t>
+    	  <t>For any other resources the intersection of the quoted
+    	  resources on this certificate and the parent certificate
+    	  is kept. If any resources were found on this certificate that
+    	  were not present on the parent certificate a warning SHOULD
+    	  be issued to help operators rectify this situation.</t>
+    	</list> 
+    	</t>
+    	<t>If the the set of verified resources obtained this way is
+    	empty, then the certificate MUST be considered invalid.</t>
+    </list></t>
+    
+    <t>Note that if this approach would be used in the example we cite
+    in section 3 of this document, Certificate 3 would have a verified
+    resource set that contains only "192.0.2.0/24", and a warning would
+    be issued with regards to resources "AS64496-AS64500". ROA1 would be
+    considered valid because the quoted prefix was also part of the
+    verified resource set of the embedded Certificate 4.</t>
+
+    </section>
+    
+    <section title="Security Considerations">
+    
+      <t>The problem described in section 3 of this document has not
+      occurred in 5 years of operating RPKI systems by the RIRs. So one
+      could consider this a low probability problem today. However the
+      potential impact on routing security would be high if the
+      inconsistency occurred near the apex of the RPKI hierarchy and
+      would invalidate the entirety of the sub-tree located below the
+      point of this inconsistency.</t>
+      <t>The proposed process does not change the probability of this
+      problem, but it limits the impact to just the resources that are
+      under dispute. As far as the authors can see there are no real new
+      problems introduced by this approach.</t>
+      <t>Finally it should be noted that although this is a problem with
+      a low probability today this is partly due to the fact that most
+      RIR RPKI systems are using their own Trust Anchors and only have
+      a single layer of hosted member CAs that does not support further
+      delegation of resources. If the Trust Anchor would be controlled
+      by another organisation and/or running delegated CAs becomes more
+      commonplace, then the probability of this problem will increase.</t>
+
+    </section>
+    <section title="IANA Considerations">
+    
+      <t>No updates to the registries are suggested by this document.</t>
+      
+    </section>
+    <section title="Acknowledgements">
+
+      <t>TBA.</t>
+
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      &RFC3779;
+      &RFC5280;
+      &RFC6487;
+    </references>
+    <references title="Informative References">
+      &RFC6482;
+      &RFC6492;
+    </references>
+  </back>
+</rfc>
