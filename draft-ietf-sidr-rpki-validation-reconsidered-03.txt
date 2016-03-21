@@ -5,7 +5,7 @@
 Network Working Group                                          G. Huston
 Internet-Draft                                             G. Michaelson
 Intended status: Informational                                     APNIC
-Expires: August 18, 2016                                     C. Martinez
+Expires: September 22, 2016                                  C. Martinez
                                                                   LACNIC
                                                           T. Bruijnzeels
                                                                 RIPE NCC
@@ -13,11 +13,11 @@ Expires: August 18, 2016                                     C. Martinez
                                                                     ARIN
                                                                  A. Aina
                                                                  AFRINIC
-                                                       February 15, 2016
+                                                          March 21, 2016
 
 
                       RPKI Validation Reconsidered
-          draft-ietf-sidr-rpki-validation-reconsidered-03.txt
+            draft-ietf-sidr-rpki-validation-reconsidered-03
 
 Abstract
 
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 18, 2016.
+   This Internet-Draft will expire on September 22, 2016.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Huston, et al.           Expires August 18, 2016                [Page 1]
+Huston, et al.         Expires September 22, 2016               [Page 1]
 
-Internet-Draft               RPKI Validation               February 2016
+Internet-Draft               RPKI Validation                  March 2016
 
 
    publication of this document.  Please review these documents
@@ -71,13 +71,13 @@ Table of Contents
    2.  Certificate Validation in the RPKI  . . . . . . . . . . . . .   2
    3.  Operational Considerations  . . . . . . . . . . . . . . . . .   3
    4.  An Amended RPKI Certification Validation Process  . . . . . .   4
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   6
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+     4.1.  Changes to existing standards . . . . . . . . . . . . . .   4
+     4.2.  An example  . . . . . . . . . . . . . . . . . . . . . . .   5
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   7
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -109,25 +109,25 @@ Table of Contents
 
 
 
-Huston, et al.           Expires August 18, 2016                [Page 2]
+Huston, et al.         Expires September 22, 2016               [Page 2]
 
-Internet-Draft               RPKI Validation               February 2016
+Internet-Draft               RPKI Validation                  March 2016
 
 
      Certificate 1 (trust anchor):
-       Issuer TA, Subject TA, Resources 192.0.2.0/24, AS64496-AS64500
+      Issuer TA, Subject TA, Resources 192.0.2.0/24, AS64496-AS64500
 
      Certificate 2:
-       Issuer TA, Subject CA1, Resources 192.0.2.0/24, AS64496-AS64500
+      Issuer TA, Subject CA1, Resources 192.0.2.0/24, AS64496-AS64500
 
      Certificate 3:
-       Issuer CA1, Subject CA2, Resources 192.0.2.0/24, AS64496-AS64500
+      Issuer CA1, Subject CA2, Resources 192.0.2.0/24, AS64496-AS64500
 
      ROA 1:
-        Embedded Certificate 4 (EE certificate):
-        Issuer CA2, Subject R1, Resources 192.0.2.0/24
+      Embedded Certificate 4 (EE certificate):
+      Issuer CA2, Subject R1, Resources 192.0.2.0/24
 
-        Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+      Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
    All certificates in this scenario are considered valid in that the
    resources on each certificate are encompassed by the issuing
@@ -142,19 +142,19 @@ Internet-Draft               RPKI Validation               February 2016
    Consider the following sequence:
 
      Certificate 1 (trust anchor):
-       Issuer TA, Subject TA, Resources 192.0.2.0/24, AS64496-AS64500
+      Issuer TA, Subject TA, Resources 192.168.2.0/24, AS64496-AS64500
 
      Certificate 2:
-       Issuer TA, Subject CA1, Resources 192.0.2.0/24
+      Issuer TA, Subject CA1, Resources 192.168.2.0/24
 
      Certificate 3:
-       Issuer CA1, Subject CA2, Resources 192.0.2.0/24, AS64496-AS64500
+      Issuer CA1, Subject CA2, Resources 192.168.2.0/24, AS64496-AS64500
 
      ROA 1:
-        Embedded Certificate 4 (EE certificate):
-        Issuer CA2, Subject R1, Resources 192.0.2.0/24
+      Embedded Certificate 4 (EE certificate):
+      Issuer CA2, Subject R1, Resources 192.168.2.0/24
 
-        Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+      Prefix 192.168.2.0/24, Max Length 24, ASN 64496
 
    Here Certificate 2 from the previous example was re-issued by TA to
    CA1 and certain AS resources were removed.  However, CA1 failed to
@@ -165,9 +165,9 @@ Internet-Draft               RPKI Validation               February 2016
 
 
 
-Huston, et al.           Expires August 18, 2016                [Page 3]
+Huston, et al.         Expires September 22, 2016               [Page 3]
 
-Internet-Draft               RPKI Validation               February 2016
+Internet-Draft               RPKI Validation                  March 2016
 
 
    It should be noted that CA2 is not claiming any resources on ROA1
@@ -194,8 +194,7 @@ Internet-Draft               RPKI Validation               February 2016
 
    In practice such a model is unworkable for the CA higher in the path,
    because it has no control over if and when it can shrink a
-   certificate for its children.  Therefore higher level CAs, such as
-   the ones operated by Regional Internet Registries (RIRs) will pro-
+   certificate for its children.  Therefore higher level CAs will pro-
    actively re-issue shrunk resource certificates when resources are no
    longer validly held by a child.
 
@@ -204,6 +203,8 @@ Internet-Draft               RPKI Validation               February 2016
    between TA and CA1, or all resources issued to CA2.
 
 4.  An Amended RPKI Certification Validation Process
+
+4.1.  Changes to existing standards
 
    The following is a amended specification of certificate validation as
    described in section 7.2 item number 6 of certificate validation in
@@ -220,10 +221,9 @@ Internet-Draft               RPKI Validation               February 2016
 
 
 
-
-Huston, et al.           Expires August 18, 2016                [Page 4]
+Huston, et al.         Expires September 22, 2016               [Page 4]
 
-Internet-Draft               RPKI Validation               February 2016
+Internet-Draft               RPKI Validation                  March 2016
 
 
          taken from the parent certificate, where this issuer is the
@@ -245,78 +245,154 @@ Internet-Draft               RPKI Validation               February 2016
    considered valid because the quoted prefix was also part of the
    verified resource set of the embedded Certificate 4.
 
+4.2.  An example
+
+   Consider the following example under the amended approach:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.         Expires September 22, 2016               [Page 5]
+
+Internet-Draft               RPKI Validation                  March 2016
+
+
+     Certificate 1 (trust anchor):
+      Issuer TA, Subject TA, Resources 192.168.2.0/24, AS64496-AS64500
+
+       Verified resources: 192.168.2.0/24, AS64496-AS64500
+       Warnings: none
+
+     Certificate 2:
+      Issuer TA, Subject CA1, Resources 192.168.2.0/24
+
+       Verified resources: 192.168.2.0/24
+       Warnings: none
+
+     Certificate 3:
+      Issuer CA1, Subject CA2, Resources 192.168.2.0/24, AS64496-AS64500
+
+       Verified resources: 192.168.2.0/24
+       Warnings: overclaim for AS64496-AS64500
+
+     ROA 1:
+      Embedded Certificate 4 (EE certificate):
+      Issuer CA2, Subject R1, Resources 192.168.2.0/24
+
+       Verified resources: 192.168.2.0/24
+       Warnings: none
+
+       Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+
+       ROA1 is considered valid because the prefix matches the verified
+       resources on the embedded EE certificate.
+
+     ROA 2:
+      Embedded Certificate 5 (EE certificate):
+      Issuer CA2, Subject R2, Resources 192.168.3.0/24
+
+       Verified resources: none
+       Warnings: overclaim for 192.168.3.0/24
+
+       Prefix 192.168.3.0/24, Max Length 24, ASN 64496
+
+       ROA2 is considered invalid because the prefix does not
+       match the verified resources on the embedded EE certificate.
+       The amended approach cannot lead to ROAs showing up as valid
+       for resources that are not verified on the full path from the
+       Trust Anchor down to the ROA.
+
+
+
+
+
+
+
+Huston, et al.         Expires September 22, 2016               [Page 6]
+
+Internet-Draft               RPKI Validation                  March 2016
+
+
 5.  Security Considerations
 
    The problem described in section 3 of this document has not occurred
-   in 5 years of operating RPKI systems by the RIRs.  So one could
-   consider this a low probability problem today.  However the potential
-   impact on routing security would be high if the inconsistency
-   occurred near the apex of the RPKI hierarchy and would invalidate the
-   entirety of the sub-tree located below the point of this
-   inconsistency.
+   to date.  So one could consider this a low probability problem today.
+   However the potential impact on routing security would be high if the
+   inconsistency occurred near the apex of the RPKI hierarchy and would
+   invalidate the entirety of the sub-tree located below the point of
+   this inconsistency.
 
    The proposed process does not change the probability of this problem,
    but it limits the impact to just the resources that are under
    dispute.  As far as the authors can see there are no real new
    problems introduced by this approach.
 
-   Finally it should be noted that although this is a problem with a low
-   probability today this is partly due to the fact that most RIR RPKI
-   systems are using their own Trust Anchors and only have a single
-   layer of hosted member CAs that does not support further delegation
-   of resources.  If the Trust Anchor would be controlled by another
-   organisation and/or running delegated CAs becomes more commonplace,
-   then the probability of this problem will increase.
+   It should be noted that although this is a problem with a low
+   probability today this is largely due to the fact that most current
+   RPKI systems use their own Trust Anchor and do not support any large
+   number of delegated CAs.  If this changes and the issuance and
+   publication of a certificate, by the parent, and its use, by a child,
+   are handled by different organisations more commonly, then the
+   probability of this problem will increase.
 
 6.  IANA Considerations
 
    No updates to the registries are suggested by this document.
 
-
-
-
-
-
-Huston, et al.           Expires August 18, 2016                [Page 5]
-
-Internet-Draft               RPKI Validation               February 2016
-
-
 7.  Acknowledgements
 
    TBA.
 
-8.  References
-
-8.1.  Normative References
+8.  Normative References
 
    [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
               Addresses and AS Identifiers", RFC 3779,
               DOI 10.17487/RFC3779, June 2004,
               <http://www.rfc-editor.org/info/rfc3779>.
 
-   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
-              Housley, R., and W. Polk, "Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
-              <http://www.rfc-editor.org/info/rfc5280>.
-
    [RFC6487]  Huston, G., Michaelson, G., and R. Loomans, "A Profile for
               X.509 PKIX Resource Certificates", RFC 6487,
               DOI 10.17487/RFC6487, February 2012,
               <http://www.rfc-editor.org/info/rfc6487>.
 
-8.2.  Informative References
-
-   [RFC6482]  Lepinski, M., Kent, S., and D. Kong, "A Profile for Route
-              Origin Authorizations (ROAs)", RFC 6482,
-              DOI 10.17487/RFC6482, February 2012,
-              <http://www.rfc-editor.org/info/rfc6482>.
-
    [RFC6492]  Huston, G., Loomans, R., Ellacott, B., and R. Austein, "A
               Protocol for Provisioning Resource Certificates",
               RFC 6492, DOI 10.17487/RFC6492, February 2012,
               <http://www.rfc-editor.org/info/rfc6492>.
+
+
+
+
+
+Huston, et al.         Expires September 22, 2016               [Page 7]
+
+Internet-Draft               RPKI Validation                  March 2016
+
 
 Authors' Addresses
 
@@ -328,14 +404,6 @@ Authors' Addresses
 
    Phone: +61 7 3858 3100
    Email: gih@apnic.net
-
-
-
-
-
-Huston, et al.           Expires August 18, 2016                [Page 6]
-
-Internet-Draft               RPKI Validation               February 2016
 
 
    George Michaelson
@@ -376,6 +444,12 @@ Internet-Draft               RPKI Validation               February 2016
    Email: andy@arin.net
 
 
+
+Huston, et al.         Expires September 22, 2016               [Page 8]
+
+Internet-Draft               RPKI Validation                  March 2016
+
+
    Alain Aina
    African Network Information Centre (AFRINIC)
    11th Floor, Raffles Tower
@@ -389,4 +463,42 @@ Internet-Draft               RPKI Validation               February 2016
 
 
 
-Huston, et al.           Expires August 18, 2016                [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.         Expires September 22, 2016               [Page 9]
