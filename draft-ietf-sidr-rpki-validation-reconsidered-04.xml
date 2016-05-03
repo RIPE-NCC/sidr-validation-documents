@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+    <!ENTITY rfc2119 PUBLIC '' 
+      'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
+]>
+
+<rfc category="info" docName="draft-ietf-sidr-rpki-validation-reconsidered-04" ipr="trust200902" >
+  <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+  <?rfc toc="yes" ?>
+  <?rfc compact="yes" ?>
+  <?rfc subcompact="no" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc iprnotified="no" ?>
+
+  <front>
+    <title abbrev="RPKI Validation">RPKI Validation Reconsidered</title>
+
+    <author fullname="Geoff Huston" initials="G." surname="Huston">
+      <organization abbrev="APNIC">Asia Pacific Network Information Centre</organization>
+      <address>
+        <postal>
+          <street>6 Cordelia St</street>
+          <city>South Brisbane</city> <region>QLD</region> <code>4101</code>
+          <country>Australia</country>
+        </postal>
+        <phone>+61 7 3858 3100</phone>
+        <email>gih@apnic.net</email>
+      </address>
+    </author>
+
+    <author fullname="George Michaelson" initials="G." surname="Michaelson">
+      <organization abbrev="APNIC">Asia Pacific Network Information Centre</organization>
+      <address>
+        <postal>
+          <street>6 Cordelia St</street>
+          <city>South Brisbane</city> <region>QLD</region> <code>4101</code>
+          <country>Australia</country>
+        </postal>
+        <phone>+61 7 3858 3100</phone>
+        <email>ggm@apnic.net</email>
+      </address>
+    </author>
+
+    <author fullname="Carlos M. Martinez" initials="C.M." surname="Martinez">
+      <organization abbrev="LACNIC">Latin American and Caribbean IP Address Regional Registry</organization>
+      <address>
+        <postal>
+          <street>Rambla Mexico 6125</street>
+          <city>Montevideo</city><code>11400</code>
+          <country>Uruguay</country>
+        </postal>
+        <phone>+598 2604 2222</phone>
+        <email>carlos@lacnic.net</email>
+      </address>
+    </author>
+
+    <author fullname="Tim Bruijnzeels" initials="T" surname="Bruijnzeels">
+      <organization abbrev="RIPE NCC">RIPE Network Coordination Centre</organization>
+      <address>
+        <postal>
+          <street>Singel 258</street>
+          <city>Amsterdam</city><code>1016 AB</code>
+          <country>The Netherlands</country>
+        </postal>
+        <email>tim@ripe.net</email>
+      </address>
+    </author>
+
+    <author fullname="Andrew Lee Newton" initials="A.L." surname="Newton">
+      <organization abbrev="ARIN">American Registry for Internet Numbers</organization>
+      <address>
+        <postal>
+          <street>3635 Concorde Parkway</street>
+          <city>Chantilly</city> <region>VA</region><code>20151</code>
+          <country>USA</country>
+        </postal>
+        <email>andy@arin.net</email>
+      </address>
+    </author>
+
+    <author fullname="Alain Aina" initials="A." surname="Aina">
+      <organization abbrev="AFRINIC">African Network Information Centre (AFRINIC)</organization>
+      <address>
+        <postal>
+          <street>11th Floor, Raffles Tower</street>
+          <city>Cybercity</city> <region>Ebene</region>
+          <country>Mauritius</country>
+        </postal>
+        <phone>+230 403 51 00</phone>
+        <email>aalain@afrinic.net</email>
+      </address>
+    </author>
+    
+    <date year="2016" month="March"/>
+    
+    <abstract>
+    
+      <t>This document proposes an update to the certificate
+      validation procedure specified in RFC 6487 that
+      reduces aspects of operational fragility in the management of
+      certificates in the RPKI, while retaining essential security
+      features.</t>
+
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+
+      <t>This document proposes an update to the certificate
+      validation procedure specified in <xref target="RFC6487" /> that
+      reduces aspects of operational fragility in the management of
+      certificates in the RPKI, while retaining essential security
+      features.</t>
+
+    </section>
+    <section title="Certificate Validation in the RPKI">
+    
+      <t>As currently defined in section 7.2 of <xref target="RFC6487" />,
+      validation of PKIX certificates that conform to the RPKI
+      profile relies on the use of a path validation process where
+      each certificate in the validation path is required to meet the
+      certificate validation criteria.</t>
+      
+      <t>These criteria require in particular that the resources on each
+      certificate in the validation path are “encompassed” by the
+      resources on the issuing certificate. The first certificate in
+      the path is required to be a trust anchor, and its resources are
+      considered valid by definition.</t>
+
+      <t>For example, in the following sequence:</t>
+<figure><artwork><![CDATA[ 
+  Certificate 1 (trust anchor):
+    Issuer TA,
+    Subject TA,
+    Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+
+  Certificate 2: 
+   Issuer TA,
+   Subject CA1,
+   Resources 192.168.2.0/23, 2001:db8::/32
+
+  Certificate 3: 
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.168.2.0/23, 2001:db8::/32
+
+  ROA 1:
+   Embedded Certificate 4 (EE certificate): 
+    Issuer CA2,
+    Subject R1,
+    Resources 192.0.2.0/24
+
+    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+]]></artwork></figure>
+
+      <t>All certificates in this scenario are considered valid in that
+      the resources on each certificate are encompassed by the issuing
+      certificate. ROA1 is valid because the specified prefix is encompassed
+      by the embedded EE certificate, as required by <xref target="RFC6482" />.</t>
+      
+    </section>
+      
+    <section title="Operational Considerations">
+      
+      <t>The allocations recorded in the RPKI change as a result of resource
+      transfers and some types of operational errors. For example, the CAs
+      involved in transfer might choose to modify CA certificates in an order
+      that causes some of these certificates to “over-claim” temporarily. It
+      may also happen that a child CA does not voluntarily request a shrunk
+      resource certificate when resources are being transferred or reclaimed by
+      the parent. Furthermore some types of operational errors that may occur
+      during management of RPKI databases also may create CA certificates that,
+      temporarily, no longer encompass all of the resources in subordinate
+      certificates.</t>
+
+      
+      <t>Consider the following sequence:</t>
+<figure><artwork><![CDATA[ 
+  Certificate 1 (trust anchor):
+   Issuer TA,
+   Subject TA,
+   Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+
+  Certificate 2:
+   Issuer TA,
+   Subject CA1,
+   Resources 192.168.2.0/24, 2001:db8::/32
+
+  Certificate 3 (invalid):
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.168.2.0/23, 2001:db8::/32
+
+  ROA 1 (invalid):
+   Embedded Certificate 4 (EE certificate): 
+    Issuer CA2,
+    Subject R1,
+    Resources 192.168.2.0/24
+   
+    Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+]]></artwork></figure>
+
+      <t>Here Certificate 2 from the previous example was re-issued by
+      TA to CA1 and the prefix 192.168.2.0/23 was shrunk to 192.168.2.0/24,
+      i.e. 192.168.3.0/24 was removed. However, CA1 failed to re-issue a new
+      Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and
+      considered invalid, and by recursion the embedded Certificate 4 used for
+      ROA1 is also invalid. And ROA1 is invalid because the specified prefix is
+      no longer encompassed by a valid embedded EE certificate, as required by
+      <xref target="RFC6482" /></t>
+      
+      <t>However, it should be noted that ROA1 does not make use of any of the
+      address resources that were removed from CA1’s certificate, and thus
+      it would be desirable if ROA1 could still be viewed as valid. Technically
+      CA1 could re-issue a Certificate 3 for 192.168.2.0/24 to CA2, then ROA1
+      would be considered valid according to <xref target="RFC6482" />. But as
+      long as CA1 does not take this action, ROA1 remains invalid. It would be
+      preferable if ROA1 could be considered valid.</t>
+              
+    </section>
+    
+    <section title="An Amended RPKI Certification Validation Process">
+    
+      <section title="Verified Resource Set">
+      
+      	<t>The changes proposed here to the validation procedure in
+      	<xref target="RFC6487" /> are intended to avoid causing CA certificates
+      	to be treated as completely invalid as a result of overclaims. However,
+      	these changes are designed to not degrade the security offered by the
+      	RPKI. Specifically, no ROAs or router certificates will be treated as
+      	valid if they contain only resources that are not encompassed by all
+      	superior certificates along a path to a trust anchor.</t>
+      	
+      	<t>The way this is achieved conceptually is by maintaining a set of
+      	verified resources for each certificate that is separate from the set
+      	of resources found in the <xref target="RFC3779" /> resource extension
+      	on a certificate.</t>
+      	
+      </section>
+      
+      <section title="Changes to existing standards">
+      
+      <section title="Resource Certificate Path Validation">
+        	
+    	<t>Step 6 of the Resource Certification Path Validation defined in
+    	section 7.2 of <xref target="RFC6487" /> currently has the following on
+    	the validation of resources contained in the <xref target="RFC3779" />
+    	resource extension of certificates:<list style="symbols">
+    		<t>The resource extension data is "encompassed" by the resource
+    		extension data contained in a valid certificate where this
+    		issuer is the subject (the previous certificate in the context
+    		of the ordered sequence defined by the certification path).</t>
+    	</list></t>
+    	
+    	<t>The following is an amended specification to be used in place of this
+    	text.<list style="symbols">
+    	
+    	  <t>The Relying Party MUST keep a Verified Resource Set for the
+    	  certificate independent of the RFC3779 extension itself, that is built
+    	  up using the following approach:<list style="symbols">
+    	  
+    	    <t>If the certificate under test is chosen as a Trust Anchor, then
+    	    the Verified Resource Set of this certificate is equal to the RFC3779
+    	    resource extensions.</t>
+    	
+    		<t>If the certificate under test not chosen as a Trust Anchor, the
+    		Verified Resource Set is found by comparing this certificate to its
+    		parent certificate (the previous certificate in the context of the
+    		ordered sequence defined by the certification path) in the following
+    		way:<list style="symbols">
+    		
+    		  <t>For any of the resource extensions that use the "inherit"
+    		  element as described in sections 2.2.3.5 and 3.2.3.3 of RFC 3779,
+    		  the corresponding resources of this type should be taken from the
+    		  parent certificate.</t>
+    	  			
+    	  	  <t>For resource extensions that do no use the "inherit" element,
+    	  	  the intersection of the resources on this certificate and the
+    	  	  Verified Resource Set of the parent certificate MUST be used. If
+    	  	  any resources on this certificate are not encompassed by the
+    	  	  Verified Resource Set of the parent certificate, a warning SHOULD
+    	  	  be issued to help operators rectify this situation.</t>
+    	  	
+    	  	  <t>If the Verified Resource Set obtained this way is empty for all
+    	  	  resource classes (IPv4, IPv6 and AS), then the certificate MUST be
+    	  	  considered invalid.</t>
+
+    	  	</list></t>
+    	  </list></t>
+    	</list></t>
+    	
+    	</section>
+    	
+    	<section title="ROA Validation">
+       	
+    	<t>Section 4 of <xref target="RFC6482" /> currently has the following
+    	text on the validation of resources on a ROA:<list style="symbols">
+    	
+    	  <t>The IP address delegation extension [RFC3779] is present in the
+    	  end-entity (EE) certificate (contained within the ROA), and each
+    	  IP address prefix(es) in the ROA is contained within the set of IP
+    	  addresses specified by the EE certificate's IP address delegation
+    	  extension.</t>
+    	</list></t>
+    	
+    	<t>The following is an amended specification to be used in place of this
+    	text.<list style="symbols">
+
+    	  <t>The Verified Resource Set of the end-entity (EE) certificate
+    	  (contained within the ROA), contains each IP address prefix(es) in the
+    	  ROA.</t>
+    	      	
+    	</list></t>
+    	
+        </section>
+        
+        <section title="BGPsec Router Certificate Validation">
+        
+          <t>BGPsec Router Certificate Validation is defined in section 3.3 of
+          <xref target="I-D.ietf-sidr-bgpsec-pki-profiles" />. Path validation
+          defined section 7 of <xref target="RFC6487" /> is used as the first
+          step in validation, and a number of additional constraints are
+          applied.</t>
+          
+          <t>We propose that the text of the following two additions:
+          <list style="symbols">
+            <t>BGPsec Router Certificates MUST NOT include the IP Resource 
+            extension.</t>
+            <t>BGPsec Router Certificates MUST include the AS Resource
+            Identifier Delegation extension.</t>
+          </list>
+          Is updated to the following:
+          <list style="symbols">
+            <t>The Validated Resource Set of BGPsec Router Certificates MUST NOT
+            include IP Resources.</t>
+            <t>BGPsec Router Certificates MUST include the AS Resource
+            Identifier Delegation extension and all AS resources included on
+            this MUST be encompassed by the Validated Resource Set of the BGPsec
+            Router Certificates.</t>
+          </list>          
+          </t>
+        </section>
+
+    		
+      </section>
+      
+      <section title="An example">
+      
+      	<t>Consider the following example under the amended approach:</t>
+
+<figure><artwork><![CDATA[ 
+  Certificate 1 (trust anchor):
+   Issuer TA,
+   Subject TA,
+   Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+    
+    Verified resources: 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+    Warnings: none
+
+  Certificate 2: 
+   Issuer TA,
+   Subject CA1,
+   Resources 192.168.2.0/24, 2001:db8::/32, AS64496
+   
+    Verified resources: 192.168.2.0/24, 2001:db8::/32, AS64496
+    Warnings: none
+
+  Certificate 3: 
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.168.2.0/23, AS64496
+   
+    Verified resources: 192.168.2.0/24, AS64496
+    Warnings: overclaim for 192.168.3.0/24
+
+  ROA 1 (valid):
+   Embedded Certificate 4 (EE certificate):
+    Issuer CA2,
+    Subject R1,
+    Resources 192.168.2.0/24
+
+     Verified resources: 192.168.2.0/24
+     Warnings: none
+     
+     Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+    
+    ROA1 is considered valid because the prefix matches the verified
+    resources on the embedded EE certificate, as required by RFC 6482.
+
+  ROA 2 (invalid):
+   Embedded Certificate 5 (EE certificate):
+    Issuer CA2,
+    Subject R2,
+    Resources 192.168.3.0/24
+
+     Verified resources: none
+     Warnings: overclaim for 192.168.3.0/24
+     
+     Prefix 192.168.3.0/24, Max Length 24, ASN 64496
+    
+    ROA2 is considered invalid because the prefix does not match the
+    Verified Resource Set on the embedded EE certificate. The amended
+    approach therefore cannot lead to ROAs showing up as valid for
+    resources that are not verified on the full path from the Trust
+    Anchor down to the ROA.
+    
+  BGPSec Certificate 1 (valid):
+   Issuer CA2
+   Subject ROUTER-64496
+   Resources AS64496
+    
+    Verified resources: AS64496
+    Warnings: none
+     
+  BGPSec Certificate 2 (invalid):
+   Issuer CA2
+   Subject ALL-ROUTERS
+   Resources AS64496-AS64497
+    
+    Verified resources: AS64496
+    Warnings: overclaim for AS64497 
+    
+    BGPSec Certificate 2 is considered invalid because not ALL
+    resources are part of the Verified Resource Set of this
+    certificate. This problem can be mitigated by issuing separate
+    certificates for each AS number.
+]]></artwork></figure>
+			
+    	</section>
+
+    </section>
+    
+    <section title="Security Considerations">
+    
+      <t>The problem described in section 3 of this document has not
+      occurred to date. So one could consider this a low probability
+      problem today. However the potential impact on routing security
+      would be high if an overclaim occurred near the apex of the RPKI
+      hierarchy and would invalidate the entirety of the sub-tree located
+      below the point of this inconsistency.</t>
+      
+      <t>The proposed process does not change the probability of this
+      problem, but it limits the impact to just the overclaimed resources.
+      As far as the authors can see there are no real new problems introduced
+      by this approach.</t>
+
+    </section>
+    
+    <section title="IANA Considerations">
+    
+      <t>No updates to the registries are suggested by this document.</t>
+      
+    </section>
+    <section title="Acknowledgements">
+
+      <t>TBA.</t>
+
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.3779.xml"?>
+      <?rfc include="reference.RFC.6482.xml"?>
+      <?rfc include="reference.RFC.6487.xml"?>
+      <?rfc include="reference.I-D.ietf-sidr-bgpsec-pki-profiles"?>                
+    </references>
+  </back>
+</rfc>
