@@ -387,7 +387,9 @@
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
 <link href="#rfc.section.7" rel="Chapter" title="7 Acknowledgements"/>
-<link href="#rfc.references" rel="Chapter" title="8 Normative References"/>
+<link href="#rfc.references" rel="Chapter" title="8 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -498,8 +500,10 @@
 </ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
 <li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
 <li>7.   <a href="#rfc.section.7">Acknowledgements</a></li>
-<li>8.   <a href="#rfc.references">Normative References</a></li>
-<li><a href="#rfc.authors">Authors' Addresses</a></li>
+<li>8.   <a href="#rfc.references">References</a></li>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+</ul><li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
   </ul>
@@ -514,17 +518,18 @@
   Certificate 1 (trust anchor):
     Issuer TA,
     Subject TA,
-    Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+    Resources 192.0.2.0/24, 198.51.100.0/24,
+              2001:db8::/32, AS64496-AS64500
 
   Certificate 2: 
    Issuer TA,
    Subject CA1,
-   Resources 192.168.2.0/23, 2001:db8::/32
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
   Certificate 3: 
    Issuer CA1,
    Subject CA2,
-   Resources 192.168.2.0/23, 2001:db8::/32
+   Resources 192.0.2.0/24, 2001:db8::/32
 
   ROA 1:
    Embedded Certificate 4 (EE certificate): 
@@ -542,32 +547,34 @@
   Certificate 1 (trust anchor):
    Issuer TA,
    Subject TA,
-   Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+             2001:db8::/32, AS64496-AS64500
 
   Certificate 2:
    Issuer TA,
    Subject CA1,
-   Resources 192.168.2.0/24, 2001:db8::/32
+   Resources 192.0.2.0/24, 2001:db8::/32
 
   Certificate 3 (invalid):
    Issuer CA1,
    Subject CA2,
-   Resources 192.168.2.0/23, 2001:db8::/32
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
   ROA 1 (invalid):
    Embedded Certificate 4 (EE certificate): 
     Issuer CA2,
     Subject R1,
-    Resources 192.168.2.0/24
+    Resources 192.0.2.0/24
    
-    Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 </pre>
-<p id="rfc.section.3.p.3">Here Certificate 2 from the previous example was re-issued by TA to CA1 and the prefix 192.168.2.0/23 was shrunk to 192.168.2.0/24, i.e. 192.168.3.0/24 was removed. However, CA1 failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and considered invalid, and by recursion the embedded Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because the specified prefix is no longer encompassed by a valid embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a></p>
-<p id="rfc.section.3.p.4">However, it should be noted that ROA1 does not make use of any of the address resources that were removed from CA1&#8217;s certificate, and thus it would be desirable if ROA1 could still be viewed as valid. Technically CA1 could re-issue a Certificate 3 for 192.168.2.0/24 to CA2, then ROA1 would be considered valid according to <a href="#RFC6482">[RFC6482]</a>. But as long as CA1 does not take this action, ROA1 remains invalid. It would be preferable if ROA1 could be considered valid.</p>
+<p id="rfc.section.3.p.3">Here Certificate 2 from the previous example was re-issued by TA to CA1 and the prefix 198.51.100.0/24 was removed. However, CA1 failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and considered invalid, and by recursion the embedded Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because the specified prefix is no longer encompassed by a valid embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a></p>
+<p id="rfc.section.3.p.4">However, it should be noted that ROA1 does not make use of any of the address resources that were removed from CA1&#8217;s certificate, and thus it would be desirable if ROA1 could still be viewed as valid. Technically CA1 could re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and then ROA1 would be considered valid according to <a href="#RFC6482">[RFC6482]</a>.  But as long as CA1 does not take this action, ROA1 remains invalid. It would be preferable if ROA1 could be considered valid.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> An Amended RPKI Certification Validation Process</h1>
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> Verified Resource Set</h1>
-<p id="rfc.section.4.1.p.1">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> are intended to avoid causing CA certificates to be treated as completely invalid as a result of overclaims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, no ROAs or router certificates will be treated as valid if they contain only resources that are not encompassed by all superior certificates along a path to a trust anchor.</p>
-<p id="rfc.section.4.1.p.2">The way this is achieved conceptually is by maintaining a set of verified resources for each certificate that is separate from the set of resources found in the <a href="#RFC3779">[RFC3779]</a> resource extension on a certificate.</p>
+<p id="rfc.section.4.1.p.1">The problem described above can be considered as a low probability problem today. However the potential impact on routing security would be high if an overclaim occurred near the apex of the RPKI hierarchy and would invalidate the entirety of the sub-tree located below this point.</p>
+<p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> do not change the probability of this problem, but limit the impact to just the overclaimed resources. This approach is intended to avoid causing CA certificates to be treated as completely invalid as a result of overclaims. However, these changes are designed to not degrade the security offered by the RPKI.  Specifically, no ROAs or router certificates will be treated as valid if they contain only resources that are not encompassed by all superior certificates along a path to a trust anchor.</p>
+<p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining a set of verified resources for each certificate that is separate from the set of resources found in the <a href="#RFC3779">[RFC3779]</a> resource extension on a certificate.</p>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Changes to existing standards</h1>
 <h1 id="rfc.section.4.2.1"><a href="#rfc.section.4.2.1">4.2.1.</a> Resource Certificate Path Validation</h1>
 <p id="rfc.section.4.2.1.p.1">Step 6 of the Resource Certification Path Validation defined in section 7.2 of <a href="#RFC6487">[RFC6487]</a> currently has the following on the validation of resources contained in the <a href="#RFC3779">[RFC3779]</a> resource extension of certificates:</p>
@@ -614,51 +621,55 @@
   Certificate 1 (trust anchor):
    Issuer TA,
    Subject TA,
-   Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+             2001:db8::/32, AS64496-AS64500
     
-    Verified resources: 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+    Verified Resource Set: 192.0.2.0/24, 198.51.100.0/24,
+                           2001:db8::/32, AS64496-AS64500
     Warnings: none
 
   Certificate 2: 
    Issuer TA,
    Subject CA1,
-   Resources 192.168.2.0/24, 2001:db8::/32, AS64496
+   Resources 192.0.2.0/24, 2001:db8::/32, AS64496
    
-    Verified resources: 192.168.2.0/24, 2001:db8::/32, AS64496
+    Verified Resource Set: 192.0.2.0/24,
+                           2001:db8::/32, AS64496
     Warnings: none
 
   Certificate 3: 
    Issuer CA1,
    Subject CA2,
-   Resources 192.168.2.0/23, AS64496
+   Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
    
-    Verified resources: 192.168.2.0/24, AS64496
-    Warnings: overclaim for 192.168.3.0/24
+    Verified Resource Set: 192.0.2.0/24, AS64496
+    Warnings: overclaim for 198.51.100.0/24
 
   ROA 1 (valid):
    Embedded Certificate 4 (EE certificate):
     Issuer CA2,
     Subject R1,
-    Resources 192.168.2.0/24
+    Resources 192.0.2.0/24
 
-     Verified resources: 192.168.2.0/24
+     Verified resources: 192.0.2.0/24
      Warnings: none
      
-     Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
     
-    ROA1 is considered valid because the prefix matches the verified
-    resources on the embedded EE certificate, as required by RFC 6482.
+    ROA1 is considered valid because the prefix matches the Verified
+    Resource Set on the embedded EE certificate, as required by
+    RFC 6482.
 
   ROA 2 (invalid):
    Embedded Certificate 5 (EE certificate):
     Issuer CA2,
     Subject R2,
-    Resources 192.168.3.0/24
+    Resources 198.51.100.0/24
 
      Verified resources: none
-     Warnings: overclaim for 192.168.3.0/24
+     Warnings: overclaim for 198.51.100.0/24
      
-     Prefix 192.168.3.0/24, Max Length 24, ASN 64496
+     Prefix 198.51.100.0/24, Max Length 24, ASN 64496
     
     ROA2 is considered invalid because the prefix does not match the
     Verified Resource Set on the embedded EE certificate. The amended
@@ -688,20 +699,20 @@
     certificates for each AS number.
 </pre>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Security Considerations</h1>
-<p id="rfc.section.5.p.1">The problem described in section 3 of this document has not occurred to date. So one could consider this a low probability problem today. However the potential impact on routing security would be high if an overclaim occurred near the apex of the RPKI hierarchy and would invalidate the entirety of the sub-tree located below the point of this inconsistency.</p>
-<p id="rfc.section.5.p.2">The proposed process does not change the probability of this problem, but it limits the impact to just the overclaimed resources.  As far as the authors can see there are no real new problems introduced by this approach.</p>
+<p id="rfc.section.5.p.1">As far as the authors can see there are no real new problems introduced by this approach.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> IANA Considerations</h1>
 <p id="rfc.section.6.p.1">No updates to the registries are suggested by this document.</p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Acknowledgements</h1>
 <p id="rfc.section.7.p.1">TBA.</p>
-<h1 id="rfc.references"><a href="#rfc.references">8.</a> Normative References</h1>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
       <td class="reference">
         <b id="I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</b>
       </td>
-      <td class="top"><a>Reynolds, M.</a> and <a>S. Kent</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sidr-bgpsec-pki-profiles-16">A Profile for BGPsec Router Certificates, Certificate Revocation Lists, and Certification Requests</a>", Internet-Draft draft-ietf-sidr-bgpsec-pki-profiles-16, March 2016.</td>
+      <td class="top"><a>Reynolds, M.</a> and <a>S. Kent</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sidr-bgpsec-pki-profiles-17">A Profile for BGPsec Router Certificates, Certificate Revocation Lists, and Certification Requests</a>", Internet-Draft draft-ietf-sidr-bgpsec-pki-profiles-17, June 2016.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -720,6 +731,29 @@
         <b id="RFC6487">[RFC6487]</b>
       </td>
       <td class="top"><a>Huston, G.</a>, <a>Michaelson, G.</a> and <a>R. Loomans</a>, "<a href="http://tools.ietf.org/html/rfc6487">A Profile for X.509 PKIX Resource Certificates</a>", RFC 6487, DOI 10.17487/RFC6487, February 2012.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC3849">[RFC3849]</b>
+      </td>
+      <td class="top"><a>Huston, G.</a>, <a>Lord, A.</a> and <a>P. Smith</a>, "<a href="http://tools.ietf.org/html/rfc3849">IPv6 Address Prefix Reserved for Documentation</a>", RFC 3849, DOI 10.17487/RFC3849, July 2004.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5398">[RFC5398]</b>
+      </td>
+      <td class="top"><a>Huston, G.</a>, "<a href="http://tools.ietf.org/html/rfc5398">Autonomous System (AS) Number Reservation for Documentation Use</a>", RFC 5398, DOI 10.17487/RFC5398, December 2008.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5737">[RFC5737]</b>
+      </td>
+      <td class="top"><a>Arkko, J.</a>, <a>Cotton, M.</a> and <a>L. Vegoda</a>, "<a href="http://tools.ietf.org/html/rfc5737">IPv4 Address Blocks Reserved for Documentation</a>", RFC 5737, DOI 10.17487/RFC5737, January 2010.</td>
     </tr>
   </tbody>
 </table>

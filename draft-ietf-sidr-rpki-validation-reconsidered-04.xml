@@ -134,17 +134,18 @@
   Certificate 1 (trust anchor):
     Issuer TA,
     Subject TA,
-    Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+    Resources 192.0.2.0/24, 198.51.100.0/24,
+              2001:db8::/32, AS64496-AS64500
 
   Certificate 2: 
    Issuer TA,
    Subject CA1,
-   Resources 192.168.2.0/23, 2001:db8::/32
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
   Certificate 3: 
    Issuer CA1,
    Subject CA2,
-   Resources 192.168.2.0/23, 2001:db8::/32
+   Resources 192.0.2.0/24, 2001:db8::/32
 
   ROA 1:
    Embedded Certificate 4 (EE certificate): 
@@ -181,43 +182,43 @@
   Certificate 1 (trust anchor):
    Issuer TA,
    Subject TA,
-   Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+             2001:db8::/32, AS64496-AS64500
 
   Certificate 2:
    Issuer TA,
    Subject CA1,
-   Resources 192.168.2.0/24, 2001:db8::/32
+   Resources 192.0.2.0/24, 2001:db8::/32
 
   Certificate 3 (invalid):
    Issuer CA1,
    Subject CA2,
-   Resources 192.168.2.0/23, 2001:db8::/32
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
   ROA 1 (invalid):
    Embedded Certificate 4 (EE certificate): 
     Issuer CA2,
     Subject R1,
-    Resources 192.168.2.0/24
+    Resources 192.0.2.0/24
    
-    Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 ]]></artwork></figure>
 
       <t>Here Certificate 2 from the previous example was re-issued by
-      TA to CA1 and the prefix 192.168.2.0/23 was shrunk to 192.168.2.0/24,
-      i.e. 192.168.3.0/24 was removed. However, CA1 failed to re-issue a new
-      Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and
-      considered invalid, and by recursion the embedded Certificate 4 used for
-      ROA1 is also invalid. And ROA1 is invalid because the specified prefix is
-      no longer encompassed by a valid embedded EE certificate, as required by
-      <xref target="RFC6482" /></t>
+      TA to CA1 and the prefix 198.51.100.0/24 was removed. However, CA1
+      failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3
+      is now over-claiming and considered invalid, and by recursion the embedded
+      Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because
+      the specified prefix is no longer encompassed by a valid embedded EE
+      certificate, as required by <xref target="RFC6482" /></t>
       
       <t>However, it should be noted that ROA1 does not make use of any of the
       address resources that were removed from CA1’s certificate, and thus
       it would be desirable if ROA1 could still be viewed as valid. Technically
-      CA1 could re-issue a Certificate 3 for 192.168.2.0/24 to CA2, then ROA1
-      would be considered valid according to <xref target="RFC6482" />. But as
-      long as CA1 does not take this action, ROA1 remains invalid. It would be
-      preferable if ROA1 could be considered valid.</t>
+      CA1 could re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and
+      then ROA1 would be considered valid according to <xref target="RFC6482" />.
+      But as long as CA1 does not take this action, ROA1 remains invalid. It
+      would be preferable if ROA1 could be considered valid.</t>
               
     </section>
     
@@ -225,18 +226,26 @@
     
       <section title="Verified Resource Set">
       
-      	<t>The changes proposed here to the validation procedure in
-      	<xref target="RFC6487" /> are intended to avoid causing CA certificates
-      	to be treated as completely invalid as a result of overclaims. However,
-      	these changes are designed to not degrade the security offered by the
-      	RPKI. Specifically, no ROAs or router certificates will be treated as
-      	valid if they contain only resources that are not encompassed by all
-      	superior certificates along a path to a trust anchor.</t>
-      	
-      	<t>The way this is achieved conceptually is by maintaining a set of
-      	verified resources for each certificate that is separate from the set
-      	of resources found in the <xref target="RFC3779" /> resource extension
-      	on a certificate.</t>
+         <t>The problem described above can be considered as a low probability
+         problem today. However the potential impact on routing security
+         would be high if an overclaim occurred near the apex of the RPKI
+         hierarchy and would invalidate the entirety of the sub-tree located
+         below this point.</t>
+      
+         <t>The changes proposed here to the validation procedure in
+      	 <xref target="RFC6487" /> do not change the probability of this problem,
+      	 but limit the impact to just the overclaimed resources. This approach 
+      	 is intended to avoid causing CA certificates to be treated as
+      	 completely invalid as a result of overclaims. However, these changes
+      	 are designed to not degrade the security offered by the RPKI.
+      	 Specifically, no ROAs or router certificates will be treated as valid
+      	 if they contain only resources that are not encompassed by all superior
+      	 certificates along a path to a trust anchor.</t>
+
+      	 <t>The way this is achieved conceptually is by maintaining a set of
+      	 verified resources for each certificate that is separate from the set
+      	 of resources found in the <xref target="RFC3779" /> resource extension
+      	 on a certificate.</t>
       	
       </section>
       
@@ -354,51 +363,55 @@
   Certificate 1 (trust anchor):
    Issuer TA,
    Subject TA,
-   Resources 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+             2001:db8::/32, AS64496-AS64500
     
-    Verified resources: 192.168.0.0/16, 2001:db8::/32, AS64496-AS64500
+    Verified Resource Set: 192.0.2.0/24, 198.51.100.0/24,
+                           2001:db8::/32, AS64496-AS64500
     Warnings: none
 
   Certificate 2: 
    Issuer TA,
    Subject CA1,
-   Resources 192.168.2.0/24, 2001:db8::/32, AS64496
+   Resources 192.0.2.0/24, 2001:db8::/32, AS64496
    
-    Verified resources: 192.168.2.0/24, 2001:db8::/32, AS64496
+    Verified Resource Set: 192.0.2.0/24,
+                           2001:db8::/32, AS64496
     Warnings: none
 
   Certificate 3: 
    Issuer CA1,
    Subject CA2,
-   Resources 192.168.2.0/23, AS64496
+   Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
    
-    Verified resources: 192.168.2.0/24, AS64496
-    Warnings: overclaim for 192.168.3.0/24
+    Verified Resource Set: 192.0.2.0/24, AS64496
+    Warnings: overclaim for 198.51.100.0/24
 
   ROA 1 (valid):
    Embedded Certificate 4 (EE certificate):
     Issuer CA2,
     Subject R1,
-    Resources 192.168.2.0/24
+    Resources 192.0.2.0/24
 
-     Verified resources: 192.168.2.0/24
+     Verified resources: 192.0.2.0/24
      Warnings: none
      
-     Prefix 192.168.2.0/24, Max Length 24, ASN 64496
+     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
     
-    ROA1 is considered valid because the prefix matches the verified
-    resources on the embedded EE certificate, as required by RFC 6482.
+    ROA1 is considered valid because the prefix matches the Verified
+    Resource Set on the embedded EE certificate, as required by
+    RFC 6482.
 
   ROA 2 (invalid):
    Embedded Certificate 5 (EE certificate):
     Issuer CA2,
     Subject R2,
-    Resources 192.168.3.0/24
+    Resources 198.51.100.0/24
 
      Verified resources: none
-     Warnings: overclaim for 192.168.3.0/24
+     Warnings: overclaim for 198.51.100.0/24
      
-     Prefix 192.168.3.0/24, Max Length 24, ASN 64496
+     Prefix 198.51.100.0/24, Max Length 24, ASN 64496
     
     ROA2 is considered invalid because the prefix does not match the
     Verified Resource Set on the embedded EE certificate. The amended
@@ -434,16 +447,7 @@
     
     <section title="Security Considerations">
     
-      <t>The problem described in section 3 of this document has not
-      occurred to date. So one could consider this a low probability
-      problem today. However the potential impact on routing security
-      would be high if an overclaim occurred near the apex of the RPKI
-      hierarchy and would invalidate the entirety of the sub-tree located
-      below the point of this inconsistency.</t>
-      
-      <t>The proposed process does not change the probability of this
-      problem, but it limits the impact to just the overclaimed resources.
-      As far as the authors can see there are no real new problems introduced
+      <t>As far as the authors can see there are no real new problems introduced
       by this approach.</t>
 
     </section>
@@ -466,6 +470,12 @@
       <?rfc include="reference.RFC.6482.xml"?>
       <?rfc include="reference.RFC.6487.xml"?>
       <?rfc include="reference.I-D.ietf-sidr-bgpsec-pki-profiles"?>                
+    </references>
+    
+    <references title="Informative References">
+      <?rfc include="reference.RFC.3849.xml"?>
+      <?rfc include="reference.RFC.5398.xml"?>
+      <?rfc include="reference.RFC.5737.xml"?>
     </references>
   </back>
 </rfc>
