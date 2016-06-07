@@ -5,7 +5,7 @@
 Network Working Group                                          G. Huston
 Internet-Draft                                             G. Michaelson
 Intended status: Informational                                     APNIC
-Expires: September 2, 2016                                   C. Martinez
+Expires: December 9, 2016                                    C. Martinez
                                                                   LACNIC
                                                           T. Bruijnzeels
                                                                 RIPE NCC
@@ -13,7 +13,7 @@ Expires: September 2, 2016                                   C. Martinez
                                                                     ARIN
                                                                  A. Aina
                                                                  AFRINIC
-                                                              March 2016
+                                                            June 7, 2016
 
 
                       RPKI Validation Reconsidered
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 2, 2016.
+   This Internet-Draft will expire on December 9, 2016.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 1]
+Huston, et al.          Expires December 9, 2016                [Page 1]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
    (http://trustee.ietf.org/license-info) in effect on the date of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 2]
+Huston, et al.          Expires December 9, 2016                [Page 2]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
    For example, in the following sequence:
@@ -165,9 +165,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 3]
+Huston, et al.          Expires December 9, 2016                [Page 3]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
      Certificate 1 (trust anchor):
@@ -221,9 +221,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 4]
+Huston, et al.          Expires December 9, 2016                [Page 4]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
    hierarchy and would invalidate the entirety of the sub-tree located
@@ -277,9 +277,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 5]
+Huston, et al.          Expires December 9, 2016                [Page 5]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
          +  For any of the resource extensions that use the "inherit"
@@ -333,9 +333,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 6]
+Huston, et al.          Expires December 9, 2016                [Page 6]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
    o  BGPsec Router Certificates MUST include the AS Resource Identifier
@@ -389,9 +389,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 7]
+Huston, et al.          Expires December 9, 2016                [Page 7]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
        Resources 192.0.2.0/24
@@ -445,9 +445,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 8]
+Huston, et al.          Expires December 9, 2016                [Page 8]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
 5.  Security Considerations
@@ -501,9 +501,9 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016               [Page 9]
+Huston, et al.          Expires December 9, 2016                [Page 9]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
    [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
@@ -557,9 +557,9 @@ Authors' Addresses
 
 
 
-Huston, et al.          Expires September 2, 2016              [Page 10]
+Huston, et al.          Expires December 9, 2016               [Page 10]
 
-Internet-Draft               RPKI Validation                  March 2016
+Internet-Draft               RPKI Validation                   June 2016
 
 
    Andrew Lee Newton
@@ -613,4 +613,4 @@ Internet-Draft               RPKI Validation                  March 2016
 
 
 
-Huston, et al.          Expires September 2, 2016              [Page 11]
+Huston, et al.          Expires December 9, 2016               [Page 11]
