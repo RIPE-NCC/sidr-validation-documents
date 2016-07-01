@@ -4,7 +4,7 @@
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
 ]>
 
-<rfc category="info" docName="draft-ietf-sidr-rpki-validation-reconsidered-05" ipr="trust200902" >
+<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-05" ipr="trust200902" >
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
   <?rfc toc="yes" ?>
   <?rfc compact="yes" ?>
@@ -123,9 +123,9 @@
       each certificate in the validation path is required to meet the
       certificate validation criteria.</t>
       
-      <t>These criteria require in particular that the resources on each
-      certificate in the validation path are “encompassed” by the
-      resources on the issuing certificate. The first certificate in
+      <t>These criteria require, in particular, that the Internet Number
+      Resources (INRs) of each certificate in the validation path are
+      “encompassed” by INRs on the issuing certificate. The first certificate in
       the path is required to be a trust anchor, and its resources are
       considered valid by definition.</t>
 
@@ -156,26 +156,27 @@
     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 ]]></artwork></figure>
 
-      <t>All certificates in this scenario are considered valid in that
-      the resources on each certificate are encompassed by the issuing
-      certificate. ROA1 is valid because the specified prefix is encompassed
-      by the embedded EE certificate, as required by <xref target="RFC6482" />.</t>
+      <t>All certificates in this scenario are considered valid since the INRs
+      of each certificate are encompassed by those of the issuing certificate.
+      ROA1 is valid because the specified prefix is encompassed by the embedded
+      EE certificate, as required by <xref target="RFC6482" />.</t>
       
     </section>
       
     <section title="Operational Considerations">
       
       <t>The allocations recorded in the RPKI change as a result of resource
-      transfers and some types of operational errors. For example, the CAs
-      involved in transfer might choose to modify CA certificates in an order
-      that causes some of these certificates to “over-claim” temporarily. It
-      may also happen that a child CA does not voluntarily request a shrunk
-      resource certificate when resources are being transferred or reclaimed by
-      the parent. Furthermore some types of operational errors that may occur
+      transfers. For example, the CAs involved in transfer might choose to 
+      modify CA certificates in an order that causes some of these certificates
+      to “over-claim” temporarily. A certificate is said to “over-claim” if it
+      includes INRs not contained in the INRs of the CA that issued the
+      certificate in question.</t>
+      <t>It may also happen that a child CA does not voluntarily request a
+      shrunk resource certificate when resources are being transferred or
+      reclaimed by the parent. Furthermore operational errors that may occur
       during management of RPKI databases also may create CA certificates that,
-      temporarily, no longer encompass all of the resources in subordinate
+      temporarily, no longer encompass all of the INRs of subordinate
       certificates.</t>
-
       
       <t>Consider the following sequence:</t>
 <figure><artwork><![CDATA[ 
@@ -207,45 +208,47 @@
       <t>Here Certificate 2 from the previous example was re-issued by
       TA to CA1 and the prefix 198.51.100.0/24 was removed. However, CA1
       failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3
-      is now over-claiming and considered invalid, and by recursion the embedded
+      is now over-claiming and considered invalid; by recursion the embedded
       Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because
-      the specified prefix is no longer encompassed by a valid embedded EE
-      certificate, as required by <xref target="RFC6482" /></t>
+      the specified prefix contained in the ROA is no longer encompassed by a
+      valid embedded EE certificate, as required by <xref target="RFC6482" /></t>
       
       <t>However, it should be noted that ROA1 does not make use of any of the
       address resources that were removed from CA1’s certificate, and thus
       it would be desirable if ROA1 could still be viewed as valid. Technically
-      CA1 could re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and
+      CA1 should re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and
       then ROA1 would be considered valid according to <xref target="RFC6482" />.
       But as long as CA1 does not take this action, ROA1 remains invalid. It
-      would be preferable if ROA1 could be considered valid.</t>
+      would be preferable if ROA1 could be considered valid, since the assertion
+      it makes was not affected by the reduced scope of CA1’s certificate.</t>
               
     </section>
     
     <section title="An Amended RPKI Certification Validation Process">
     
-      <section title="Verified Resource Set">
+      <section title="Verified Resource Sets">
       
          <t>The problem described above can be considered as a low probability
          problem today. However the potential impact on routing security
-         would be high if an overclaim occurred near the apex of the RPKI
-         hierarchy and would invalidate the entirety of the sub-tree located
-         below this point.</t>
+         would be high if an over-claiming occurred near the apex of the RPKI
+         hierarchy, as this would invalidate the entirety of the sub-tree
+         located below this point.</t>
       
          <t>The changes proposed here to the validation procedure in
-      	 <xref target="RFC6487" /> do not change the probability of this problem,
-      	 but limit the impact to just the overclaimed resources. This approach 
-      	 is intended to avoid causing CA certificates to be treated as
-      	 completely invalid as a result of overclaims. However, these changes
-      	 are designed to not degrade the security offered by the RPKI.
-      	 Specifically, no ROAs or router certificates will be treated as valid
-      	 if they contain only resources that are not encompassed by all superior
-      	 certificates along a path to a trust anchor.</t>
+      	 <xref target="RFC6487" /> do not change the probability of this
+      	 problem, but they do limit the impact to just the over-claimed
+      	 resources. This revised validation algorithm is intended to avoid
+      	 causing CA certificates to be treated as completely invalid as a result
+      	 of over-claims. However, these changes are designed to not degrade the
+      	 security offered by the RPKI. Specifically, ROAs and router
+      	 certificates will be treated as valid only if all of the resources
+      	 contained in them are encompassed by all superior certificates along a
+      	 path to a trust anchor.</t>
 
-      	 <t>The way this is achieved conceptually is by maintaining a set of
-      	 verified resources for each certificate that is separate from the set
-      	 of resources found in the <xref target="RFC3779" /> resource extension
-      	 on a certificate.</t>
+      	 <t>The way this is achieved conceptually is by maintaining Verified
+      	 Resource Set (VRS) for each certificate that is separate from the INRs
+      	 found in the <xref target="RFC3779" /> resource extension in the
+      	 certificate.</t>
       	
       </section>
       
@@ -385,7 +388,7 @@
    Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
    
     Verified Resource Set: 192.0.2.0/24, AS64496
-    Warnings: overclaim for 198.51.100.0/24
+    Warnings: over-claim for 198.51.100.0/24
 
   ROA 1 (valid):
    Embedded Certificate 4 (EE certificate):
@@ -409,7 +412,7 @@
     Resources 198.51.100.0/24
 
      Verified resources: none
-     Warnings: overclaim for 198.51.100.0/24
+     Warnings: over-claim for 198.51.100.0/24
      
      Prefix 198.51.100.0/24, Max Length 24, ASN 64496
     
@@ -433,7 +436,7 @@
    Resources AS64496-AS64497
     
     Verified resources: AS64496
-    Warnings: overclaim for AS64497 
+    Warnings: over-claim for AS64497 
     
     BGPSec Certificate 2 is considered invalid because not ALL
     resources are part of the Verified Resource Set of this
@@ -447,8 +450,8 @@
     
     <section title="Security Considerations">
     
-      <t>As far as the authors can see there are no real new problems introduced
-      by this approach.</t>
+      <t>The authors believe that the revised validation algorithm introduces no
+      new security vulnerabilities into the RPKI.</t>
 
     </section>
     

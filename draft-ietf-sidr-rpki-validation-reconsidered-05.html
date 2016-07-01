@@ -378,7 +378,7 @@
 <link href="#rfc.section.2" rel="Chapter" title="2 Certificate Validation in the RPKI"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Operational Considerations"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 An Amended RPKI Certification Validation Process"/>
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Set"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Sets"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Changes to existing standards"/>
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Resource Certificate Path Validation"/>
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 ROA Validation"/>
@@ -418,7 +418,7 @@
   <td class="right">G. Michaelson</td>
 </tr>
 <tr>
-  <td class="left">Intended status: Informational</td>
+  <td class="left">Intended status: Standards Track</td>
   <td class="right">APNIC</td>
 </tr>
 <tr>
@@ -491,7 +491,7 @@
 <li>2.   <a href="#rfc.section.2">Certificate Validation in the RPKI</a></li>
 <li>3.   <a href="#rfc.section.3">Operational Considerations</a></li>
 <li>4.   <a href="#rfc.section.4">An Amended RPKI Certification Validation Process</a></li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">Verified Resource Set</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">Verified Resource Sets</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">Changes to existing standards</a></li>
 <ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Resource Certificate Path Validation</a></li>
 <li>4.2.2.   <a href="#rfc.section.4.2.2">ROA Validation</a></li>
@@ -512,7 +512,7 @@
 <p id="rfc.section.1.p.1">This document proposes an update to the certificate validation procedure specified in <a href="#RFC6487">[RFC6487]</a> that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> Certificate Validation in the RPKI</h1>
 <p id="rfc.section.2.p.1">As currently defined in section 7.2 of <a href="#RFC6487">[RFC6487]</a>, validation of PKIX certificates that conform to the RPKI profile relies on the use of a path validation process where each certificate in the validation path is required to meet the certificate validation criteria.</p>
-<p id="rfc.section.2.p.2">These criteria require in particular that the resources on each certificate in the validation path are &#8220;encompassed&#8221; by the resources on the issuing certificate. The first certificate in the path is required to be a trust anchor, and its resources are considered valid by definition.</p>
+<p id="rfc.section.2.p.2">These criteria require, in particular, that the Internet Number Resources (INRs) of each certificate in the validation path are &#8220;encompassed&#8221; by INRs on the issuing certificate. The first certificate in the path is required to be a trust anchor, and its resources are considered valid by definition.</p>
 <p id="rfc.section.2.p.3">For example, in the following sequence:</p>
 <pre> 
   Certificate 1 (trust anchor):
@@ -539,10 +539,11 @@
 
     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 </pre>
-<p id="rfc.section.2.p.4">All certificates in this scenario are considered valid in that the resources on each certificate are encompassed by the issuing certificate. ROA1 is valid because the specified prefix is encompassed by the embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a>.</p>
+<p id="rfc.section.2.p.4">All certificates in this scenario are considered valid since the INRs of each certificate are encompassed by those of the issuing certificate.  ROA1 is valid because the specified prefix is encompassed by the embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a>.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Operational Considerations</h1>
-<p id="rfc.section.3.p.1">The allocations recorded in the RPKI change as a result of resource transfers and some types of operational errors. For example, the CAs involved in transfer might choose to modify CA certificates in an order that causes some of these certificates to &#8220;over-claim&#8221; temporarily. It may also happen that a child CA does not voluntarily request a shrunk resource certificate when resources are being transferred or reclaimed by the parent. Furthermore some types of operational errors that may occur during management of RPKI databases also may create CA certificates that, temporarily, no longer encompass all of the resources in subordinate certificates.</p>
-<p id="rfc.section.3.p.2">Consider the following sequence:</p>
+<p id="rfc.section.3.p.1">The allocations recorded in the RPKI change as a result of resource transfers. For example, the CAs involved in transfer might choose to modify CA certificates in an order that causes some of these certificates to &#8220;over-claim&#8221; temporarily. A certificate is said to &#8220;over-claim&#8221; if it includes INRs not contained in the INRs of the CA that issued the certificate in question.</p>
+<p id="rfc.section.3.p.2">It may also happen that a child CA does not voluntarily request a shrunk resource certificate when resources are being transferred or reclaimed by the parent. Furthermore operational errors that may occur during management of RPKI databases also may create CA certificates that, temporarily, no longer encompass all of the INRs of subordinate certificates.</p>
+<p id="rfc.section.3.p.3">Consider the following sequence:</p>
 <pre> 
   Certificate 1 (trust anchor):
    Issuer TA,
@@ -568,13 +569,13 @@
    
     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 </pre>
-<p id="rfc.section.3.p.3">Here Certificate 2 from the previous example was re-issued by TA to CA1 and the prefix 198.51.100.0/24 was removed. However, CA1 failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and considered invalid, and by recursion the embedded Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because the specified prefix is no longer encompassed by a valid embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a></p>
-<p id="rfc.section.3.p.4">However, it should be noted that ROA1 does not make use of any of the address resources that were removed from CA1&#8217;s certificate, and thus it would be desirable if ROA1 could still be viewed as valid. Technically CA1 could re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and then ROA1 would be considered valid according to <a href="#RFC6482">[RFC6482]</a>.  But as long as CA1 does not take this action, ROA1 remains invalid. It would be preferable if ROA1 could be considered valid.</p>
+<p id="rfc.section.3.p.4">Here Certificate 2 from the previous example was re-issued by TA to CA1 and the prefix 198.51.100.0/24 was removed. However, CA1 failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and considered invalid; by recursion the embedded Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because the specified prefix contained in the ROA is no longer encompassed by a valid embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a></p>
+<p id="rfc.section.3.p.5">However, it should be noted that ROA1 does not make use of any of the address resources that were removed from CA1&#8217;s certificate, and thus it would be desirable if ROA1 could still be viewed as valid. Technically CA1 should re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and then ROA1 would be considered valid according to <a href="#RFC6482">[RFC6482]</a>.  But as long as CA1 does not take this action, ROA1 remains invalid. It would be preferable if ROA1 could be considered valid, since the assertion it makes was not affected by the reduced scope of CA1&#8217;s certificate.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> An Amended RPKI Certification Validation Process</h1>
-<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> Verified Resource Set</h1>
-<p id="rfc.section.4.1.p.1">The problem described above can be considered as a low probability problem today. However the potential impact on routing security would be high if an overclaim occurred near the apex of the RPKI hierarchy and would invalidate the entirety of the sub-tree located below this point.</p>
-<p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> do not change the probability of this problem, but limit the impact to just the overclaimed resources. This approach is intended to avoid causing CA certificates to be treated as completely invalid as a result of overclaims. However, these changes are designed to not degrade the security offered by the RPKI.  Specifically, no ROAs or router certificates will be treated as valid if they contain only resources that are not encompassed by all superior certificates along a path to a trust anchor.</p>
-<p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining a set of verified resources for each certificate that is separate from the set of resources found in the <a href="#RFC3779">[RFC3779]</a> resource extension on a certificate.</p>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> Verified Resource Sets</h1>
+<p id="rfc.section.4.1.p.1">The problem described above can be considered as a low probability problem today. However the potential impact on routing security would be high if an over-claiming occurred near the apex of the RPKI hierarchy, as this would invalidate the entirety of the sub-tree located below this point.</p>
+<p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> do not change the probability of this problem, but they do limit the impact to just the over-claimed resources. This revised validation algorithm is intended to avoid causing CA certificates to be treated as completely invalid as a result of over-claims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, ROAs and router certificates will be treated as valid only if all of the resources contained in them are encompassed by all superior certificates along a path to a trust anchor.</p>
+<p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining Verified Resource Set (VRS) for each certificate that is separate from the INRs found in the <a href="#RFC3779">[RFC3779]</a> resource extension in the certificate.</p>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Changes to existing standards</h1>
 <h1 id="rfc.section.4.2.1"><a href="#rfc.section.4.2.1">4.2.1.</a> Resource Certificate Path Validation</h1>
 <p id="rfc.section.4.2.1.p.1">Step 6 of the Resource Certification Path Validation defined in section 7.2 of <a href="#RFC6487">[RFC6487]</a> currently has the following on the validation of resources contained in the <a href="#RFC3779">[RFC3779]</a> resource extension of certificates:</p>
@@ -643,7 +644,7 @@
    Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
    
     Verified Resource Set: 192.0.2.0/24, AS64496
-    Warnings: overclaim for 198.51.100.0/24
+    Warnings: over-claim for 198.51.100.0/24
 
   ROA 1 (valid):
    Embedded Certificate 4 (EE certificate):
@@ -667,7 +668,7 @@
     Resources 198.51.100.0/24
 
      Verified resources: none
-     Warnings: overclaim for 198.51.100.0/24
+     Warnings: over-claim for 198.51.100.0/24
      
      Prefix 198.51.100.0/24, Max Length 24, ASN 64496
     
@@ -691,7 +692,7 @@
    Resources AS64496-AS64497
     
     Verified resources: AS64496
-    Warnings: overclaim for AS64497 
+    Warnings: over-claim for AS64497 
     
     BGPSec Certificate 2 is considered invalid because not ALL
     resources are part of the Verified Resource Set of this
@@ -699,7 +700,7 @@
     certificates for each AS number.
 </pre>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Security Considerations</h1>
-<p id="rfc.section.5.p.1">As far as the authors can see there are no real new problems introduced by this approach.</p>
+<p id="rfc.section.5.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> IANA Considerations</h1>
 <p id="rfc.section.6.p.1">No updates to the registries are suggested by this document.</p>
 <h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Acknowledgements</h1>
