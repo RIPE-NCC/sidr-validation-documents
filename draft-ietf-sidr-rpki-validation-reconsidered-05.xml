@@ -429,21 +429,17 @@
     RFC 6482.
 
   ROA 2 (invalid):
-   Embedded Certificate 5 (EE certificate):
+   Embedded Certificate 5 (EE certificate invalid):
     Issuer CA2,
     Subject R2,
     Resources 198.51.100.0/24
 
-     Verified resources: none
-     Warnings: over-claim for 198.51.100.0/24
+     EE certificate is invalid due to over-claim for 198.51.100.0/24
      
      Prefix 198.51.100.0/24, Max Length 24, ASN 64496
     
-    ROA2 is considered invalid because the prefix does not match the
-    Verified Resource Set on the embedded EE certificate. The amended
-    approach therefore cannot lead to ROAs showing up as valid for
-    resources that are not verified on the full path from the Trust
-    Anchor down to the ROA.
+    ROA2 is considered invalid because he embedded EE certificate is
+    considered invalid.
     
   BGPSec Certificate 1 (valid):
    Issuer CA2
@@ -458,13 +454,10 @@
    Subject ALL-ROUTERS
    Resources AS64496-AS64497
     
-    Verified resources: AS64496
-    Warnings: over-claim for AS64497 
+    EE certificate is invalid due to over-claim for AS64497 
     
-    BGPSec Certificate 2 is considered invalid because not ALL
-    resources are part of the Verified Resource Set of this
-    certificate. This problem can be mitigated by issuing separate
-    certificates for each AS number.
+    This problem can be mitigated by issuing separate certificates
+    for each AS number.
 ]]></artwork></figure>
 			
     	</section>

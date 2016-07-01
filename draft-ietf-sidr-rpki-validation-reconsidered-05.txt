@@ -77,7 +77,7 @@ Table of Contents
      4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   8
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  10
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  10
@@ -451,21 +451,17 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
      ROA 2 (invalid):
-      Embedded Certificate 5 (EE certificate):
+      Embedded Certificate 5 (EE certificate invalid):
        Issuer CA2,
        Subject R2,
        Resources 198.51.100.0/24
 
-        Verified resources: none
-        Warnings: over-claim for 198.51.100.0/24
+        EE certificate is invalid due to over-claim for 198.51.100.0/24
 
         Prefix 198.51.100.0/24, Max Length 24, ASN 64496
 
-       ROA2 is considered invalid because the prefix does not match the
-       Verified Resource Set on the embedded EE certificate. The amended
-       approach therefore cannot lead to ROAs showing up as valid for
-       resources that are not verified on the full path from the Trust
-       Anchor down to the ROA.
+       ROA2 is considered invalid because he embedded EE certificate is
+       considered invalid.
 
      BGPSec Certificate 1 (valid):
       Issuer CA2
@@ -480,13 +476,10 @@ Internet-Draft               RPKI Validation                   July 2016
       Subject ALL-ROUTERS
       Resources AS64496-AS64497
 
-       Verified resources: AS64496
-       Warnings: over-claim for AS64497
+       EE certificate is invalid due to over-claim for AS64497
 
-       BGPSec Certificate 2 is considered invalid because not ALL
-       resources are part of the Verified Resource Set of this
-       certificate. This problem can be mitigated by issuing separate
-       certificates for each AS number.
+       This problem can be mitigated by issuing separate certificates
+       for each AS number.
 
 5.  Security Considerations
 
@@ -497,6 +490,13 @@ Internet-Draft               RPKI Validation                   July 2016
 
    No updates to the registries are suggested by this document.
 
+7.  Acknowledgements
+
+   TBA.
+
+
+
+
 
 
 
@@ -505,10 +505,6 @@ Huston, et al.           Expires January 2, 2017                [Page 9]
 
 Internet-Draft               RPKI Validation                   July 2016
 
-
-7.  Acknowledgements
-
-   TBA.
 
 8.  References
 
@@ -552,6 +548,10 @@ Internet-Draft               RPKI Validation                   July 2016
               Documentation Use", RFC 5398, DOI 10.17487/RFC5398,
               December 2008, <http://www.rfc-editor.org/info/rfc5398>.
 
+   [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
+              Reserved for Documentation", RFC 5737,
+              DOI 10.17487/RFC5737, January 2010,
+              <http://www.rfc-editor.org/info/rfc5737>.
 
 
 
@@ -561,11 +561,6 @@ Huston, et al.           Expires January 2, 2017               [Page 10]
 
 Internet-Draft               RPKI Validation                   July 2016
 
-
-   [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
-              Reserved for Documentation", RFC 5737,
-              DOI 10.17487/RFC5737, January 2010,
-              <http://www.rfc-editor.org/info/rfc5737>.
 
 Authors' Addresses
 
@@ -608,16 +603,6 @@ Authors' Addresses
    Email: tim@ripe.net
 
 
-
-
-
-
-
-Huston, et al.           Expires January 2, 2017               [Page 11]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Andrew Lee Newton
    American Registry for Internet Numbers
    3635 Concorde Parkway
@@ -625,6 +610,12 @@ Internet-Draft               RPKI Validation                   July 2016
    USA
 
    Email: andy@arin.net
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 11]
+
+Internet-Draft               RPKI Validation                   July 2016
 
 
    Alain Aina
@@ -635,6 +626,15 @@ Internet-Draft               RPKI Validation                   July 2016
 
    Phone: +230 403 51 00
    Email: aalain@afrinic.net
+
+
+
+
+
+
+
+
+
 
 
 
