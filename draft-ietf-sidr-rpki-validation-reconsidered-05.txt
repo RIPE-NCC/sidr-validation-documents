@@ -74,17 +74,14 @@ Table of Contents
    4.  An Amended RPKI Certification Validation Process  . . . . . .   4
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
      4.2.  Changes to existing standards . . . . . . . . . . . . . .   5
-       4.2.1.  Resource Certificate Path Validation  . . . . . . . .   5
-       4.2.2.  ROA Validation  . . . . . . . . . . . . . . . . . . .   6
-       4.2.3.  BGPsec Router Certificate Validation  . . . . . . . .   6
-     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   7
+     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   8
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  10
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -106,6 +103,9 @@ Table of Contents
    certificate in the path is required to be a trust anchor, and its
    resources are considered valid by definition.
 
+   For example, in the following sequence:
+
+
 
 
 
@@ -113,8 +113,6 @@ Huston, et al.           Expires January 2, 2017                [Page 2]
 
 Internet-Draft               RPKI Validation                   July 2016
 
-
-   For example, in the following sequence:
 
      Certificate 1 (trust anchor):
        Issuer TA,
@@ -162,6 +160,8 @@ Internet-Draft               RPKI Validation                   July 2016
    of subordinate certificates.
 
    Consider the following sequence:
+
+
 
 
 
@@ -250,28 +250,28 @@ Internet-Draft               RPKI Validation                   July 2016
 
 4.2.  Changes to existing standards
 
-4.2.1.  Resource Certificate Path Validation
+   The following is an amended specification to be used in place of
+   section 7.2 of [RFC6487].
 
-   Step 6 of the Resource Certification Path Validation defined in
-   section 7.2 of [RFC6487] currently has the following on the
-   validation of resources contained in the [RFC3779] resource extension
-   of certificates:
+   The following algorithm is employed to validate CA and EE resources
+   certificates.  It is modeled on the path validation algorithm from
+   [RFC5280], but modified to make use of the IP Address Delegation and
+   AS Identifier Delegation Extensions from [RFC3779].
 
-   o  The resource extension data is "encompassed" by the resource
-      extension data contained in a valid certificate where this issuer
-      is the subject (the previous certificate in the context of the
-      ordered sequence defined by the certification path).
+   There are two inputs to the validation algorithm:
 
-   The following is an amended specification to be used in place of this
-   text.
+   1.  a trust anchor
 
-   o  The Relying Party MUST keep a Verified Resource Set for the
-      certificate independent of the RFC3779 extension itself, that is
-      built up using the following approach:
+   2.  a certificate to be validated
 
-      *  If the certificate under test is chosen as a Trust Anchor, then
-         the Verified Resource Set of this certificate is equal to the
-         RFC3779 resource extensions.
+   The algorithm is initialized with two new variables for use in the
+   RPKI: Validated Resource Set-IP (VRS-IP) and Validated Resource Set-
+   AS (VRS-AS).  These sets are used to track the set of INRs (IP
+   address space and AS Numbers) that are considered valid for each CA
+   certificate.  The VRS-IP and VRS-AS sets are initially set to the IP
+   Address Delegation and AS Identifier Delegation values, respectively,
+   from the trust anchor used to perform validation.
+
 
 
 
@@ -282,54 +282,54 @@ Huston, et al.           Expires January 2, 2017                [Page 5]
 Internet-Draft               RPKI Validation                   July 2016
 
 
-      *  If the certificate under test not chosen as a Trust Anchor, the
-         Verified Resource Set is found by comparing this certificate to
-         its parent certificate (the previous certificate in the context
-         of the ordered sequence defined by the certification path) in
-         the following way:
+   This path validation algorithm verifies, among other things, that a
+   prospective certification path (a sequence of n certificates)
+   satisfies the following conditions:
 
-         +  For any of the resource extensions that use the "inherit"
-            element as described in sections 2.2.3.5 and 3.2.3.3 of RFC
-            3779, the corresponding resources of this type should be
-            taken from the parent certificate.
+   a.  for all 'x' in {1, ..., n-1}, the subject of certificate 'x' is
+       the issuer of certificate ('x' + 1);
 
-         +  For resource extensions that do no use the "inherit"
-            element, the intersection of the resources on this
-            certificate and the Verified Resource Set of the parent
-            certificate MUST be used.  If any resources on this
-            certificate are not encompassed by the Verified Resource Set
-            of the parent certificate, a warning SHOULD be issued to
-            help operators rectify this situation.
+   b.  certificate '1' is issued by a trust anchor;
 
-         +  If the Verified Resource Set obtained this way is empty for
-            all resource classes (IPv4, IPv6 and AS), then the
-            certificate MUST be considered invalid.
+   c.  certificate 'n' is the certificate to be validated; and
 
-4.2.2.  ROA Validation
+   d.  for all 'x' in {1, ..., n}, certificate 'x' is valid.
 
-   Section 4 of [RFC6482] currently has the following text on the
-   validation of resources on a ROA:
+   Certificate validation requires verifying that all of the following
+   conditions hold, in addition to the certification path validation
+   criteria specified in Section 6 of [RFC5280].
 
-   o  The IP address delegation extension [RFC3779] is present in the
-      end-entity (EE) certificate (contained within the ROA), and each
-      IP address prefix(es) in the ROA is contained within the set of IP
-      addresses specified by the EE certificate's IP address delegation
-      extension.
+   1.  The signature of certificate x (x>1) is verified using the public
+       key of the issuer's certificate (x-1), using the signature
+       algorithm specified for that public key (in certificate x-1).
 
-   The following is an amended specification to be used in place of this
-   text.
+   2.  The current time lies within the interval defined by the
+       NotBefore and NotAfter values in the Validity field of
+       certificate x.
 
-   o  The Verified Resource Set of the end-entity (EE) certificate
-      (contained within the ROA), contains each IP address prefix(es) in
-      the ROA.
+   3.  The Version, Issuer, and Subject fields of certificate x satisfy
+       the constraints established in Section 4.1-4.7 of this
+       specification.
 
-4.2.3.  BGPsec Router Certificate Validation
+   4.  Certificate x contains all the extensions that MUST be present,
+       as defined in Section 4.8 of this specification.  The value(s)
+       for each of these extensions MUST be satisfy the constraints
+       established for each extension in the respective sections.  Any
+       extension not identified in Section 4.8 MUST NOT appear in
+       certificate x.
 
-   BGPsec Router Certificate Validation is defined in section 3.3 of
-   [I-D.ietf-sidr-bgpsec-pki-profiles].  Path validation defined section
-   7 of [RFC6487] is used as the first step in validation, and a number
-   of additional constraints are applied.
+   5.  Certificate x MUST NOT have been revoked, i.e., it MUST NOT
+       appear on a CRL issued by the CA represented by certificate x-1
 
+   6.  If certificate x is an EE certificate, then the INRs of this
+       certificate MUST be "encompassed" by the values of VRS-IP and
+       VRS-AS for certificate x-1.
+
+   7.  If certificate x is a CA certificate, compute the VRS-IP and VRS-
+       AS set values as indicated below:
+
+       *  If the IP Address Delegation extension is present in
+          certificate x, compute the intersection of the resources
 
 
 
@@ -338,23 +338,64 @@ Huston, et al.           Expires January 2, 2017                [Page 6]
 Internet-Draft               RPKI Validation                   July 2016
 
 
-   We propose that the text of the following two additions:
+          between this extension and the value of the VRS-IP computed
+          for certificate x-1.
 
-   o  BGPsec Router Certificates MUST NOT include the IP Resource
-      extension.
+       *  If the IP Address Delegation extension is absent in
+          certificate x, set the VRS-IP to NULL.
 
-   o  BGPsec Router Certificates MUST include the AS Resource Identifier
-      Delegation extension.
+       *  If the AS Identifier Delegation extension is present in
+          certificate x, compute the intersection of the resources
+          between this extension and the value of the VRS-AS computed
+          for certificate x-1
 
-   Is updated to the following:
+       *  If the AS Identifier Delegation extension is absent in
+          certificate x, set the VRS-AS to NULL.
 
-   o  The Validated Resource Set of BGPsec Router Certificates MUST NOT
-      include IP Resources.
+       *  If x = n (i.e., this is the certificate being validated),
+          then:
 
-   o  BGPsec Router Certificates MUST include the AS Resource Identifier
-      Delegation extension and all AS resources included on this MUST be
-      encompassed by the Validated Resource Set of the BGPsec Router
-      Certificates.
+          1.  If IP Address Delegation extension is present, it is
+              replaced with the intersection of the values from that
+              extension and the current value of the VRS-IP.
+
+          2.  If an AS Identifier Delegation extension is present, it is
+              replaced with the intersection of the values from that
+              extension and the current value of the VRS-IP.
+
+       *  If an RP is caching the results of validation, these values
+          MAY be stored along with the certificate, to facilitate
+          incremental validation based on cached results.
+
+   These rules allow a CA certificate to contain resources that are not
+   present in (all of) the certificates along the path from the trust
+   anchor to the CA certificate.  If none of the resources in the CA
+   certificate are present in all certificates along the path, no
+   subordinate certificates could be valid.  However, the certificate is
+   not immediately rejected as this may be a transient condition.  Not
+   immediately rejecting the certificate does not result in a security
+   problem because the associated VRS sets accurately reflect the
+   resources validly associated with the certificate in question.
+
+   The INRs of an EE certificate being validated MUST always be
+   encompassed by all certificates along the path to the trust anchor
+   used to verify that certificate.  The algorithm described above
+   ensures this.
+
+   Note that ROAs [RFC6482] and BGPSec router (EE) certificates
+   [I-D.ietf-sidr-bgpsec-pki-profiles] can contain multiple prefixes or
+   ASNs respectively, and an over-claim of any of these would result in
+   the ROA or BGPSec EE certificates being considered invalid.  However,
+
+
+
+Huston, et al.           Expires January 2, 2017                [Page 7]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+   operators MAY issue separate ROAs or BGPSec router certificates to
+   avoid this type of fate sharing.
 
 4.3.  An example
 
@@ -387,13 +428,6 @@ Internet-Draft               RPKI Validation                   July 2016
        Verified Resource Set: 192.0.2.0/24, AS64496
        Warnings: over-claim for 198.51.100.0/24
 
-
-
-Huston, et al.           Expires January 2, 2017                [Page 7]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
      ROA 1 (valid):
       Embedded Certificate 4 (EE certificate):
        Issuer CA2,
@@ -408,6 +442,13 @@ Internet-Draft               RPKI Validation                   July 2016
        ROA1 is considered valid because the prefix matches the Verified
        Resource Set on the embedded EE certificate, as required by
        RFC 6482.
+
+
+
+Huston, et al.           Expires January 2, 2017                [Page 8]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
      ROA 2 (invalid):
       Embedded Certificate 5 (EE certificate):
@@ -442,14 +483,6 @@ Internet-Draft               RPKI Validation                   July 2016
        Verified resources: AS64496
        Warnings: over-claim for AS64497
 
-
-
-
-Huston, et al.           Expires January 2, 2017                [Page 8]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
        BGPSec Certificate 2 is considered invalid because not ALL
        resources are part of the Verified Resource Set of this
        certificate. This problem can be mitigated by issuing separate
@@ -463,6 +496,15 @@ Internet-Draft               RPKI Validation                   July 2016
 6.  IANA Considerations
 
    No updates to the registries are suggested by this document.
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017                [Page 9]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
 7.  Acknowledgements
 
@@ -483,6 +525,12 @@ Internet-Draft               RPKI Validation                   July 2016
               DOI 10.17487/RFC3779, June 2004,
               <http://www.rfc-editor.org/info/rfc3779>.
 
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <http://www.rfc-editor.org/info/rfc5280>.
+
    [RFC6482]  Lepinski, M., Kent, S., and D. Kong, "A Profile for Route
               Origin Authorizations (ROAs)", RFC 6482,
               DOI 10.17487/RFC6482, February 2012,
@@ -495,17 +543,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
 8.2.  Informative References
 
-
-
-
-
-
-
-Huston, et al.           Expires January 2, 2017                [Page 9]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    [RFC3849]  Huston, G., Lord, A., and P. Smith, "IPv6 Address Prefix
               Reserved for Documentation", RFC 3849,
               DOI 10.17487/RFC3849, July 2004,
@@ -514,6 +551,16 @@ Internet-Draft               RPKI Validation                   July 2016
    [RFC5398]  Huston, G., "Autonomous System (AS) Number Reservation for
               Documentation Use", RFC 5398, DOI 10.17487/RFC5398,
               December 2008, <http://www.rfc-editor.org/info/rfc5398>.
+
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 10]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
    [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
               Reserved for Documentation", RFC 5737,
@@ -552,16 +599,6 @@ Authors' Addresses
    Email: carlos@lacnic.net
 
 
-
-
-
-
-
-Huston, et al.           Expires January 2, 2017               [Page 10]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Tim Bruijnzeels
    RIPE Network Coordination Centre
    Singel 258
@@ -569,6 +606,16 @@ Internet-Draft               RPKI Validation                   July 2016
    The Netherlands
 
    Email: tim@ripe.net
+
+
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 11]
+
+Internet-Draft               RPKI Validation                   July 2016
 
 
    Andrew Lee Newton
@@ -613,4 +660,13 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017               [Page 11]
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 12]
