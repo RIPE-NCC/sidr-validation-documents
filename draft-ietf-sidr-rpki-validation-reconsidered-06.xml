@@ -254,6 +254,8 @@
       
       <section title="Changes to existing standards">
       
+      <section title="Resource Certificate Path Validation">
+
     	<t>The following is an amended specification to be used in place of
     	section 7.2 of <xref target="RFC6487" />.</t>
     	
@@ -316,12 +318,7 @@
     		<t>Certificate x MUST NOT have been revoked, i.e., it MUST NOT
     		appear on a CRL issued by the CA represented by certificate x-1</t>
     		
-    		<t>If certificate x is an EE certificate, then the INRs of this
-    		certificate MUST be "encompassed" by the values of VRS-IP and VRS-AS
-    		for certificate x-1.</t>
-
-    		<t>If certificate x is a CA certificate, compute the VRS-IP and
-    		VRS-AS set values as indicated below:
+    		<t>Compute the VRS-IP and VRS-AS set values as indicated below:
     			<list style="symbols">
     				<t>If the IP Address Delegation extension is present in
     				certificate x, compute the intersection of the resources
@@ -368,18 +365,8 @@
     	problem because the associated VRS sets accurately reflect the resources
     	validly associated with the certificate in question.</t>
     	
-    	<t>The INRs of an EE certificate being validated MUST always be
-    	encompassed by all certificates along the path to the trust anchor used
-    	to verify that certificate. The algorithm described above ensures
-    	this.</t>
-
-    	<t>Note that ROAs <xref target="RFC6482" /> and BGPSec router (EE)
-    	certificates <xref target="I-D.ietf-sidr-bgpsec-pki-profiles" />
-    	can contain multiple prefixes or ASNs respectively, and an over-claim of
-    	any of these would result in the ROA or BGPSec EE certificates being
-    	considered invalid. However, operators MAY issue separate ROAs or BGPSec
-    	router certificates to avoid this type of fate sharing.</t>
-    	
+      </section>
+   
       </section>
       <section title="An example">
       

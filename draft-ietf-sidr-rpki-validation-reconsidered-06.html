@@ -380,6 +380,7 @@
 <link href="#rfc.section.4" rel="Chapter" title="4 An Amended RPKI Certification Validation Process"/>
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Sets"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Changes to existing standards"/>
+<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Resource Certificate Path Validation"/>
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
@@ -490,7 +491,8 @@
 <li>4.   <a href="#rfc.section.4">An Amended RPKI Certification Validation Process</a></li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">Verified Resource Sets</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">Changes to existing standards</a></li>
-<li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
+<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Resource Certificate Path Validation</a></li>
+</ul><li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
 </ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
 <li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
 <li>7.   <a href="#rfc.section.7">Acknowledgements</a></li>
@@ -571,16 +573,17 @@
 <p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> do not change the probability of this problem, but they do limit the impact to just the over-claimed resources. This revised validation algorithm is intended to avoid causing CA certificates to be treated as completely invalid as a result of over-claims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, ROAs and router certificates will be treated as valid only if all of the resources contained in them are encompassed by all superior certificates along a path to a trust anchor.</p>
 <p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining Verified Resource Set (VRS) for each certificate that is separate from the INRs found in the <a href="#RFC3779">[RFC3779]</a> resource extension in the certificate.</p>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Changes to existing standards</h1>
-<p id="rfc.section.4.2.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487">[RFC6487]</a>.</p>
-<p id="rfc.section.4.2.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.p.3">There are two inputs to the validation algorithm:</p>
+<h1 id="rfc.section.4.2.1"><a href="#rfc.section.4.2.1">4.2.1.</a> Resource Certificate Path Validation</h1>
+<p id="rfc.section.4.2.1.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.1.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.1.p.3">There are two inputs to the validation algorithm:</p>
 
 <ol>
   <li>a trust anchor</li>
   <li>a certificate to be validated</li>
 </ol>
-<p id="rfc.section.4.2.p.4">The algorithm is initialized with two new variables for use in the RPKI: Validated Resource Set-IP (VRS-IP) and Validated Resource Set-AS (VRS-AS). These sets are used to track the set of INRs (IP address space and AS Numbers) that are considered valid for each CA certificate.  The VRS-IP and VRS-AS sets are initially set to the IP Address Delegation and AS Identifier Delegation values, respectively, from the trust anchor used to perform validation.</p>
-<p id="rfc.section.4.2.p.5">This path validation algorithm verifies, among other things, that a prospective certification path (a sequence of n certificates) satisfies the following conditions:</p>
+<p id="rfc.section.4.2.1.p.4">The algorithm is initialized with two new variables for use in the RPKI: Validated Resource Set-IP (VRS-IP) and Validated Resource Set-AS (VRS-AS). These sets are used to track the set of INRs (IP address space and AS Numbers) that are considered valid for each CA certificate.  The VRS-IP and VRS-AS sets are initially set to the IP Address Delegation and AS Identifier Delegation values, respectively, from the trust anchor used to perform validation.</p>
+<p id="rfc.section.4.2.1.p.5">This path validation algorithm verifies, among other things, that a prospective certification path (a sequence of n certificates) satisfies the following conditions:</p>
 
 <ol style="list-style-type: lower-alpha">
   <li>for all 'x' in {1, ..., n-1}, the subject of certificate 'x' is the issuer of certificate ('x' + 1);</li>
@@ -588,7 +591,7 @@
   <li>certificate 'n' is the certificate to be validated; and</li>
   <li>for all 'x' in {1, ..., n}, certificate 'x' is valid.</li>
 </ol>
-<p id="rfc.section.4.2.p.6">Certificate validation requires verifying that all of the following conditions hold, in addition to the certification path validation criteria specified in Section 6 of [RFC5280].</p>
+<p id="rfc.section.4.2.1.p.6">Certificate validation requires verifying that all of the following conditions hold, in addition to the certification path validation criteria specified in Section 6 of [RFC5280].</p>
 
 <ol>
   <li>The signature of certificate x (x&gt;1) is verified using the public key of the issuer&#8217;s certificate (x-1), using the signature algorithm specified for that public key (in certificate x-1).</li>
@@ -596,12 +599,9 @@
   <li>The Version, Issuer, and Subject fields of certificate x satisfy the constraints established in Section 4.1-4.7 of this specification.</li>
   <li>Certificate x contains all the extensions that MUST be present, as defined in Section 4.8 of this specification. The value(s) for each of these extensions MUST be satisfy the constraints established for each extension in the respective sections. Any extension not identified in Section 4.8 MUST NOT appear in certificate x.</li>
   <li>Certificate x MUST NOT have been revoked, i.e., it MUST NOT appear on a CRL issued by the CA represented by certificate x-1</li>
-  <li>If certificate x is an EE certificate, then the INRs of this certificate MUST be "encompassed" by the values of VRS-IP and VRS-AS for certificate x-1.</li>
-  <li>If certificate x is a CA certificate, compute the VRS-IP and VRS-AS set values as indicated below: <ul><li>If the IP Address Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li><li>If the IP Address Delegation extension is absent in certificate x, set the VRS-IP to NULL.</li><li>If the AS Identifier Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li><li>If the AS Identifier Delegation extension is absent in certificate x, set the VRS-AS to NULL.</li><li>If x = n (i.e., this is the certificate being validated), then:<ol><li>If IP Address Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li><li>If an AS Identifier Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li></ol></li><li>If an RP is caching the results of validation, these values MAY be stored along with the certificate, to facilitate incremental validation based on cached results.</li></ul><p> </p></li>
+  <li>Compute the VRS-IP and VRS-AS set values as indicated below: <ul><li>If the IP Address Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li><li>If the IP Address Delegation extension is absent in certificate x, set the VRS-IP to NULL.</li><li>If the AS Identifier Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li><li>If the AS Identifier Delegation extension is absent in certificate x, set the VRS-AS to NULL.</li><li>If x = n (i.e., this is the certificate being validated), then:<ol><li>If IP Address Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li><li>If an AS Identifier Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li></ol></li><li>If an RP is caching the results of validation, these values MAY be stored along with the certificate, to facilitate incremental validation based on cached results.</li></ul><p> </p></li>
 </ol>
-<p id="rfc.section.4.2.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
-<p id="rfc.section.4.2.p.8">The INRs of an EE certificate being validated MUST always be encompassed by all certificates along the path to the trust anchor used to verify that certificate. The algorithm described above ensures this.</p>
-<p id="rfc.section.4.2.p.9">Note that ROAs <a href="#RFC6482">[RFC6482]</a> and BGPSec router (EE) certificates <a href="#I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</a> can contain multiple prefixes or ASNs respectively, and an over-claim of any of these would result in the ROA or BGPSec EE certificates being considered invalid. However, operators MAY issue separate ROAs or BGPSec router certificates to avoid this type of fate sharing.</p>
+<p id="rfc.section.4.2.1.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
 <h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> An example</h1>
 <p id="rfc.section.4.3.p.1">Consider the following example under the amended approach:</p>
 <pre> 
