@@ -1,0 +1,892 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>RPKI Validation Reconsidered</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Certificate Validation in the RPKI"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Operational Considerations"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 An Amended RPKI Certification Validation Process"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Sets"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Changes to existing standards"/>
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Acknowledgements"/>
+<link href="#rfc.references" rel="Chapter" title="8 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.5.1 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Huston, G., Michaelson, G., Martinez, C., Bruijnzeels, T., Newton, A., and D. Shaw" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-sidr-rpki-validation-reconsidered-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-7-1" />
+  <meta name="dct.abstract" content="This document proposes an update to the certificate validation procedure specified in RFC 6487 that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features." />
+  <meta name="description" content="This document proposes an update to the certificate validation procedure specified in RFC 6487 that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">Network Working Group</td>
+  <td class="right">G. Huston</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">G. Michaelson</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Standards Track</td>
+  <td class="right">APNIC</td>
+</tr>
+<tr>
+  <td class="left">Expires: January 2, 2017</td>
+  <td class="right">C. Martinez</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">LACNIC</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">T. Bruijnzeels</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">RIPE NCC</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">A. Newton</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">ARIN</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">D. Shaw</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">AFRINIC</td>
+</tr>
+<tr>
+  <td class="left"></td>
+  <td class="right">July 1, 2016</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">RPKI Validation Reconsidered<br />
+  <span class="filename">draft-ietf-sidr-rpki-validation-reconsidered-06</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>This document proposes an update to the certificate validation procedure specified in RFC 6487 that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features.</p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on January 2, 2017.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2016 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
+<li>2.   <a href="#rfc.section.2">Certificate Validation in the RPKI</a></li>
+<li>3.   <a href="#rfc.section.3">Operational Considerations</a></li>
+<li>4.   <a href="#rfc.section.4">An Amended RPKI Certification Validation Process</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">Verified Resource Sets</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">Changes to existing standards</a></li>
+<li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
+<li>7.   <a href="#rfc.section.7">Acknowledgements</a></li>
+<li>8.   <a href="#rfc.references">References</a></li>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+</ul><li><a href="#rfc.authors">Authors' Addresses</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> Introduction</h1>
+<p id="rfc.section.1.p.1">This document proposes an update to the certificate validation procedure specified in <a href="#RFC6487">[RFC6487]</a> that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features.</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> Certificate Validation in the RPKI</h1>
+<p id="rfc.section.2.p.1">As currently defined in section 7.2 of <a href="#RFC6487">[RFC6487]</a>, validation of PKIX certificates that conform to the RPKI profile relies on the use of a path validation process where each certificate in the validation path is required to meet the certificate validation criteria.</p>
+<p id="rfc.section.2.p.2">These criteria require, in particular, that the Internet Number Resources (INRs) of each certificate in the validation path are &#8220;encompassed&#8221; by INRs on the issuing certificate. The first certificate in the path is required to be a trust anchor, and its resources are considered valid by definition.</p>
+<p id="rfc.section.2.p.3">For example, in the following sequence:</p>
+<pre> 
+  Certificate 1 (trust anchor):
+    Issuer TA,
+    Subject TA,
+    Resources 192.0.2.0/24, 198.51.100.0/24,
+              2001:db8::/32, AS64496-AS64500
+
+  Certificate 2: 
+   Issuer TA,
+   Subject CA1,
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
+
+  Certificate 3: 
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.0.2.0/24, 2001:db8::/32
+
+  ROA 1:
+   Embedded Certificate 4 (EE certificate): 
+    Issuer CA2,
+    Subject R1,
+    Resources 192.0.2.0/24
+
+    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+</pre>
+<p id="rfc.section.2.p.4">All certificates in this scenario are considered valid since the INRs of each certificate are encompassed by those of the issuing certificate.  ROA1 is valid because the specified prefix is encompassed by the embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a>.</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Operational Considerations</h1>
+<p id="rfc.section.3.p.1">The allocations recorded in the RPKI change as a result of resource transfers. For example, the CAs involved in transfer might choose to modify CA certificates in an order that causes some of these certificates to &#8220;over-claim&#8221; temporarily. A certificate is said to &#8220;over-claim&#8221; if it includes INRs not contained in the INRs of the CA that issued the certificate in question.</p>
+<p id="rfc.section.3.p.2">It may also happen that a child CA does not voluntarily request a shrunk resource certificate when resources are being transferred or reclaimed by the parent. Furthermore operational errors that may occur during management of RPKI databases also may create CA certificates that, temporarily, no longer encompass all of the INRs of subordinate certificates.</p>
+<p id="rfc.section.3.p.3">Consider the following sequence:</p>
+<pre> 
+  Certificate 1 (trust anchor):
+   Issuer TA,
+   Subject TA,
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+             2001:db8::/32, AS64496-AS64500
+
+  Certificate 2:
+   Issuer TA,
+   Subject CA1,
+   Resources 192.0.2.0/24, 2001:db8::/32
+
+  Certificate 3 (invalid):
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
+
+  ROA 1 (invalid):
+   Embedded Certificate 4 (EE certificate): 
+    Issuer CA2,
+    Subject R1,
+    Resources 192.0.2.0/24
+   
+    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+</pre>
+<p id="rfc.section.3.p.4">Here Certificate 2 from the previous example was re-issued by TA to CA1 and the prefix 198.51.100.0/24 was removed. However, CA1 failed to re-issue a new Certificate 3 to CA2. As a result Certificate 3 is now over-claiming and considered invalid; by recursion the embedded Certificate 4 used for ROA1 is also invalid. And ROA1 is invalid because the specified prefix contained in the ROA is no longer encompassed by a valid embedded EE certificate, as required by <a href="#RFC6482">[RFC6482]</a></p>
+<p id="rfc.section.3.p.5">However, it should be noted that ROA1 does not make use of any of the address resources that were removed from CA1&#8217;s certificate, and thus it would be desirable if ROA1 could still be viewed as valid. Technically CA1 should re-issue a Certificate 3 to CA2 without 198.51.100.0/24, and then ROA1 would be considered valid according to <a href="#RFC6482">[RFC6482]</a>.  But as long as CA1 does not take this action, ROA1 remains invalid. It would be preferable if ROA1 could be considered valid, since the assertion it makes was not affected by the reduced scope of CA1&#8217;s certificate.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> An Amended RPKI Certification Validation Process</h1>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> Verified Resource Sets</h1>
+<p id="rfc.section.4.1.p.1">The problem described above can be considered as a low probability problem today. However the potential impact on routing security would be high if an over-claiming occurred near the apex of the RPKI hierarchy, as this would invalidate the entirety of the sub-tree located below this point.</p>
+<p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> do not change the probability of this problem, but they do limit the impact to just the over-claimed resources. This revised validation algorithm is intended to avoid causing CA certificates to be treated as completely invalid as a result of over-claims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, ROAs and router certificates will be treated as valid only if all of the resources contained in them are encompassed by all superior certificates along a path to a trust anchor.</p>
+<p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining Verified Resource Set (VRS) for each certificate that is separate from the INRs found in the <a href="#RFC3779">[RFC3779]</a> resource extension in the certificate.</p>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Changes to existing standards</h1>
+<p id="rfc.section.4.2.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.p.3">There are two inputs to the validation algorithm:</p>
+
+<ol>
+  <li>a trust anchor</li>
+  <li>a certificate to be validated</li>
+</ol>
+<p id="rfc.section.4.2.p.4">The algorithm is initialized with two new variables for use in the RPKI: Validated Resource Set-IP (VRS-IP) and Validated Resource Set-AS (VRS-AS). These sets are used to track the set of INRs (IP address space and AS Numbers) that are considered valid for each CA certificate.  The VRS-IP and VRS-AS sets are initially set to the IP Address Delegation and AS Identifier Delegation values, respectively, from the trust anchor used to perform validation.</p>
+<p id="rfc.section.4.2.p.5">This path validation algorithm verifies, among other things, that a prospective certification path (a sequence of n certificates) satisfies the following conditions:</p>
+
+<ol style="list-style-type: lower-alpha">
+  <li>for all 'x' in {1, ..., n-1}, the subject of certificate 'x' is the issuer of certificate ('x' + 1);</li>
+  <li>certificate '1' is issued by a trust anchor;</li>
+  <li>certificate 'n' is the certificate to be validated; and</li>
+  <li>for all 'x' in {1, ..., n}, certificate 'x' is valid.</li>
+</ol>
+<p id="rfc.section.4.2.p.6">Certificate validation requires verifying that all of the following conditions hold, in addition to the certification path validation criteria specified in Section 6 of [RFC5280].</p>
+
+<ol>
+  <li>The signature of certificate x (x&gt;1) is verified using the public key of the issuer&#8217;s certificate (x-1), using the signature algorithm specified for that public key (in certificate x-1).</li>
+  <li>The current time lies within the interval defined by the NotBefore and NotAfter values in the Validity field of certificate x.</li>
+  <li>The Version, Issuer, and Subject fields of certificate x satisfy the constraints established in Section 4.1-4.7 of this specification.</li>
+  <li>Certificate x contains all the extensions that MUST be present, as defined in Section 4.8 of this specification. The value(s) for each of these extensions MUST be satisfy the constraints established for each extension in the respective sections. Any extension not identified in Section 4.8 MUST NOT appear in certificate x.</li>
+  <li>Certificate x MUST NOT have been revoked, i.e., it MUST NOT appear on a CRL issued by the CA represented by certificate x-1</li>
+  <li>If certificate x is an EE certificate, then the INRs of this certificate MUST be "encompassed" by the values of VRS-IP and VRS-AS for certificate x-1.</li>
+  <li>If certificate x is a CA certificate, compute the VRS-IP and VRS-AS set values as indicated below: <ul><li>If the IP Address Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li><li>If the IP Address Delegation extension is absent in certificate x, set the VRS-IP to NULL.</li><li>If the AS Identifier Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li><li>If the AS Identifier Delegation extension is absent in certificate x, set the VRS-AS to NULL.</li><li>If x = n (i.e., this is the certificate being validated), then:<ol><li>If IP Address Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li><li>If an AS Identifier Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li></ol></li><li>If an RP is caching the results of validation, these values MAY be stored along with the certificate, to facilitate incremental validation based on cached results.</li></ul><p> </p></li>
+</ol>
+<p id="rfc.section.4.2.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
+<p id="rfc.section.4.2.p.8">The INRs of an EE certificate being validated MUST always be encompassed by all certificates along the path to the trust anchor used to verify that certificate. The algorithm described above ensures this.</p>
+<p id="rfc.section.4.2.p.9">Note that ROAs <a href="#RFC6482">[RFC6482]</a> and BGPSec router (EE) certificates <a href="#I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</a> can contain multiple prefixes or ASNs respectively, and an over-claim of any of these would result in the ROA or BGPSec EE certificates being considered invalid. However, operators MAY issue separate ROAs or BGPSec router certificates to avoid this type of fate sharing.</p>
+<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> An example</h1>
+<p id="rfc.section.4.3.p.1">Consider the following example under the amended approach:</p>
+<pre> 
+  Certificate 1 (trust anchor):
+   Issuer TA,
+   Subject TA,
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+             2001:db8::/32, AS64496-AS64500
+    
+    Verified Resource Set: 192.0.2.0/24, 198.51.100.0/24,
+                           2001:db8::/32, AS64496-AS64500
+    Warnings: none
+
+  Certificate 2: 
+   Issuer TA,
+   Subject CA1,
+   Resources 192.0.2.0/24, 2001:db8::/32, AS64496
+   
+    Verified Resource Set: 192.0.2.0/24,
+                           2001:db8::/32, AS64496
+    Warnings: none
+
+  Certificate 3: 
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
+   
+    Verified Resource Set: 192.0.2.0/24, AS64496
+    Warnings: over-claim for 198.51.100.0/24
+
+  ROA 1 (valid):
+   Embedded Certificate 4 (EE certificate):
+    Issuer CA2,
+    Subject R1,
+    Resources 192.0.2.0/24
+
+     Verified resources: 192.0.2.0/24
+     Warnings: none
+     
+     Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+    
+    ROA1 is considered valid because the prefix matches the Verified
+    Resource Set on the embedded EE certificate, as required by
+    RFC 6482.
+
+  ROA 2 (invalid):
+   Embedded Certificate 5 (EE certificate invalid):
+    Issuer CA2,
+    Subject R2,
+    Resources 198.51.100.0/24
+
+     EE certificate is invalid due to over-claim for 198.51.100.0/24
+     
+     Prefix 198.51.100.0/24, Max Length 24, ASN 64496
+    
+    ROA2 is considered invalid because he embedded EE certificate is
+    considered invalid.
+    
+  BGPSec Certificate 1 (valid):
+   Issuer CA2
+   Subject ROUTER-64496
+   Resources AS64496
+    
+    Verified resources: AS64496
+    Warnings: none
+     
+  BGPSec Certificate 2 (invalid):
+   Issuer CA2
+   Subject ALL-ROUTERS
+   Resources AS64496-AS64497
+    
+    EE certificate is invalid due to over-claim for AS64497 
+    
+    This problem can be mitigated by issuing separate certificates
+    for each AS number.
+</pre>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Security Considerations</h1>
+<p id="rfc.section.5.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> IANA Considerations</h1>
+<p id="rfc.section.6.p.1">No updates to the registries are suggested by this document.</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Acknowledgements</h1>
+<p id="rfc.section.7.p.1">TBA.</p>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</b>
+      </td>
+      <td class="top"><a>Reynolds, M.</a>, <a>Turner, S.</a> and <a>S. Kent</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sidr-bgpsec-pki-profiles-17">A Profile for BGPsec Router Certificates, Certificate Revocation Lists, and Certification Requests</a>", Internet-Draft draft-ietf-sidr-bgpsec-pki-profiles-17, June 2016.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC3779">[RFC3779]</b>
+      </td>
+      <td class="top"><a>Lynn, C.</a>, <a>Kent, S.</a> and <a>K. Seo</a>, "<a href="http://tools.ietf.org/html/rfc3779">X.509 Extensions for IP Addresses and AS Identifiers</a>", RFC 3779, DOI 10.17487/RFC3779, June 2004.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5280">[RFC5280]</b>
+      </td>
+      <td class="top"><a>Cooper, D.</a>, <a>Santesson, S.</a>, <a>Farrell, S.</a>, <a>Boeyen, S.</a>, <a>Housley, R.</a> and <a>W. Polk</a>, "<a href="http://tools.ietf.org/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>", RFC 5280, DOI 10.17487/RFC5280, May 2008.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6482">[RFC6482]</b>
+      </td>
+      <td class="top"><a>Lepinski, M.</a>, <a>Kent, S.</a> and <a>D. Kong</a>, "<a href="http://tools.ietf.org/html/rfc6482">A Profile for Route Origin Authorizations (ROAs)</a>", RFC 6482, DOI 10.17487/RFC6482, February 2012.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6487">[RFC6487]</b>
+      </td>
+      <td class="top"><a>Huston, G.</a>, <a>Michaelson, G.</a> and <a>R. Loomans</a>, "<a href="http://tools.ietf.org/html/rfc6487">A Profile for X.509 PKIX Resource Certificates</a>", RFC 6487, DOI 10.17487/RFC6487, February 2012.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC3849">[RFC3849]</b>
+      </td>
+      <td class="top"><a>Huston, G.</a>, <a>Lord, A.</a> and <a>P. Smith</a>, "<a href="http://tools.ietf.org/html/rfc3849">IPv6 Address Prefix Reserved for Documentation</a>", RFC 3849, DOI 10.17487/RFC3849, July 2004.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5398">[RFC5398]</b>
+      </td>
+      <td class="top"><a>Huston, G.</a>, "<a href="http://tools.ietf.org/html/rfc5398">Autonomous System (AS) Number Reservation for Documentation Use</a>", RFC 5398, DOI 10.17487/RFC5398, December 2008.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5737">[RFC5737]</b>
+      </td>
+      <td class="top"><a>Arkko, J.</a>, <a>Cotton, M.</a> and <a>L. Vegoda</a>, "<a href="http://tools.ietf.org/html/rfc5737">IPv4 Address Blocks Reserved for Documentation</a>", RFC 5737, DOI 10.17487/RFC5737, January 2010.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Authors' Addresses</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Geoff Huston</span> 
+	  <span class="n hidden">
+		<span class="family-name">Huston</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Asia Pacific Network Information Centre</span>
+	<span class="adr">
+	  <span class="vcardline">6 Cordelia St</span>
+
+	  <span class="vcardline">
+		<span class="locality">South Brisbane</span>,  
+		<span class="region">QLD</span> 
+		<span class="code">4101</span>
+	  </span>
+	  <span class="country-name vcardline">Australia</span>
+	</span>
+	<span class="vcardline">Phone: +61 7 3858 3100</span>
+
+<span class="vcardline">EMail: <a href="mailto:gih@apnic.net">gih@apnic.net</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">George Michaelson</span> 
+	  <span class="n hidden">
+		<span class="family-name">Michaelson</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Asia Pacific Network Information Centre</span>
+	<span class="adr">
+	  <span class="vcardline">6 Cordelia St</span>
+
+	  <span class="vcardline">
+		<span class="locality">South Brisbane</span>,  
+		<span class="region">QLD</span> 
+		<span class="code">4101</span>
+	  </span>
+	  <span class="country-name vcardline">Australia</span>
+	</span>
+	<span class="vcardline">Phone: +61 7 3858 3100</span>
+
+<span class="vcardline">EMail: <a href="mailto:ggm@apnic.net">ggm@apnic.net</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Carlos M. Martinez</span> 
+	  <span class="n hidden">
+		<span class="family-name">Martinez</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Latin American and Caribbean IP Address Regional Registry</span>
+	<span class="adr">
+	  <span class="vcardline">Rambla Mexico 6125</span>
+
+	  <span class="vcardline">
+		<span class="locality">Montevideo</span>,  
+		<span class="region"></span>
+		<span class="code">11400</span>
+	  </span>
+	  <span class="country-name vcardline">Uruguay</span>
+	</span>
+	<span class="vcardline">Phone: +598 2604 2222</span>
+
+<span class="vcardline">EMail: <a href="mailto:carlos@lacnic.net">carlos@lacnic.net</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Tim Bruijnzeels</span> 
+	  <span class="n hidden">
+		<span class="family-name">Bruijnzeels</span>
+	  </span>
+	</span>
+	<span class="org vcardline">RIPE Network Coordination Centre</span>
+	<span class="adr">
+	  <span class="vcardline">Singel 258</span>
+
+	  <span class="vcardline">
+		<span class="locality">Amsterdam</span>,  
+		<span class="region"></span>
+		<span class="code">1016 AB</span>
+	  </span>
+	  <span class="country-name vcardline">The Netherlands</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:tim@ripe.net">tim@ripe.net</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Andrew Lee Newton</span> 
+	  <span class="n hidden">
+		<span class="family-name">Newton</span>
+	  </span>
+	</span>
+	<span class="org vcardline">American Registry for Internet Numbers</span>
+	<span class="adr">
+	  <span class="vcardline">3635 Concorde Parkway</span>
+
+	  <span class="vcardline">
+		<span class="locality">Chantilly</span>,  
+		<span class="region">VA</span> 
+		<span class="code">20151</span>
+	  </span>
+	  <span class="country-name vcardline">USA</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:andy@arin.net">andy@arin.net</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Daniel Shaw</span> 
+	  <span class="n hidden">
+		<span class="family-name">Shaw</span>
+	  </span>
+	</span>
+	<span class="org vcardline">African Network Information Centre (AFRINIC)</span>
+	<span class="adr">
+	  <span class="vcardline">11th Floor, Standard Chartered Tower</span>
+
+	  <span class="vcardline">
+		<span class="locality">Cybercity</span>,  
+		<span class="region">Ebene</span> 
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline">Mauritius</span>
+	</span>
+	<span class="vcardline">Phone: +230 403 51 00</span>
+
+<span class="vcardline">EMail: <a href="mailto:daniel@afrinic.net">daniel@afrinic.net</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
