@@ -75,14 +75,15 @@ Table of Contents
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
      4.2.  Changes to existing standards . . . . . . . . . . . . . .   5
        4.2.1.  Resource Certificate Path Validation  . . . . . . . .   5
-     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   7
+       4.2.2.  ROA Validation  . . . . . . . . . . . . . . . . . . .   7
+     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   8
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   9
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  10
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  10
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
    resources are considered valid by definition.
 
    For example, in the following sequence:
-
 
 
 
@@ -371,6 +371,43 @@ Internet-Draft               RPKI Validation                   July 2016
    problem because the associated VRS sets accurately reflect the
    resources validly associated with the certificate in question.
 
+4.2.2.  ROA Validation
+
+   Section 4 of [RFC6482] currently has the following text on the
+   validation of resources on a ROA:
+
+   o  The IP address delegation extension [RFC3779] is present in the
+      end-entity (EE) certificate (contained within the ROA), and each
+      IP address prefix(es) in the ROA is contained within the set of IP
+      addresses specified by the EE certificate's IP address delegation
+      extension.
+
+   The following is an amended specification to be used in place of this
+   text.
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017                [Page 7]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+   o  The IP address delegation extension [RFC3779] is present in the
+      end-entity (EE) certificate (contained within the ROA), and each
+      IP address prefix(es) in the ROA is contained within the VRS-IP
+      set that is specified as an outcome of EE certificate validation.
+
+   Note that this ensures that ROAs can be valid only, if all IP address
+   prefixes in the ROA are encompassed by the VRS-IP of all certificates
+   along the path to the trust anchor used to verify it.
+
+   Operators MAY issue separate ROAs for each IP address prefix, so that
+   the loss of on IP address prefix from the VRS-IP of any certificate
+   along the path to the trust anchor would not invalidate
+   authorizations for other IP address prefixes.
+
 4.3.  An example
 
    Consider the following example under the amended approach:
@@ -386,14 +423,6 @@ Internet-Draft               RPKI Validation                   July 2016
        Warnings: none
 
      Certificate 2:
-
-
-
-Huston, et al.           Expires January 2, 2017                [Page 7]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
       Issuer TA,
       Subject CA1,
       Resources 192.0.2.0/24, 2001:db8::/32, AS64496
@@ -413,6 +442,14 @@ Internet-Draft               RPKI Validation                   July 2016
      ROA 1 (valid):
       Embedded Certificate 4 (EE certificate):
        Issuer CA2,
+
+
+
+Huston, et al.           Expires January 2, 2017                [Page 8]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
        Subject R1,
        Resources 192.0.2.0/24
 
@@ -443,13 +480,6 @@ Internet-Draft               RPKI Validation                   July 2016
       Subject ROUTER-64496
       Resources AS64496
 
-
-
-Huston, et al.           Expires January 2, 2017                [Page 8]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
        Verified resources: AS64496
        Warnings: none
 
@@ -467,6 +497,14 @@ Internet-Draft               RPKI Validation                   July 2016
 
    The authors believe that the revised validation algorithm introduces
    no new security vulnerabilities into the RPKI.
+
+
+
+
+Huston, et al.           Expires January 2, 2017                [Page 9]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
 6.  IANA Considerations
 
@@ -497,15 +535,6 @@ Internet-Draft               RPKI Validation                   July 2016
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <http://www.rfc-editor.org/info/rfc5280>.
 
-
-
-
-
-Huston, et al.           Expires January 2, 2017                [Page 9]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    [RFC6482]  Lepinski, M., Kent, S., and D. Kong, "A Profile for Route
               Origin Authorizations (ROAs)", RFC 6482,
               DOI 10.17487/RFC6482, February 2012,
@@ -522,6 +551,16 @@ Internet-Draft               RPKI Validation                   July 2016
               Reserved for Documentation", RFC 3849,
               DOI 10.17487/RFC3849, July 2004,
               <http://www.rfc-editor.org/info/rfc3849>.
+
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 10]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
    [RFC5398]  Huston, G., "Autonomous System (AS) Number Reservation for
               Documentation Use", RFC 5398, DOI 10.17487/RFC5398,
@@ -554,14 +593,6 @@ Authors' Addresses
    Email: ggm@apnic.net
 
 
-
-
-
-Huston, et al.           Expires January 2, 2017               [Page 10]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Carlos M. Martinez
    Latin American and Caribbean IP Address Regional Registry
    Rambla Mexico 6125
@@ -579,6 +610,12 @@ Internet-Draft               RPKI Validation                   July 2016
    The Netherlands
 
    Email: tim@ripe.net
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 11]
+
+Internet-Draft               RPKI Validation                   July 2016
 
 
    Andrew Lee Newton
@@ -613,4 +650,23 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017               [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 2, 2017               [Page 12]

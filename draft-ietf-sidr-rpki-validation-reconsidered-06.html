@@ -381,6 +381,7 @@
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Sets"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Changes to existing standards"/>
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Resource Certificate Path Validation"/>
+<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 ROA Validation"/>
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
@@ -492,6 +493,7 @@
 <ul><li>4.1.   <a href="#rfc.section.4.1">Verified Resource Sets</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">Changes to existing standards</a></li>
 <ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Resource Certificate Path Validation</a></li>
+<li>4.2.2.   <a href="#rfc.section.4.2.2">ROA Validation</a></li>
 </ul><li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
 </ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
 <li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
@@ -602,6 +604,19 @@
   <li>Compute the VRS-IP and VRS-AS set values as indicated below: <ul><li>If the IP Address Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li><li>If the IP Address Delegation extension is absent in certificate x, set the VRS-IP to NULL.</li><li>If the AS Identifier Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li><li>If the AS Identifier Delegation extension is absent in certificate x, set the VRS-AS to NULL.</li><li>If x = n (i.e., this is the certificate being validated), then:<ol><li>If IP Address Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li><li>If an AS Identifier Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li></ol></li><li>If an RP is caching the results of validation, these values MAY be stored along with the certificate, to facilitate incremental validation based on cached results.</li></ul><p> </p></li>
 </ol>
 <p id="rfc.section.4.2.1.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
+<h1 id="rfc.section.4.2.2"><a href="#rfc.section.4.2.2">4.2.2.</a> ROA Validation</h1>
+<p id="rfc.section.4.2.2.p.1">Section 4 of <a href="#RFC6482">[RFC6482]</a> currently has the following text on the validation of resources on a ROA:</p>
+
+<ul>
+  <li>The IP address delegation extension [RFC3779] is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the set of IP addresses specified by the EE certificate's IP address delegation extension.</li>
+</ul>
+<p id="rfc.section.4.2.2.p.2">The following is an amended specification to be used in place of this text.</p>
+
+<ul>
+  <li>The IP address delegation extension [RFC3779] is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the VRS-IP set that is specified as an outcome of EE certificate validation.</li>
+</ul>
+<p id="rfc.section.4.2.2.p.3">Note that this ensures that ROAs can be valid only, if all IP address prefixes in the ROA are encompassed by the VRS-IP of all certificates along the path to the trust anchor used to verify it.</p>
+<p id="rfc.section.4.2.2.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of on IP address prefix from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
 <h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> An example</h1>
 <p id="rfc.section.4.3.p.1">Consider the following example under the amended approach:</p>
 <pre> 
