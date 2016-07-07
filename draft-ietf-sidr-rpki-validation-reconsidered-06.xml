@@ -398,7 +398,31 @@
     	along the path to the trust anchor would not invalidate authorizations
     	for other IP address prefixes.</t>
     	
-      </section>   
+      </section>
+      
+      <section title="BGPsec Router Certificate Validation">
+      
+        <t>BGPsec Router Certificate Validation is defined in section 3.3 of
+        <xref target="I-D.ietf-sidr-bgpsec-pki-profiles" />. Path validation
+        defined section 7 of <xref target="RFC6487" /> is used as the first
+        step in validation, and a number of additional constraints are
+        applied.</t>
+          
+        <t>We request that the authors add the following constraint:
+        <list style="symbols">
+    		<t>The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs
+            in the AS Resource Identifier Delegation extension.</t>
+        </list>
+        </t>
+          
+        <t>Furthermore we request that the authors include text instructing
+        operators that they MAY issue separate BGPsec Router Certificates for
+        different ASNs, so that the loss of on ASN from the VRS-AS of any
+        certificate along the path to the trust anchor would not invalidate
+        router keys for other ASNs.
+        </t>
+          
+      </section>
    
       </section>
       <section title="An example">

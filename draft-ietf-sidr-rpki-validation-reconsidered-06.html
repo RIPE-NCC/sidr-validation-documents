@@ -382,6 +382,7 @@
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Changes to existing standards"/>
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Resource Certificate Path Validation"/>
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 ROA Validation"/>
+<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 BGPsec Router Certificate Validation"/>
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
@@ -494,6 +495,7 @@
 <li>4.2.   <a href="#rfc.section.4.2">Changes to existing standards</a></li>
 <ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Resource Certificate Path Validation</a></li>
 <li>4.2.2.   <a href="#rfc.section.4.2.2">ROA Validation</a></li>
+<li>4.2.3.   <a href="#rfc.section.4.2.3">BGPsec Router Certificate Validation</a></li>
 </ul><li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
 </ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
 <li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
@@ -617,6 +619,16 @@
 </ul>
 <p id="rfc.section.4.2.2.p.3">Note that this ensures that ROAs can be valid only, if all IP address prefixes in the ROA are encompassed by the VRS-IP of all certificates along the path to the trust anchor used to verify it.</p>
 <p id="rfc.section.4.2.2.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of on IP address prefix from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
+<h1 id="rfc.section.4.2.3"><a href="#rfc.section.4.2.3">4.2.3.</a> BGPsec Router Certificate Validation</h1>
+<p id="rfc.section.4.2.3.p.1">BGPsec Router Certificate Validation is defined in section 3.3 of <a href="#I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>. Path validation defined section 7 of <a href="#RFC6487">[RFC6487]</a> is used as the first step in validation, and a number of additional constraints are applied.</p>
+<p id="rfc.section.4.2.3.p.2">We request that the authors add the following constraint: </p>
+
+<ul>
+  <li>The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs in the AS Resource Identifier Delegation extension.</li>
+</ul>
+
+<p> </p>
+<p id="rfc.section.4.2.3.p.3">Furthermore we request that the authors include text instructing operators that they MAY issue separate BGPsec Router Certificates for different ASNs, so that the loss of on ASN from the VRS-AS of any certificate along the path to the trust anchor would not invalidate router keys for other ASNs.  </p>
 <h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> An example</h1>
 <p id="rfc.section.4.3.p.1">Consider the following example under the amended approach:</p>
 <pre> 
