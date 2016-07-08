@@ -5,7 +5,7 @@
 Network Working Group                                          G. Huston
 Internet-Draft                                             G. Michaelson
 Intended status: Standards Track                                   APNIC
-Expires: January 2, 2017                                     C. Martinez
+Expires: January 9, 2017                                     C. Martinez
                                                                   LACNIC
                                                           T. Bruijnzeels
                                                                 RIPE NCC
@@ -13,7 +13,7 @@ Expires: January 2, 2017                                     C. Martinez
                                                                     ARIN
                                                                  D. Shaw
                                                                  AFRINIC
-                                                            July 1, 2016
+                                                            July 8, 2016
 
 
                       RPKI Validation Reconsidered
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 2, 2017.
+   This Internet-Draft will expire on January 9, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 1]
+Huston, et al.           Expires January 9, 2017                [Page 1]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 2]
+Huston, et al.           Expires January 9, 2017                [Page 2]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -165,7 +165,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 3]
+Huston, et al.           Expires January 9, 2017                [Page 3]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -221,7 +221,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 4]
+Huston, et al.           Expires January 9, 2017                [Page 4]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -277,7 +277,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 5]
+Huston, et al.           Expires January 9, 2017                [Page 5]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -333,7 +333,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 6]
+Huston, et al.           Expires January 9, 2017                [Page 6]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -389,7 +389,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 7]
+Huston, et al.           Expires January 9, 2017                [Page 7]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -445,7 +445,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 8]
+Huston, et al.           Expires January 9, 2017                [Page 8]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -501,7 +501,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017                [Page 9]
+Huston, et al.           Expires January 9, 2017                [Page 9]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -557,7 +557,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017               [Page 10]
+Huston, et al.           Expires January 9, 2017               [Page 10]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -613,7 +613,7 @@ Authors' Addresses
 
 
 
-Huston, et al.           Expires January 2, 2017               [Page 11]
+Huston, et al.           Expires January 9, 2017               [Page 11]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -669,4 +669,4 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 2, 2017               [Page 12]
+Huston, et al.           Expires January 9, 2017               [Page 12]
