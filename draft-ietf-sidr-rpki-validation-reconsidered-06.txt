@@ -530,7 +530,8 @@ Internet-Draft               RPKI Validation                   July 2016
 
 7.  Acknowledgements
 
-   TBA.
+   The authors would like to thank Stephen Kent for reviewing and
+   contributing to this document.
 
 8.  References
 
@@ -552,7 +553,6 @@ Internet-Draft               RPKI Validation                   July 2016
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <http://www.rfc-editor.org/info/rfc5280>.
-
 
 
 
