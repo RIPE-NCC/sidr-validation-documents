@@ -4,7 +4,7 @@
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
 ]>
 
-<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-07" ipr="trust200902" >
+<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-07" ipr="trust200902" updates="6484 6487">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
   <?rfc toc="yes" ?>
   <?rfc compact="yes" ?>
@@ -113,8 +113,9 @@
       reduces aspects of operational fragility in the management of
       certificates in the RPKI, while retaining essential security
       features.</t>
-
+      
     </section>
+
     <section title="Certificate Validation in the RPKI">
     
       <t>As currently defined in section 7.2 of <xref target="RFC6487" />,
@@ -253,6 +254,34 @@
       </section>
       
       <section title="Changes to existing standards">
+      
+      <section title="An updated validation policy">
+      
+        <t>The following is an amended specification to be used in place of
+        section 1.2 of <xref target="RFC6484" />.</t>
+        
+        <t>The name of this document is "Certificate Policy (CP) for the
+        Resource PKI (RPKI)”.</t>
+        
+        <t>This policy has been assigned the following two OIDs:</t>
+        
+        <figure><artwork><![CDATA[ 
+   id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
+                          identified-organization(3) dod(6) internet(1)
+                          security(5) mechanisms(5) pkix(7) cp(14) 2 }
+        
+    id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
+                          identified-organization(3) dod(6) internet(1)
+                          security(5) mechanisms(5) pkix(7) cp(14) TBD }
+]]></artwork></figure>
+        <t>id-cp-ipAddr-asNumber and the extensions defined in
+        <xref target="RFC3779" /> indicate that the original certification path
+        validation rules are to be used.  id-cp-ipAddr-asNumber-v2 and the
+        extensions defined in [this document] indicate that the validation
+        reconsidered certification path validation rules defined in
+        [this document] are to be used.</t>
+        
+      </section>
       
       <section title="Resource Certificate Path Validation">
 
@@ -533,6 +562,7 @@
       <?rfc include="reference.RFC.3779.xml"?>
       <?rfc include="reference.RFC.5280.xml"?>
       <?rfc include="reference.RFC.6482.xml"?>
+      <?rfc include="reference.RFC.6484.xml"?>
       <?rfc include="reference.RFC.6487.xml"?>
       <?rfc include="reference.I-D.ietf-sidr-bgpsec-pki-profiles"?>                
     </references>

@@ -4,9 +4,9 @@
 
 Network Working Group                                          G. Huston
 Internet-Draft                                             G. Michaelson
-Intended status: Standards Track                                   APNIC
-Expires: January 9, 2017                                     C. Martinez
-                                                                  LACNIC
+Updates: 6484 6487 (if approved)                                   APNIC
+Intended status: Standards Track                             C. Martinez
+Expires: January 9, 2017                                          LACNIC
                                                           T. Bruijnzeels
                                                                 RIPE NCC
                                                                A. Newton
@@ -74,17 +74,18 @@ Table of Contents
    4.  An Amended RPKI Certification Validation Process  . . . . . .   4
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
      4.2.  Changes to existing standards . . . . . . . . . . . . . .   5
-       4.2.1.  Resource Certificate Path Validation  . . . . . . . .   5
-       4.2.2.  ROA Validation  . . . . . . . . . . . . . . . . . . .   7
-       4.2.3.  BGPsec Router Certificate Validation  . . . . . . . .   8
-     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   8
+       4.2.1.  An updated validation policy  . . . . . . . . . . . .   5
+       4.2.2.  Resource Certificate Path Validation  . . . . . . . .   6
+       4.2.3.  ROA Validation  . . . . . . . . . . . . . . . . . . .   8
+       4.2.4.  BGPsec Router Certificate Validation  . . . . . . . .   8
+     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   9
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  10
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  11
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
    "encompassed" by INRs on the issuing certificate.  The first
    certificate in the path is required to be a trust anchor, and its
    resources are considered valid by definition.
-
 
 
 
@@ -250,7 +250,39 @@ Internet-Draft               RPKI Validation                   July 2016
 
 4.2.  Changes to existing standards
 
-4.2.1.  Resource Certificate Path Validation
+4.2.1.  An updated validation policy
+
+   The following is an amended specification to be used in place of
+   section 1.2 of [RFC6484].
+
+   The name of this document is "Certificate Policy (CP) for the
+   Resource PKI (RPKI)".
+
+   This policy has been assigned the following two OIDs:
+
+   id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
+                          identified-organization(3) dod(6) internet(1)
+                          security(5) mechanisms(5) pkix(7) cp(14) 2 }
+
+    id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
+                          identified-organization(3) dod(6) internet(1)
+                          security(5) mechanisms(5) pkix(7) cp(14) TBD }
+
+   id-cp-ipAddr-asNumber and the extensions defined in [RFC3779]
+   indicate that the original certification path validation rules are to
+   be used.  id-cp-ipAddr-asNumber-v2 and the extensions defined in
+   [this document] indicate that the validation reconsidered
+   certification path validation rules defined in [this document] are to
+   be used.
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 5]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+4.2.2.  Resource Certificate Path Validation
 
    The following is an amended specification to be used in place of
    section 7.2 of [RFC6487].
@@ -273,14 +305,6 @@ Internet-Draft               RPKI Validation                   July 2016
    certificate.  The VRS-IP and VRS-AS sets are initially set to the IP
    Address Delegation and AS Identifier Delegation values, respectively,
    from the trust anchor used to perform validation.
-
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 5]
-
-Internet-Draft               RPKI Validation                   July 2016
-
 
    This path validation algorithm verifies, among other things, that a
    prospective certification path (a sequence of n certificates)
@@ -307,6 +331,13 @@ Internet-Draft               RPKI Validation                   July 2016
        NotBefore and NotAfter values in the Validity field of
        certificate x.
 
+
+
+Huston, et al.           Expires January 9, 2017                [Page 6]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    3.  The Version, Issuer, and Subject fields of certificate x satisfy
        the constraints established in Section 4.1-4.7 of this
        specification.
@@ -331,13 +362,6 @@ Internet-Draft               RPKI Validation                   July 2016
        *  If the IP Address Delegation extension is absent in
           certificate x, set the VRS-IP to NULL.
 
-
-
-Huston, et al.           Expires January 9, 2017                [Page 6]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
        *  If the AS Identifier Delegation extension is present in
           certificate x, compute the intersection of the resources
           between this extension and the value of the VRS-AS computed
@@ -361,6 +385,15 @@ Internet-Draft               RPKI Validation                   July 2016
           MAY be stored along with the certificate, to facilitate
           incremental validation based on cached results.
 
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 7]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    These rules allow a CA certificate to contain resources that are not
    present in (all of) the certificates along the path from the trust
    anchor to the CA certificate.  If none of the resources in the CA
@@ -371,7 +404,7 @@ Internet-Draft               RPKI Validation                   July 2016
    problem because the associated VRS sets accurately reflect the
    resources validly associated with the certificate in question.
 
-4.2.2.  ROA Validation
+4.2.3.  ROA Validation
 
    Section 4 of [RFC6482] currently has the following text on the
    validation of resources on a ROA:
@@ -384,15 +417,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
    The following is an amended specification to be used in place of this
    text.
-
-
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 7]
-
-Internet-Draft               RPKI Validation                   July 2016
-
 
    o  The IP address delegation extension [RFC3779] is present in the
       end-entity (EE) certificate (contained within the ROA), and each
@@ -408,7 +432,7 @@ Internet-Draft               RPKI Validation                   July 2016
    along the path to the trust anchor would not invalidate
    authorizations for other IP address prefixes.
 
-4.2.3.  BGPsec Router Certificate Validation
+4.2.4.  BGPsec Router Certificate Validation
 
    BGPsec Router Certificate Validation is defined in section 3.3 of
    [I-D.ietf-sidr-bgpsec-pki-profiles].  Path validation defined section
@@ -416,6 +440,15 @@ Internet-Draft               RPKI Validation                   July 2016
    of additional constraints are applied.
 
    We request that the authors add the following constraint:
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 8]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
    o  The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs
       in the AS Resource Identifier Delegation extension.
@@ -442,14 +475,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
      Certificate 2:
       Issuer TA,
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 8]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
       Subject CA1,
       Resources 192.0.2.0/24, 2001:db8::/32, AS64496
 
@@ -473,6 +498,13 @@ Internet-Draft               RPKI Validation                   July 2016
 
         Verified resources: 192.0.2.0/24
         Warnings: none
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 9]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
         Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
@@ -498,14 +530,6 @@ Internet-Draft               RPKI Validation                   July 2016
       Subject ROUTER-64496
       Resources AS64496
 
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 9]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
        Verified resources: AS64496
        Warnings: none
 
@@ -527,6 +551,16 @@ Internet-Draft               RPKI Validation                   July 2016
 6.  IANA Considerations
 
    No updates to the registries are suggested by this document.
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 10]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
 7.  Acknowledgements
 
@@ -554,18 +588,15 @@ Internet-Draft               RPKI Validation                   July 2016
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <http://www.rfc-editor.org/info/rfc5280>.
 
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 10]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    [RFC6482]  Lepinski, M., Kent, S., and D. Kong, "A Profile for Route
               Origin Authorizations (ROAs)", RFC 6482,
               DOI 10.17487/RFC6482, February 2012,
               <http://www.rfc-editor.org/info/rfc6482>.
+
+   [RFC6484]  Kent, S., Kong, D., Seo, K., and R. Watro, "Certificate
+              Policy (CP) for the Resource Public Key Infrastructure
+              (RPKI)", BCP 173, RFC 6484, DOI 10.17487/RFC6484, February
+              2012, <http://www.rfc-editor.org/info/rfc6484>.
 
    [RFC6487]  Huston, G., Michaelson, G., and R. Loomans, "A Profile for
               X.509 PKIX Resource Certificates", RFC 6487,
@@ -578,6 +609,14 @@ Internet-Draft               RPKI Validation                   July 2016
               Reserved for Documentation", RFC 3849,
               DOI 10.17487/RFC3849, July 2004,
               <http://www.rfc-editor.org/info/rfc3849>.
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 11]
+
+Internet-Draft               RPKI Validation                   July 2016
+
 
    [RFC5398]  Huston, G., "Autonomous System (AS) Number Reservation for
               Documentation Use", RFC 5398, DOI 10.17487/RFC5398,
@@ -610,14 +649,6 @@ Authors' Addresses
    Email: ggm@apnic.net
 
 
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 11]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Carlos M. Martinez
    Latin American and Caribbean IP Address Regional Registry
    Rambla Mexico 6125
@@ -635,6 +666,12 @@ Internet-Draft               RPKI Validation                   July 2016
    The Netherlands
 
    Email: tim@ripe.net
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 12]
+
+Internet-Draft               RPKI Validation                   July 2016
 
 
    Andrew Lee Newton
@@ -669,4 +706,23 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 13]
