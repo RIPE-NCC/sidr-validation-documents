@@ -4,7 +4,7 @@
       'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
 ]>
 
-<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-07" ipr="trust200902" updates="6484 6487">
+<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-07" ipr="trust200902" updates="3779 6482 6484 6487">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
   <?rfc toc="yes" ?>
   <?rfc compact="yes" ?>
@@ -255,7 +255,7 @@
       
       <section title="Changes to existing standards">
       
-      <section title="An updated validation policy">
+      <section title="OID for an updated validation policy">
       
         <t>The following is an amended specification to be used in place of
         section 1.2 of <xref target="RFC6484" />.</t>
@@ -267,23 +267,53 @@
         
         <figure><artwork><![CDATA[ 
    id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
-                          identified-organization(3) dod(6) internet(1)
-                          security(5) mechanisms(5) pkix(7) cp(14) 2 }
+                    identified-organization(3) dod(6) internet(1)
+                    security(5) mechanisms(5) pkix(7) cp(14) 2 }
         
-    id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
-                          identified-organization(3) dod(6) internet(1)
-                          security(5) mechanisms(5) pkix(7) cp(14) TBD }
+   id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
+                    identified-organization(3) dod(6) internet(1)
+                    security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 ]]></artwork></figure>
         <t>id-cp-ipAddr-asNumber and the extensions defined in
         <xref target="RFC3779" /> indicate that the original certification path
         validation rules are to be used.  id-cp-ipAddr-asNumber-v2 and the
         extensions defined in [this document] indicate that the validation
         reconsidered certification path validation rules defined in
-        [this document] are to be used.</t>
+        <xref target="reconsidered_path_validation" /> are to be used.</t>
         
       </section>
       
-      <section title="Resource Certificate Path Validation">
+      <section title="Changes to RFC3779">
+      
+        <t>To ensure that Relying Parties use the reconsidered certification
+        path validation rules defined in <xref target="reconsidered_path_validation" />,
+        the following amended version of <xref target="RFC3779" /> is to be used.
+        </t>
+        
+        <section title="OID for id-pe-ipAddrBlocks-v2">
+        
+          <t>The following is an amended specification to be used in place of
+          section 2.2.1 of <xref target="RFC3779" />.</t>
+          
+          <t>The OID for this extension is id-pe-ipAddrBlocks-v2.</t>
+          <figure><artwork><![CDATA[ 
+   id-pe-ipAddrBlocks  OBJECT IDENTIFIER ::= { TBD2 }
+]]></artwork></figure>
+
+          <t>where <xref target="RFC3280" /> defines:</t>
+          <figure><artwork><![CDATA[ 
+   id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+               dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+
+   id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+]]></artwork></figure>
+
+        </section>
+      
+      </section>
+      
+      
+      <section title="Resource Certificate Path Validation" anchor="reconsidered_path_validation">
 
     	<t>The following is an amended specification to be used in place of
     	section 7.2 of <xref target="RFC6487" />.</t>
@@ -559,6 +589,7 @@
 
   <back>
     <references title="Normative References">
+      <?rfc include="reference.RFC.3280.xml"?>
       <?rfc include="reference.RFC.3779.xml"?>
       <?rfc include="reference.RFC.5280.xml"?>
       <?rfc include="reference.RFC.6482.xml"?>

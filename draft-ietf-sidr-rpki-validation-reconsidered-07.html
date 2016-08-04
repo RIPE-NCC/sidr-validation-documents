@@ -380,10 +380,11 @@
 <link href="#rfc.section.4" rel="Chapter" title="4 An Amended RPKI Certification Validation Process"/>
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Sets"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Changes to existing standards"/>
-<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 An updated validation policy"/>
-<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Resource Certificate Path Validation"/>
-<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 ROA Validation"/>
-<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 BGPsec Router Certificate Validation"/>
+<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 OID for an updated validation policy"/>
+<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Changes to RFC3779"/>
+<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Resource Certificate Path Validation"/>
+<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 ROA Validation"/>
+<link href="#rfc.section.4.2.5" rel="Chapter" title="4.2.5 BGPsec Router Certificate Validation"/>
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
@@ -419,19 +420,19 @@
   <td class="right">G. Michaelson</td>
 </tr>
 <tr>
-  <td class="left">Updates: 6484 6487 (if approved)</td>
+  <td class="left">Updates: 3779 6482 6484 6487 (if</td>
   <td class="right">APNIC</td>
 </tr>
 <tr>
-  <td class="left">Intended status: Standards Track</td>
+  <td class="left">         approved)</td>
   <td class="right">C. Martinez</td>
 </tr>
 <tr>
-  <td class="left">Expires: January 9, 2017</td>
+  <td class="left">Intended status: Standards Track</td>
   <td class="right">LACNIC</td>
 </tr>
 <tr>
-  <td class="left"></td>
+  <td class="left">Expires: January 9, 2017</td>
   <td class="right">T. Bruijnzeels</td>
 </tr>
 <tr>
@@ -494,10 +495,11 @@
 <li>4.   <a href="#rfc.section.4">An Amended RPKI Certification Validation Process</a></li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">Verified Resource Sets</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">Changes to existing standards</a></li>
-<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">An updated validation policy</a></li>
-<li>4.2.2.   <a href="#rfc.section.4.2.2">Resource Certificate Path Validation</a></li>
-<li>4.2.3.   <a href="#rfc.section.4.2.3">ROA Validation</a></li>
-<li>4.2.4.   <a href="#rfc.section.4.2.4">BGPsec Router Certificate Validation</a></li>
+<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">OID for an updated validation policy</a></li>
+<li>4.2.2.   <a href="#rfc.section.4.2.2">Changes to RFC3779</a></li>
+<li>4.2.3.   <a href="#rfc.section.4.2.3">Resource Certificate Path Validation</a></li>
+<li>4.2.4.   <a href="#rfc.section.4.2.4">ROA Validation</a></li>
+<li>4.2.5.   <a href="#rfc.section.4.2.5">BGPsec Router Certificate Validation</a></li>
 </ul><li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
 </ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
 <li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
@@ -579,31 +581,46 @@
 <p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487">[RFC6487]</a> do not change the probability of this problem, but they do limit the impact to just the over-claimed resources. This revised validation algorithm is intended to avoid causing CA certificates to be treated as completely invalid as a result of over-claims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, ROAs and router certificates will be treated as valid only if all of the resources contained in them are encompassed by all superior certificates along a path to a trust anchor.</p>
 <p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining Verified Resource Set (VRS) for each certificate that is separate from the INRs found in the <a href="#RFC3779">[RFC3779]</a> resource extension in the certificate.</p>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Changes to existing standards</h1>
-<h1 id="rfc.section.4.2.1"><a href="#rfc.section.4.2.1">4.2.1.</a> An updated validation policy</h1>
+<h1 id="rfc.section.4.2.1"><a href="#rfc.section.4.2.1">4.2.1.</a> OID for an updated validation policy</h1>
 <p id="rfc.section.4.2.1.p.1">The following is an amended specification to be used in place of section 1.2 of <a href="#RFC6484">[RFC6484]</a>.</p>
 <p id="rfc.section.4.2.1.p.2">The name of this document is "Certificate Policy (CP) for the Resource PKI (RPKI)&#8221;.</p>
 <p id="rfc.section.4.2.1.p.3">This policy has been assigned the following two OIDs:</p>
 <pre> 
    id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
-                          identified-organization(3) dod(6) internet(1)
-                          security(5) mechanisms(5) pkix(7) cp(14) 2 }
+                    identified-organization(3) dod(6) internet(1)
+                    security(5) mechanisms(5) pkix(7) cp(14) 2 }
         
-    id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
-                          identified-organization(3) dod(6) internet(1)
-                          security(5) mechanisms(5) pkix(7) cp(14) TBD }
+   id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
+                    identified-organization(3) dod(6) internet(1)
+                    security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 </pre>
-<p id="rfc.section.4.2.1.p.4">id-cp-ipAddr-asNumber and the extensions defined in <a href="#RFC3779">[RFC3779]</a> indicate that the original certification path validation rules are to be used.  id-cp-ipAddr-asNumber-v2 and the extensions defined in [this document] indicate that the validation reconsidered certification path validation rules defined in [this document] are to be used.</p>
-<h1 id="rfc.section.4.2.2"><a href="#rfc.section.4.2.2">4.2.2.</a> Resource Certificate Path Validation</h1>
-<p id="rfc.section.4.2.2.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487">[RFC6487]</a>.</p>
-<p id="rfc.section.4.2.2.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.p.3">There are two inputs to the validation algorithm:</p>
+<p id="rfc.section.4.2.1.p.4">id-cp-ipAddr-asNumber and the extensions defined in <a href="#RFC3779">[RFC3779]</a> indicate that the original certification path validation rules are to be used.  id-cp-ipAddr-asNumber-v2 and the extensions defined in [this document] indicate that the validation reconsidered certification path validation rules defined in <a href="#reconsidered_path_validation">Section 4.2.3</a> are to be used.</p>
+<h1 id="rfc.section.4.2.2"><a href="#rfc.section.4.2.2">4.2.2.</a> Changes to RFC3779</h1>
+<p id="rfc.section.4.2.2.p.1">To ensure that Relying Parties use the reconsidered certification path validation rules defined in <a href="#reconsidered_path_validation">Section 4.2.3</a>, the following amended version of <a href="#RFC3779">[RFC3779]</a> is to be used.  </p>
+<h1 id="rfc.section.4.2.2.1"><a href="#rfc.section.4.2.2.1">4.2.2.1.</a> OID for id-pe-ipAddrBlocks-v2</h1>
+<p id="rfc.section.4.2.2.1.p.1">The following is an amended specification to be used in place of section 2.2.1 of <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.1.p.2">The OID for this extension is id-pe-ipAddrBlocks-v2.</p>
+<pre> 
+   id-pe-ipAddrBlocks  OBJECT IDENTIFIER ::= { TBD2 }
+</pre>
+<p id="rfc.section.4.2.2.1.p.3">where <a href="#RFC3280">[RFC3280]</a> defines:</p>
+<pre> 
+   id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+               dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+
+   id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+</pre>
+<h1 id="rfc.section.4.2.3"><a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#reconsidered_path_validation" id="reconsidered_path_validation">Resource Certificate Path Validation</a></h1>
+<p id="rfc.section.4.2.3.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.3.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.3.p.3">There are two inputs to the validation algorithm:</p>
 
 <ol>
   <li>a trust anchor</li>
   <li>a certificate to be validated</li>
 </ol>
-<p id="rfc.section.4.2.2.p.4">The algorithm is initialized with two new variables for use in the RPKI: Validated Resource Set-IP (VRS-IP) and Validated Resource Set-AS (VRS-AS). These sets are used to track the set of INRs (IP address space and AS Numbers) that are considered valid for each CA certificate.  The VRS-IP and VRS-AS sets are initially set to the IP Address Delegation and AS Identifier Delegation values, respectively, from the trust anchor used to perform validation.</p>
-<p id="rfc.section.4.2.2.p.5">This path validation algorithm verifies, among other things, that a prospective certification path (a sequence of n certificates) satisfies the following conditions:</p>
+<p id="rfc.section.4.2.3.p.4">The algorithm is initialized with two new variables for use in the RPKI: Validated Resource Set-IP (VRS-IP) and Validated Resource Set-AS (VRS-AS). These sets are used to track the set of INRs (IP address space and AS Numbers) that are considered valid for each CA certificate.  The VRS-IP and VRS-AS sets are initially set to the IP Address Delegation and AS Identifier Delegation values, respectively, from the trust anchor used to perform validation.</p>
+<p id="rfc.section.4.2.3.p.5">This path validation algorithm verifies, among other things, that a prospective certification path (a sequence of n certificates) satisfies the following conditions:</p>
 
 <ol style="list-style-type: lower-alpha">
   <li>for all 'x' in {1, ..., n-1}, the subject of certificate 'x' is the issuer of certificate ('x' + 1);</li>
@@ -611,7 +628,7 @@
   <li>certificate 'n' is the certificate to be validated; and</li>
   <li>for all 'x' in {1, ..., n}, certificate 'x' is valid.</li>
 </ol>
-<p id="rfc.section.4.2.2.p.6">Certificate validation requires verifying that all of the following conditions hold, in addition to the certification path validation criteria specified in Section 6 of [RFC5280].</p>
+<p id="rfc.section.4.2.3.p.6">Certificate validation requires verifying that all of the following conditions hold, in addition to the certification path validation criteria specified in Section 6 of [RFC5280].</p>
 
 <ol>
   <li>The signature of certificate x (x&gt;1) is verified using the public key of the issuer&#8217;s certificate (x-1), using the signature algorithm specified for that public key (in certificate x-1).</li>
@@ -621,30 +638,30 @@
   <li>Certificate x MUST NOT have been revoked, i.e., it MUST NOT appear on a CRL issued by the CA represented by certificate x-1</li>
   <li>Compute the VRS-IP and VRS-AS set values as indicated below: <ul><li>If the IP Address Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li><li>If the IP Address Delegation extension is absent in certificate x, set the VRS-IP to NULL.</li><li>If the AS Identifier Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li><li>If the AS Identifier Delegation extension is absent in certificate x, set the VRS-AS to NULL.</li><li>If x = n (i.e., this is the certificate being validated), then:<ol><li>If IP Address Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li><li>If an AS Identifier Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li></ol></li><li>If an RP is caching the results of validation, these values MAY be stored along with the certificate, to facilitate incremental validation based on cached results.</li></ul><p> </p></li>
 </ol>
-<p id="rfc.section.4.2.2.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
-<h1 id="rfc.section.4.2.3"><a href="#rfc.section.4.2.3">4.2.3.</a> ROA Validation</h1>
-<p id="rfc.section.4.2.3.p.1">Section 4 of <a href="#RFC6482">[RFC6482]</a> currently has the following text on the validation of resources on a ROA:</p>
+<p id="rfc.section.4.2.3.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
+<h1 id="rfc.section.4.2.4"><a href="#rfc.section.4.2.4">4.2.4.</a> ROA Validation</h1>
+<p id="rfc.section.4.2.4.p.1">Section 4 of <a href="#RFC6482">[RFC6482]</a> currently has the following text on the validation of resources on a ROA:</p>
 
 <ul>
   <li>The IP address delegation extension [RFC3779] is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the set of IP addresses specified by the EE certificate's IP address delegation extension.</li>
 </ul>
-<p id="rfc.section.4.2.3.p.2">The following is an amended specification to be used in place of this text.</p>
+<p id="rfc.section.4.2.4.p.2">The following is an amended specification to be used in place of this text.</p>
 
 <ul>
   <li>The IP address delegation extension [RFC3779] is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the VRS-IP set that is specified as an outcome of EE certificate validation.</li>
 </ul>
-<p id="rfc.section.4.2.3.p.3">Note that this ensures that ROAs can be valid only, if all IP address prefixes in the ROA are encompassed by the VRS-IP of all certificates along the path to the trust anchor used to verify it.</p>
-<p id="rfc.section.4.2.3.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of on IP address prefix from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
-<h1 id="rfc.section.4.2.4"><a href="#rfc.section.4.2.4">4.2.4.</a> BGPsec Router Certificate Validation</h1>
-<p id="rfc.section.4.2.4.p.1">BGPsec Router Certificate Validation is defined in section 3.3 of <a href="#I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>. Path validation defined section 7 of <a href="#RFC6487">[RFC6487]</a> is used as the first step in validation, and a number of additional constraints are applied.</p>
-<p id="rfc.section.4.2.4.p.2">We request that the authors add the following constraint: </p>
+<p id="rfc.section.4.2.4.p.3">Note that this ensures that ROAs can be valid only, if all IP address prefixes in the ROA are encompassed by the VRS-IP of all certificates along the path to the trust anchor used to verify it.</p>
+<p id="rfc.section.4.2.4.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of on IP address prefix from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
+<h1 id="rfc.section.4.2.5"><a href="#rfc.section.4.2.5">4.2.5.</a> BGPsec Router Certificate Validation</h1>
+<p id="rfc.section.4.2.5.p.1">BGPsec Router Certificate Validation is defined in section 3.3 of <a href="#I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>. Path validation defined section 7 of <a href="#RFC6487">[RFC6487]</a> is used as the first step in validation, and a number of additional constraints are applied.</p>
+<p id="rfc.section.4.2.5.p.2">We request that the authors add the following constraint: </p>
 
 <ul>
   <li>The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs in the AS Resource Identifier Delegation extension.</li>
 </ul>
 
 <p> </p>
-<p id="rfc.section.4.2.4.p.3">Furthermore we request that the authors include text instructing operators that they MAY issue separate BGPsec Router Certificates for different ASNs, so that the loss of on ASN from the VRS-AS of any certificate along the path to the trust anchor would not invalidate router keys for other ASNs.  </p>
+<p id="rfc.section.4.2.5.p.3">Furthermore we request that the authors include text instructing operators that they MAY issue separate BGPsec Router Certificates for different ASNs, so that the loss of on ASN from the VRS-AS of any certificate along the path to the trust anchor would not invalidate router keys for other ASNs.  </p>
 <h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> An example</h1>
 <p id="rfc.section.4.3.p.1">Consider the following example under the amended approach:</p>
 <pre> 
@@ -736,6 +753,12 @@
         <b id="I-D.ietf-sidr-bgpsec-pki-profiles">[I-D.ietf-sidr-bgpsec-pki-profiles]</b>
       </td>
       <td class="top"><a>Reynolds, M.</a>, <a>Turner, S.</a> and <a>D. Kent</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sidr-bgpsec-pki-profiles-18">A Profile for BGPsec Router Certificates, Certificate Revocation Lists, and Certification Requests</a>", Internet-Draft draft-ietf-sidr-bgpsec-pki-profiles-18, July 2016.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC3280">[RFC3280]</b>
+      </td>
+      <td class="top"><a>Housley, R.</a>, <a>Polk, W.</a>, <a>Ford, W.</a> and <a>D. Solo</a>, "<a href="http://tools.ietf.org/html/rfc3280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>", RFC 3280, DOI 10.17487/RFC3280, April 2002.</td>
     </tr>
     <tr>
       <td class="reference">
