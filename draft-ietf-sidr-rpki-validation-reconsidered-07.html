@@ -387,12 +387,13 @@
 <link href="#rfc.section.4.2.5" rel="Chapter" title="4.2.5 Changes to RFC6482"/>
 <link href="#rfc.section.4.2.6" rel="Chapter" title="4.2.6 Changes to BGPSec PKI Profiles"/>
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 Acknowledgements"/>
-<link href="#rfc.references" rel="Chapter" title="8 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Deployment Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 Acknowledgements"/>
+<link href="#rfc.references" rel="Chapter" title="9 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -503,12 +504,13 @@
 <li>4.2.5.   <a href="#rfc.section.4.2.5">Changes to RFC6482</a></li>
 <li>4.2.6.   <a href="#rfc.section.4.2.6">Changes to BGPSec PKI Profiles</a></li>
 </ul><li>4.3.   <a href="#rfc.section.4.3">An example</a></li>
-</ul><li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
-<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
-<li>7.   <a href="#rfc.section.7">Acknowledgements</a></li>
-<li>8.   <a href="#rfc.references">References</a></li>
-<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Deployment Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
+<li>7.   <a href="#rfc.section.7">IANA Considerations</a></li>
+<li>8.   <a href="#rfc.section.8">Acknowledgements</a></li>
+<li>9.   <a href="#rfc.references">References</a></li>
+<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
@@ -898,17 +900,49 @@
     This problem can be mitigated by issuing separate certificates
     for each AS number.
 </pre>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Security Considerations</h1>
-<p id="rfc.section.5.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI.</p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> IANA Considerations</h1>
-<p id="rfc.section.6.p.1">IANA is to add the following to the SMI Security for PKIX Certificate Policies registry:</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Deployment Considerations</h1>
+<p id="rfc.section.5.p.1">Because the use of the version of <a href="#RFC6487">[RFC6487]</a> updated in in <a href="#amended_6487">Section 4.2.4</a> in RPKI certificates and objects will lead to the rejection of such objects by Relying Party tools that do not implement this updated version, it is important that such tools are updated before Certificate Authorities start to use this updated specification.</p>
+<p id="rfc.section.5.p.2">That being said it is important both Relying Party tools and Certificate Authority implementations are updated to use the updated specification within a reasonable time frame to ensure that validation of RPKI certificates and objects is done in one consistent way.</p>
+<p id="rfc.section.5.p.3">Therefore the following deployment time line applies:</p>
+<div id="rfc.table.1"/>
+<div id="table_deployment"/>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+  <thead>
+    <tr>
+      <th class="center">Months since RFC</th>
+      <th class="left">Step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="center">6</td>
+      <td class="left">Relying Party tools MUST implement the updated specification.</td>
+    </tr>
+    <tr>
+      <td class="center">9</td>
+      <td class="left">Certificate Authorities MAY implement the updated specification.</td>
+    </tr>
+    <tr>
+      <td class="center">18</td>
+      <td class="left">Certificate Authorities MUST implement the updated specification.</td>
+    </tr>
+    <tr>
+      <td class="center">24</td>
+      <td class="left">Relying Party tools SHOULD reject RPKI certificates and objects using the old specification.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> Security Considerations</h1>
+<p id="rfc.section.6.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI.</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> IANA Considerations</h1>
+<p id="rfc.section.7.p.1">IANA is to add the following to the SMI Security for PKIX Certificate Policies registry:</p>
 <pre>
       Decimal  Description                       References
 
       TBD1     id-cp-ipAddr-asNumber-v2          [this RFC]
 </pre>
 <p/>
-<p id="rfc.section.6.p.3">IANA is to add the following to the SMI Security for PKIX Certificate Extension registry:</p>
+<p id="rfc.section.7.p.3">IANA is to add the following to the SMI Security for PKIX Certificate Extension registry:</p>
 <pre> 
       Decimal  Description                       References
 
@@ -916,7 +950,7 @@
       TBD3     id-pe-autonomousSysIds-v2        [this RFC]
 </pre>
 <p/>
-<p id="rfc.section.6.p.5">IANA is to add the following to the SMI Security for PKIX Module Identifier registry:</p>
+<p id="rfc.section.7.p.5">IANA is to add the following to the SMI Security for PKIX Module Identifier registry:</p>
 <pre> 
       Decimal  Description                       References
 
@@ -924,10 +958,10 @@
       TBD5   IPAddrAndASCertExtn-2010v2         [this RFC]
 </pre>
 <p/>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Acknowledgements</h1>
-<p id="rfc.section.7.p.1">The authors would like to thank Stephen Kent for reviewing and contributing to this document.</p>
-<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> Acknowledgements</h1>
+<p id="rfc.section.8.p.1">The authors would like to thank Stephen Kent for reviewing and contributing to this document.</p>
+<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -980,7 +1014,7 @@
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>

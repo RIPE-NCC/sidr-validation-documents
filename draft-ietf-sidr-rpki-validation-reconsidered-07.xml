@@ -820,6 +820,38 @@
 
     </section>
     
+    <section title="Deployment Considerations">
+    
+       <t>Because the use of the version of <xref target="RFC6487" /> updated in
+       in <xref target="amended_6487" /> in RPKI certificates and objects will
+       lead to the rejection of such objects by Relying Party tools that do not
+       implement this updated version, it is important that such tools are
+       updated before Certificate Authorities start to use this updated
+       specification.</t>
+       
+       <t>That being said it is important both Relying Party tools and Certificate
+       Authority implementations are updated to use the updated specification
+       within a reasonable time frame to ensure that validation of RPKI certificates
+       and objects is done in one consistent way.</t>
+       
+       <t>Therefore the following deployment time line applies:</t>
+       
+       <texttable anchor="table_deployment">
+           <ttcol align='center'>Months since RFC</ttcol>
+           <ttcol align='left'>Step</ttcol>
+           <c>6</c>
+           <c>Relying Party tools MUST implement the updated specification.</c>
+           <c>9</c>
+           <c>Certificate Authorities MAY implement the updated specification.</c>
+           <c>18</c>
+           <c>Certificate Authorities MUST implement the updated specification.</c>
+           <c>24</c>
+           <c>Relying Party tools SHOULD reject RPKI certificates and objects
+           using the old specification.</c>
+       </texttable>
+    
+    </section>
+    
     <section title="Security Considerations">
     
       <t>The authors believe that the revised validation algorithm introduces no
