@@ -74,19 +74,20 @@ Table of Contents
    4.  An Amended RPKI Certification Validation Process  . . . . . .   5
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
      4.2.  Changes to existing standards . . . . . . . . . . . . . .   5
-       4.2.1.  OID for an updated validation policy  . . . . . . . .   5
+       4.2.1.  Changes to RFC6484  . . . . . . . . . . . . . . . . .   5
        4.2.2.  Changes to RFC3779  . . . . . . . . . . . . . . . . .   6
-       4.2.3.  Resource Certificate Path Validation  . . . . . . . .   6
-       4.2.4.  ROA Validation  . . . . . . . . . . . . . . . . . . .   8
-       4.2.5.  BGPsec Router Certificate Validation  . . . . . . . .   9
-     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .   9
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  11
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+       4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .   8
+       4.2.4.  Changes to RFC6487  . . . . . . . . . . . . . . . . .  10
+       4.2.5.  Changes to RFC6482  . . . . . . . . . . . . . . . . .  14
+       4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  15
+     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  15
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  17
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
    These criteria require, in particular, that the Internet Number
    Resources (INRs) of each certificate in the validation path are
    "encompassed" by INRs on the issuing certificate.  The first
-
 
 
 
@@ -252,7 +252,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 4.2.  Changes to existing standards
 
-4.2.1.  OID for an updated validation policy
+4.2.1.  Changes to RFC6484
 
    The following is an amended specification to be used in place of
    section 1.2 of [RFC6484].
@@ -282,14 +282,14 @@ Huston, et al.           Expires January 9, 2017                [Page 5]
 Internet-Draft               RPKI Validation                   July 2016
 
 
-   certification path validation rules defined in Section 4.2.3 are to
+   certification path validation rules defined in Section 4.2.4.4 are to
    be used.
 
 4.2.2.  Changes to RFC3779
 
    To ensure that Relying Parties use the reconsidered certification
-   path validation rules defined in Section 4.2.3, the following amended
-   version of [RFC3779] is to be used.
+   path validation rules defined in Section 4.2.4.4, the following
+   amended version of [RFC3779] is to be used.
 
 4.2.2.1.  OID for id-pe-ipAddrBlocks-v2
 
@@ -298,7 +298,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
    The OID for this extension is id-pe-ipAddrBlocks-v2.
 
-      id-pe-ipAddrBlocks  OBJECT IDENTIFIER ::= { TBD2 }
+      id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { TBD2 }
 
    where [RFC3280] defines:
 
@@ -307,13 +307,317 @@ Internet-Draft               RPKI Validation                   July 2016
 
       id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
-4.2.3.  Resource Certificate Path Validation
+4.2.2.2.  OID for id-pe-autonomousSysIds-v2
+
+   The following is an amended specification to be used in place of
+   section 3.2.1 of [RFC3779].
+
+   The OID for this extension is id-pe-autonomousSysIds-v2.
+
+      id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
+
+   where [RFC3280] defines:
+
+      id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+                  dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+
+      id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+
+4.2.2.3.  Amended IP Address Delegation Extension Certification Path
+          Validation
+
+   The following is an amended specification to be used in place of
+   section 2.3 of [RFC3779].
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 6]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+   Certificate path validation is performed as specified in
+   Section 4.2.4.4 of [this document].
+
+4.2.2.4.  Amended Autonomous System Identifier Delegation Extension
+          Certification Path Validation
+
+   The following is an amended specification to be used in place of
+   section 3.3 of [RFC3779].
+
+   Certificate path validation is performed as specified in
+   Section 4.2.4.4 of [this document].
+
+4.2.2.5.  Amended ASN.1 module
+
+   The following is an amended specification to be used in place of
+   appendix A of [RFC3779].
+
+   This normative appendix describes the IP address and AS identifiers
+   extensions used by conforming PKI components in ASN.1 syntax.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 7]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+  IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
+           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+           id-mod-ip-addr-and-as-ident-v2(TBD4) }
+
+  DEFINITIONS EXPLICIT TAGS ::=
+
+  BEGIN
+
+  -- EXPORTS ALL --
+
+  IMPORTS
+
+  -- PKIX specific OIDs and arcs --
+
+      id-pe FROM PKIX1Explicit88 { iso(1) identified-organization(3)
+                 dod(6) internet(1) security(5) mechanisms(5) pkix(7)
+                 id-mod(0) id-pkix1-explicit(18) }
+
+  -- IP Address Block and AS Identifiers Syntax --
+
+        IPAddrBlocks, ASIdentifiers FROM  IPAddrAndASCertExtn { iso(1)
+           identified-organization(3) dod(6) internet(1) security(5)
+           mechanisms(5) pkix(7) mod(0) id-mod-ip-addr-and-as-ident(30) }
+   ;
+
+  -- Validation Reconsidered IP Address Delegation Extension OID --
+
+        id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
+
+  -- Validation Reconsidered IP Address Delegation Extension Syntax --
+  -- Syntax is imported from [RFC3779] --
+
+  -- Validation Reconsidered Autonomous System Identifier Delegation Extension OID --
+
+  id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
+
+  -- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+  -- Syntax is imported from [RFC3779] --
+
+  END
+
+4.2.3.  Addendum to RFC6268
+
+   [RFC6268] is an informational RFC that updates some auxiliary ASN.1
+   modules to conform to the 2008 version of ASN.1; the 1988 ASN.1
+   modules for which we provided an update in Section 4.2.2.5 remain the
+   normative version.
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 8]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+   The following is an additional module confirming to the 2008 version
+   of ASN.1 to be used with the updated version of [RFC3779] defined in
+   [this document].
+
+  IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
+           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+           id-mod-ip-addr-and-as-ident-2v2(TBD5) }
+
+  DEFINITIONS EXPLICIT TAGS ::=
+
+  BEGIN
+
+     EXPORTS ALL;
+     IMPORTS
+
+     -- PKIX specific OIDs and arcs --
+
+     id-pe
+     FROM PKIX1Explicit-2009
+       { iso(1) identified-organization(3) dod(6) internet(1)
+         security(5) mechanisms(5) pkix(7) id-mod(0)
+         id-mod-pkix1-explicit-02(51)}
+
+     EXTENSION
+     FROM PKIX-CommonTypes-2009
+       { iso(1) identified-organization(3) dod(6) internet(1)
+         security(5) mechanisms(5) pkix(7) id-mod(0)
+         id-mod-pkixCommon-02(57)}
+
+  -- IP Address Block and AS Identifiers Syntax --
+
+     IPAddrBlocks, ASIdentifiers
+     FROM IPAddrAndASCertExtn-2010
+        { iso(1) identified-organization(3) dod(6)
+          internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+          id-mod-ip-addr-and-as-ident-2(72) }
+     ;
+
+     --
+     -- Extensions contains the set of extensions defined in this
+     -- module
+     --
+     -- These are intended to be placed in public key certificates
+     -- and thus should be added to the CertExtensions extension
+     -- set in PKIXImplicit-2009 defined for [RFC5280]
+     --
+
+     Extensions EXTENSION ::= {
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 9]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+        ext-pe-ipAddrBlocks-v2 | ext-pe-autonomousSysIds-v2
+     }
+
+     -- Validation Reconsidered IP Address Delegation Extension OID --
+
+     ext-pe-ipAddrBlocks-v2 EXTENSION ::= {
+       SYNTAX IPAddrBlocks
+       IDENTIFIED BY id-pe-ipAddrBlocks-v2
+     }
+
+     id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
+
+     -- IP Address Delegation Extension Syntax --
+     -- Syntax is imported from [RFC6268] --
+
+     -- Validation Reconsidered Autonomous System Identifier Delegation Extension OID --
+
+     ext-pe-autonomousSysIds-v2 EXTENSION ::= {
+       SYNTAX ASIdentifiers
+       IDENTIFIED BY id-pe-autonomousSysIds-v2
+     }
+
+     id-pe-autonomousSysIds OBJECT IDENTIFIER ::= { id-pe TBD3 }
+
+  -- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+  -- Syntax is imported from [RFC6268] --
+
+  END
+
+
+4.2.4.  Changes to RFC6487
+
+   Certificate Authorities MUST issue certificates either as specified
+   in [RFC6487] or with all the amendments specified in the following
+   sections.
+
+4.2.4.1.  Amended Certificate Policies
+
+   The following is an amended specification to be used in place of
+   section 4.8.9 of [RFC6487].
+
+   This extension MUST be present and MUST be marked critical.  It MUST
+   include exactly one policy of type id-cp-ipAddr-asNumber-v2, as
+   specified in the updated RPKI CP in Section 4.2.1 of [this document].
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 10]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+4.2.4.2.  Amended IP Resources
+
+   The following is an amended specification to be used in place of
+   section 4.8.10 of [RFC6487].
+
+   Either the IP Resources extension, or the AS Resources extension, or
+   both, MUST be present in all RPKI certificates, and if present, MUST
+   be marked critical.
+
+   This extension contains the list of IP address resources as per
+   Section 4.2.2.1 of [this document].  The value may specify the
+   "inherit" element for a particular Address Family Identifier (AFI)
+   value.  In the context of resource certificates describing public
+   number resources for use in the public Internet, the Subsequent AFI
+   (SAFI) value MUST NOT be used.
+
+   This extension MUST either specify a non-empty set of IP address
+   records, or use the "inherit" setting to indicate that the IP address
+   resource set of this certificate is inherited from that of the
+   certificate's issuer.
+
+4.2.4.3.  Amended AS Resources
+
+   The following is an amended specification to be used in place of
+   section 4.8.11 of [RFC6487].
+
+   Either the AS Resources extension, or the IP Resources extension, or
+   both, MUST be present in all RPKI certificates, and if present, MUST
+   be marked critical.
+
+   This extension contains the list of AS number resources as per
+   Section 4.2.2.2 of [this document], or it may specify the "inherit"
+   element.  Routing Domain Identifier (RDI) values are NOT supported in
+   this profile and MUST NOT be used.
+
+   This extension MUST either specify a non-empty set of AS number
+   records, or use the "inherit" setting to indicate that the AS number
+   resource set of this certificate is inherited from that of the
+   certificate's issuer.
+
+4.2.4.4.  Amended Resource Certificate Path Validation
 
    The following is an amended specification to be used in place of
    section 7.2 of [RFC6487].
 
    The following algorithm is employed to validate CA and EE resources
    certificates.  It is modeled on the path validation algorithm from
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 11]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    [RFC5280], but modified to make use of the IP Address Delegation and
    AS Identifier Delegation Extensions from [RFC3779].
 
@@ -330,13 +634,6 @@ Internet-Draft               RPKI Validation                   July 2016
    certificate.  The VRS-IP and VRS-AS sets are initially set to the IP
    Address Delegation and AS Identifier Delegation values, respectively,
    from the trust anchor used to perform validation.
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 6]
-
-Internet-Draft               RPKI Validation                   July 2016
-
 
    This path validation algorithm verifies, among other things, that a
    prospective certification path (a sequence of n certificates)
@@ -369,6 +666,14 @@ Internet-Draft               RPKI Validation                   July 2016
 
    4.  Certificate x contains all the extensions that MUST be present,
        as defined in Section 4.8 of this specification.  The value(s)
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 12]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
        for each of these extensions MUST be satisfy the constraints
        established for each extension in the respective sections.  Any
        extension not identified in Section 4.8 MUST NOT appear in
@@ -386,13 +691,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
        *  If the IP Address Delegation extension is absent in
           certificate x, set the VRS-IP to NULL.
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 7]
-
-Internet-Draft               RPKI Validation                   July 2016
-
 
        *  If the AS Identifier Delegation extension is present in
           certificate x, compute the intersection of the resources
@@ -417,6 +715,27 @@ Internet-Draft               RPKI Validation                   July 2016
           MAY be stored along with the certificate, to facilitate
           incremental validation based on cached results.
 
+   7.  If there is any difference in resources in the VRS-IP and the IP
+       Address Delegation extension on certificate x, or the VRS-AS and
+       the AS Identifier Delegation extension on certificate x, then:
+
+       *  If certificate x uses the updated version of [RFC6487] with
+          the amended policy and extension defined in Section 4.2.4 a
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 13]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+          warning listing the over-claiming resources for certificate x
+          SHOULD be issued.
+
+       *  If certificate x uses the original version of [RFC6487], then
+          certificate x MUST be rejected.
+
    These rules allow a CA certificate to contain resources that are not
    present in (all of) the certificates along the path from the trust
    anchor to the CA certificate.  If none of the resources in the CA
@@ -427,7 +746,7 @@ Internet-Draft               RPKI Validation                   July 2016
    problem because the associated VRS sets accurately reflect the
    resources validly associated with the certificate in question.
 
-4.2.4.  ROA Validation
+4.2.5.  Changes to RFC6482
 
    Section 4 of [RFC6482] currently has the following text on the
    validation of resources on a ROA:
@@ -440,15 +759,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
    The following is an amended specification to be used in place of this
    text.
-
-
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 8]
-
-Internet-Draft               RPKI Validation                   July 2016
-
 
    o  The IP address delegation extension [RFC3779] is present in the
       end-entity (EE) certificate (contained within the ROA), and each
@@ -464,23 +774,31 @@ Internet-Draft               RPKI Validation                   July 2016
    along the path to the trust anchor would not invalidate
    authorizations for other IP address prefixes.
 
-4.2.5.  BGPsec Router Certificate Validation
 
-   BGPsec Router Certificate Validation is defined in section 3.3 of
-   [I-D.ietf-sidr-bgpsec-pki-profiles].  Path validation defined section
-   7 of [RFC6487] is used as the first step in validation, and a number
-   of additional constraints are applied.
 
-   We request that the authors add the following constraint:
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 14]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+4.2.6.  Changes to BGPSec PKI Profiles
+
+   In addition to the BGPsec Router Certificate Validation defined in
+   section 3.3 of [I-D.ietf-sidr-bgpsec-pki-profiles], the following
+   constraint MUST be met:
 
    o  The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs
       in the AS Resource Identifier Delegation extension.
 
-   Furthermore we request that the authors include text instructing
-   operators that they MAY issue separate BGPsec Router Certificates for
-   different ASNs, so that the loss of on ASN from the VRS-AS of any
-   certificate along the path to the trust anchor would not invalidate
-   router keys for other ASNs.
+   Furthermore we wish to note that operators MAY issue separate BGPsec
+   Router Certificates for different ASNs, so that the loss of on ASN
+   from the VRS-AS of any certificate along the path to the trust anchor
+   would not invalidate router keys for other ASNs.
 
 4.3.  An example
 
@@ -498,14 +816,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
      Certificate 2:
       Issuer TA,
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 9]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
       Subject CA1,
       Resources 192.0.2.0/24, 2001:db8::/32, AS64496
 
@@ -524,6 +834,14 @@ Internet-Draft               RPKI Validation                   July 2016
      ROA 1 (valid):
       Embedded Certificate 4 (EE certificate):
        Issuer CA2,
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 15]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
        Subject R1,
        Resources 192.0.2.0/24
 
@@ -554,14 +872,6 @@ Internet-Draft               RPKI Validation                   July 2016
       Subject ROUTER-64496
       Resources AS64496
 
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 10]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
        Verified resources: AS64496
        Warnings: none
 
@@ -580,9 +890,38 @@ Internet-Draft               RPKI Validation                   July 2016
    The authors believe that the revised validation algorithm introduces
    no new security vulnerabilities into the RPKI.
 
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 16]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
 6.  IANA Considerations
 
-   No updates to the registries are suggested by this document.
+   IANA is to add the following to the SMI Security for PKIX Certificate
+   Policies registry:
+
+         Decimal  Description                       References
+
+         TBD1     id-cp-ipAddr-asNumber-v2          [this RFC]
+
+   IANA is to add the following to the SMI Security for PKIX Certificate
+   Extension registry:
+
+         Decimal  Description                       References
+
+         TBD2     id-pe-ipAddrBlocks-v2            [this RFC]
+         TBD3     id-pe-autonomousSysIds-v2        [this RFC]
+
+   IANA is to add the following to the SMI Security for PKIX Module
+   Identifier registry:
+
+         Decimal  Description                       References
+
+         TBD4   IPAddrAndASCertExtn-v2             [this RFC]
+         TBD5   IPAddrAndASCertExtn-2010v2         [this RFC]
 
 7.  Acknowledgements
 
@@ -605,24 +944,32 @@ Internet-Draft               RPKI Validation                   July 2016
               DOI 10.17487/RFC3280, April 2002,
               <http://www.rfc-editor.org/info/rfc3280>.
 
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 17]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
               Addresses and AS Identifiers", RFC 3779,
               DOI 10.17487/RFC3779, June 2004,
               <http://www.rfc-editor.org/info/rfc3779>.
-
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 11]
-
-Internet-Draft               RPKI Validation                   July 2016
-
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <http://www.rfc-editor.org/info/rfc5280>.
+
+   [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
+              for the Cryptographic Message Syntax (CMS) and the Public
+              Key Infrastructure Using X.509 (PKIX)", RFC 6268,
+              DOI 10.17487/RFC6268, July 2011,
+              <http://www.rfc-editor.org/info/rfc6268>.
 
    [RFC6482]  Lepinski, M., Kent, S., and D. Kong, "A Profile for Route
               Origin Authorizations (ROAs)", RFC 6482,
@@ -655,6 +1002,14 @@ Internet-Draft               RPKI Validation                   July 2016
               DOI 10.17487/RFC5737, January 2010,
               <http://www.rfc-editor.org/info/rfc5737>.
 
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 18]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
 Authors' Addresses
 
    Geoff Huston
@@ -665,13 +1020,6 @@ Authors' Addresses
 
    Phone: +61 7 3858 3100
    Email: gih@apnic.net
-
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 12]
-
-Internet-Draft               RPKI Validation                   July 2016
 
 
    George Michaelson
@@ -712,6 +1060,12 @@ Internet-Draft               RPKI Validation                   July 2016
    Email: andy@arin.net
 
 
+
+Huston, et al.           Expires January 9, 2017               [Page 19]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    Daniel Shaw
    African Network Information Centre (AFRINIC)
    11th Floor, Standard Chartered Tower
@@ -725,4 +1079,42 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 20]
