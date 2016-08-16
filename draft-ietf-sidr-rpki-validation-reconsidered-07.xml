@@ -956,7 +956,10 @@
     <section title="Acknowledgements">
 
       <t>The authors would like to thank Stephen Kent for reviewing and
-      contributing to this document.</t>
+      contributing to this document. We would like to thank Rob Austein for
+      suggesting that separate OIDs should be used to make the behaviour of
+      Relying Party tools deterministic, and we would like to thank Russ Hously,
+      Sean Turner and Tom Petch for their contributions on OID and ASN.1 updates.</t>
 
     </section>
   </middle>
