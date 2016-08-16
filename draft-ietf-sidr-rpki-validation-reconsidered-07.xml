@@ -310,6 +310,38 @@
 
         </section>
         
+        <section title="Syntax for id-pe-ipAddrBlocks-v2">
+        
+          <t>The following is amended specification to be used in place of
+          section 2.2.3 of <xref target="RFC3779" />.</t>
+
+          <t><figure><artwork><![CDATA[ 
+   id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+
+   IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
+
+   IPAddressFamily     ::= SEQUENCE {    -- AFI & optional SAFI --
+      addressFamily        OCTET STRING (SIZE (2..3)),
+      ipAddressChoice      IPAddressChoice }
+
+   IPAddressChoice     ::= CHOICE {
+      inherit              NULL, -- inherit from issuer --
+      addressesOrRanges    SEQUENCE OF IPAddressOrRange }
+
+   IPAddressOrRange    ::= CHOICE {
+      addressPrefix        IPAddress,
+      addressRange         IPAddressRange }
+
+   IPAddressRange      ::= SEQUENCE {
+      min                  IPAddress,
+      max                  IPAddress }
+
+   IPAddress           ::= BIT STRING          
+          
+]]></artwork></figure></t>
+          
+        </section> 
+        
         <section title="OID for id-pe-autonomousSysIds-v2" anchor="amended_as_ext">
 
           <t>The following is an amended specification to be used in place of
@@ -327,6 +359,36 @@
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 ]]></artwork></figure>        
+        
+        </section>
+        
+        <section title="Syntax for id-pe-autonomousSysIds-v2">
+        
+          <t>The following is an amended specification to be used in place of
+          section 3.2.3 of <xref target="RFC3779" />.</t>
+
+          <t><figure><artwork><![CDATA[ 
+   id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+
+   ASIdentifiers       ::= SEQUENCE {
+       asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
+       rdi                 [1] EXPLICIT ASIdentifierChoice OPTIONAL}
+
+   ASIdentifierChoice  ::= CHOICE {
+      inherit              NULL, -- inherit from issuer --
+      asIdsOrRanges        SEQUENCE OF ASIdOrRange }
+
+   ASIdOrRange         ::= CHOICE {
+       id                  ASId,
+       range               ASRange }
+
+   ASRange             ::= SEQUENCE {
+       min                 ASId,
+       max                 ASId }
+
+   ASId                ::= INTEGER         
+          
+]]></artwork></figure></t>
         
         </section>
         

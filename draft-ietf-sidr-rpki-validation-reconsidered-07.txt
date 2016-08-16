@@ -76,19 +76,19 @@ Table of Contents
      4.2.  Changes to existing standards . . . . . . . . . . . . . .   5
        4.2.1.  Changes to RFC6484  . . . . . . . . . . . . . . . . .   5
        4.2.2.  Changes to RFC3779  . . . . . . . . . . . . . . . . .   6
-       4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .   8
-       4.2.4.  Changes to RFC6487  . . . . . . . . . . . . . . . . .  10
-       4.2.5.  Changes to RFC6482  . . . . . . . . . . . . . . . . .  14
-       4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  15
-     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  15
-   5.  Deployment Considerations . . . . . . . . . . . . . . . . . .  16
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
-   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  18
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
+       4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .   9
+       4.2.4.  Changes to RFC6487  . . . . . . . . . . . . . . . . .  11
+       4.2.5.  Changes to RFC6482  . . . . . . . . . . . . . . . . .  15
+       4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  16
+     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  16
+   5.  Deployment Considerations . . . . . . . . . . . . . . . . . .  17
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  19
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -307,7 +307,61 @@ Internet-Draft               RPKI Validation                   July 2016
 
       id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
-4.2.2.2.  OID for id-pe-autonomousSysIds-v2
+4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
+
+   The following is amended specification to be used in place of section
+   2.2.3 of [RFC3779].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 6]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+      id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+
+      IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
+
+      IPAddressFamily     ::= SEQUENCE {    -- AFI & optional SAFI --
+         addressFamily        OCTET STRING (SIZE (2..3)),
+         ipAddressChoice      IPAddressChoice }
+
+      IPAddressChoice     ::= CHOICE {
+         inherit              NULL, -- inherit from issuer --
+         addressesOrRanges    SEQUENCE OF IPAddressOrRange }
+
+      IPAddressOrRange    ::= CHOICE {
+         addressPrefix        IPAddress,
+         addressRange         IPAddressRange }
+
+      IPAddressRange      ::= SEQUENCE {
+         min                  IPAddress,
+         max                  IPAddress }
+
+      IPAddress           ::= BIT STRING
+
+
+4.2.2.3.  OID for id-pe-autonomousSysIds-v2
 
    The following is an amended specification to be used in place of
    section 3.2.1 of [RFC3779].
@@ -323,25 +377,54 @@ Internet-Draft               RPKI Validation                   July 2016
 
       id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
-4.2.2.3.  Amended IP Address Delegation Extension Certification Path
+4.2.2.4.  Syntax for id-pe-autonomousSysIds-v2
+
+   The following is an amended specification to be used in place of
+   section 3.2.3 of [RFC3779].
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017                [Page 7]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
+      id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+
+      ASIdentifiers       ::= SEQUENCE {
+          asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
+          rdi                 [1] EXPLICIT ASIdentifierChoice OPTIONAL}
+
+      ASIdentifierChoice  ::= CHOICE {
+         inherit              NULL, -- inherit from issuer --
+         asIdsOrRanges        SEQUENCE OF ASIdOrRange }
+
+      ASIdOrRange         ::= CHOICE {
+          id                  ASId,
+          range               ASRange }
+
+      ASRange             ::= SEQUENCE {
+          min                 ASId,
+          max                 ASId }
+
+      ASId                ::= INTEGER
+
+
+4.2.2.5.  Amended IP Address Delegation Extension Certification Path
           Validation
 
    The following is an amended specification to be used in place of
    section 2.3 of [RFC3779].
 
-
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 6]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Certificate path validation is performed as specified in
    Section 4.2.4.4 of [this document].
 
-4.2.2.4.  Amended Autonomous System Identifier Delegation Extension
+4.2.2.6.  Amended Autonomous System Identifier Delegation Extension
           Certification Path Validation
 
    The following is an amended specification to be used in place of
@@ -350,7 +433,7 @@ Internet-Draft               RPKI Validation                   July 2016
    Certificate path validation is performed as specified in
    Section 4.2.4.4 of [this document].
 
-4.2.2.5.  Amended ASN.1 module
+4.2.2.7.  Amended ASN.1 module
 
    The following is an amended specification to be used in place of
    appendix A of [RFC3779].
@@ -362,34 +445,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Huston, et al.           Expires January 9, 2017                [Page 7]
+Huston, et al.           Expires January 9, 2017                [Page 8]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -439,13 +495,13 @@ Internet-Draft               RPKI Validation                   July 2016
 
    [RFC6268] is an informational RFC that updates some auxiliary ASN.1
    modules to conform to the 2008 version of ASN.1; the 1988 ASN.1
-   modules for which we provided an update in Section 4.2.2.5 remain the
+   modules for which we provided an update in Section 4.2.2.7 remain the
    normative version.
 
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 8]
+Huston, et al.           Expires January 9, 2017                [Page 9]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -501,7 +557,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 9]
+Huston, et al.           Expires January 9, 2017               [Page 10]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -557,7 +613,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 10]
+Huston, et al.           Expires January 9, 2017               [Page 11]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -593,7 +649,7 @@ Internet-Draft               RPKI Validation                   July 2016
    be marked critical.
 
    This extension contains the list of AS number resources as per
-   Section 4.2.2.2 of [this document], or it may specify the "inherit"
+   Section 4.2.2.3 of [this document], or it may specify the "inherit"
    element.  Routing Domain Identifier (RDI) values are NOT supported in
    this profile and MUST NOT be used.
 
@@ -613,7 +669,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 11]
+Huston, et al.           Expires January 9, 2017               [Page 12]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -669,7 +725,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 12]
+Huston, et al.           Expires January 9, 2017               [Page 13]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -725,7 +781,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 13]
+Huston, et al.           Expires January 9, 2017               [Page 14]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -781,7 +837,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 14]
+Huston, et al.           Expires January 9, 2017               [Page 15]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -837,7 +893,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 15]
+Huston, et al.           Expires January 9, 2017               [Page 16]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -893,7 +949,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 16]
+Huston, et al.           Expires January 9, 2017               [Page 17]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -949,7 +1005,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 17]
+Huston, et al.           Expires January 9, 2017               [Page 18]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -1005,7 +1061,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 18]
+Huston, et al.           Expires January 9, 2017               [Page 19]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -1061,7 +1117,7 @@ Authors' Addresses
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 19]
+Huston, et al.           Expires January 9, 2017               [Page 20]
 
 Internet-Draft               RPKI Validation                   July 2016
 
@@ -1117,4 +1173,4 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 20]
+Huston, et al.           Expires January 9, 2017               [Page 21]

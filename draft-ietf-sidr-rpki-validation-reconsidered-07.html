@@ -614,28 +614,80 @@
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 </pre>
-<h1 id="rfc.section.4.2.2.2"><a href="#rfc.section.4.2.2.2">4.2.2.2.</a> <a href="#amended_as_ext" id="amended_as_ext">OID for id-pe-autonomousSysIds-v2</a></h1>
-<p id="rfc.section.4.2.2.2.p.1">The following is an amended specification to be used in place of section 3.2.1 of <a href="#RFC3779">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.2.p.2">The OID for this extension is id-pe-autonomousSysIds-v2.</p>
+<h1 id="rfc.section.4.2.2.2"><a href="#rfc.section.4.2.2.2">4.2.2.2.</a> Syntax for id-pe-ipAddrBlocks-v2</h1>
+<p id="rfc.section.4.2.2.2.p.1">The following is amended specification to be used in place of section 2.2.3 of <a href="#RFC3779">[RFC3779]</a>.</p>
+<pre> 
+   id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+
+   IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
+
+   IPAddressFamily     ::= SEQUENCE {    -- AFI &amp; optional SAFI --
+      addressFamily        OCTET STRING (SIZE (2..3)),
+      ipAddressChoice      IPAddressChoice }
+
+   IPAddressChoice     ::= CHOICE {
+      inherit              NULL, -- inherit from issuer --
+      addressesOrRanges    SEQUENCE OF IPAddressOrRange }
+
+   IPAddressOrRange    ::= CHOICE {
+      addressPrefix        IPAddress,
+      addressRange         IPAddressRange }
+
+   IPAddressRange      ::= SEQUENCE {
+      min                  IPAddress,
+      max                  IPAddress }
+
+   IPAddress           ::= BIT STRING          
+          
+</pre>
+<p/>
+<h1 id="rfc.section.4.2.2.3"><a href="#rfc.section.4.2.2.3">4.2.2.3.</a> <a href="#amended_as_ext" id="amended_as_ext">OID for id-pe-autonomousSysIds-v2</a></h1>
+<p id="rfc.section.4.2.2.3.p.1">The following is an amended specification to be used in place of section 3.2.1 of <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.3.p.2">The OID for this extension is id-pe-autonomousSysIds-v2.</p>
 <pre> 
    id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
 </pre>
-<p id="rfc.section.4.2.2.2.p.3">where <a href="#RFC3280">[RFC3280]</a> defines:</p>
+<p id="rfc.section.4.2.2.3.p.3">where <a href="#RFC3280">[RFC3280]</a> defines:</p>
 <pre> 
    id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
                dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 </pre>
-<h1 id="rfc.section.4.2.2.3"><a href="#rfc.section.4.2.2.3">4.2.2.3.</a> Amended IP Address Delegation Extension Certification Path Validation</h1>
-<p id="rfc.section.4.2.2.3.p.1">The following is an amended specification to be used in place of section 2.3 of <a href="#RFC3779">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.3.p.2">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation">Section 4.2.4.4</a> of [this document].</p>
-<h1 id="rfc.section.4.2.2.4"><a href="#rfc.section.4.2.2.4">4.2.2.4.</a> Amended Autonomous System Identifier Delegation Extension Certification       Path Validation</h1>
-<p id="rfc.section.4.2.2.4.p.1">The following is an amended specification to be used in place of section 3.3 of <a href="#RFC3779">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.4.p.2">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation">Section 4.2.4.4</a> of [this document].</p>
-<h1 id="rfc.section.4.2.2.5"><a href="#rfc.section.4.2.2.5">4.2.2.5.</a> <a href="#amended_3779_module" id="amended_3779_module">Amended ASN.1 module</a></h1>
-<p id="rfc.section.4.2.2.5.p.1">The following is an amended specification to be used in place of appendix A of <a href="#RFC3779">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.5.p.2">This normative appendix describes the IP address and AS identifiers extensions used by conforming PKI components in ASN.1 syntax.</p>
+<h1 id="rfc.section.4.2.2.4"><a href="#rfc.section.4.2.2.4">4.2.2.4.</a> Syntax for id-pe-autonomousSysIds-v2</h1>
+<p id="rfc.section.4.2.2.4.p.1">The following is an amended specification to be used in place of section 3.2.3 of <a href="#RFC3779">[RFC3779]</a>.</p>
+<pre> 
+   id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+
+   ASIdentifiers       ::= SEQUENCE {
+       asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
+       rdi                 [1] EXPLICIT ASIdentifierChoice OPTIONAL}
+
+   ASIdentifierChoice  ::= CHOICE {
+      inherit              NULL, -- inherit from issuer --
+      asIdsOrRanges        SEQUENCE OF ASIdOrRange }
+
+   ASIdOrRange         ::= CHOICE {
+       id                  ASId,
+       range               ASRange }
+
+   ASRange             ::= SEQUENCE {
+       min                 ASId,
+       max                 ASId }
+
+   ASId                ::= INTEGER         
+          
+</pre>
+<p/>
+<h1 id="rfc.section.4.2.2.5"><a href="#rfc.section.4.2.2.5">4.2.2.5.</a> Amended IP Address Delegation Extension Certification Path Validation</h1>
+<p id="rfc.section.4.2.2.5.p.1">The following is an amended specification to be used in place of section 2.3 of <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.5.p.2">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation">Section 4.2.4.4</a> of [this document].</p>
+<h1 id="rfc.section.4.2.2.6"><a href="#rfc.section.4.2.2.6">4.2.2.6.</a> Amended Autonomous System Identifier Delegation Extension Certification       Path Validation</h1>
+<p id="rfc.section.4.2.2.6.p.1">The following is an amended specification to be used in place of section 3.3 of <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.6.p.2">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation">Section 4.2.4.4</a> of [this document].</p>
+<h1 id="rfc.section.4.2.2.7"><a href="#rfc.section.4.2.2.7">4.2.2.7.</a> <a href="#amended_3779_module" id="amended_3779_module">Amended ASN.1 module</a></h1>
+<p id="rfc.section.4.2.2.7.p.1">The following is an amended specification to be used in place of appendix A of <a href="#RFC3779">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.7.p.2">This normative appendix describes the IP address and AS identifiers extensions used by conforming PKI components in ASN.1 syntax.</p>
 <pre> 
   IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
            internet(1) security(5) mechanisms(5) pkix(7) mod(0)
@@ -679,7 +731,7 @@
   END
 </pre>
 <h1 id="rfc.section.4.2.3"><a href="#rfc.section.4.2.3">4.2.3.</a> Addendum to RFC6268</h1>
-<p><a href="#RFC6268">[RFC6268]</a> is an informational RFC that updates some auxiliary ASN.1 modules to conform to the 2008 version of ASN.1; the 1988 ASN.1 modules for which we provided an update in <a href="#amended_3779_module">Section 4.2.2.5</a> remain the normative version.</p>
+<p><a href="#RFC6268">[RFC6268]</a> is an informational RFC that updates some auxiliary ASN.1 modules to conform to the 2008 version of ASN.1; the 1988 ASN.1 modules for which we provided an update in <a href="#amended_3779_module">Section 4.2.2.7</a> remain the normative version.</p>
 <p id="rfc.section.4.2.3.p.2">The following is an additional module confirming to the 2008 version of ASN.1 to be used with the updated version of <a href="#RFC3779">[RFC3779]</a> defined in [this document].</p>
 <pre> 
   IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
@@ -770,7 +822,7 @@
 <h1 id="rfc.section.4.2.4.3"><a href="#rfc.section.4.2.4.3">4.2.4.3.</a> Amended AS Resources</h1>
 <p id="rfc.section.4.2.4.3.p.1">The following is an amended specification to be used in place of section 4.8.11 of <a href="#RFC6487">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.3.p.2">Either the AS Resources extension, or the IP Resources extension, or both, MUST be present in all RPKI certificates, and if present, MUST be marked critical.</p>
-<p id="rfc.section.4.2.4.3.p.3">This extension contains the list of AS number resources as per <a href="#amended_as_ext">Section 4.2.2.2</a> of [this document], or it may specify the "inherit" element.  Routing Domain Identifier (RDI) values are NOT supported in this profile and MUST NOT be used.</p>
+<p id="rfc.section.4.2.4.3.p.3">This extension contains the list of AS number resources as per <a href="#amended_as_ext">Section 4.2.2.3</a> of [this document], or it may specify the "inherit" element.  Routing Domain Identifier (RDI) values are NOT supported in this profile and MUST NOT be used.</p>
 <p id="rfc.section.4.2.4.3.p.4">This extension MUST either specify a non-empty set of AS number records, or use the "inherit" setting to indicate that the AS number resource set of this certificate is inherited from that of the certificate's issuer.</p>
 <h1 id="rfc.section.4.2.4.4"><a href="#rfc.section.4.2.4.4">4.2.4.4.</a> <a href="#reconsidered_path_validation" id="reconsidered_path_validation">Amended Resource Certificate Path Validation</a></h1>
 <p id="rfc.section.4.2.4.4.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487">[RFC6487]</a>.</p>
