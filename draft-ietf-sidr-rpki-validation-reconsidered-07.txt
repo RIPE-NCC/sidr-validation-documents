@@ -1030,7 +1030,8 @@ Internet-Draft               RPKI Validation                   July 2016
    for suggesting that separate OIDs should be used to make the
    behaviour of Relying Party tools deterministic, and we would like to
    thank Russ Hously, Sean Turner and Tom Petch for their contributions
-   on OID and ASN.1 updates.
+   on OID and ASN.1 updates.  Finally we would like to thank Tom
+   Harrison for a general review of this document.
 
 9.  References
 
@@ -1053,11 +1054,10 @@ Internet-Draft               RPKI Validation                   July 2016
               DOI 10.17487/RFC3779, June 2004,
               <http://www.rfc-editor.org/info/rfc3779>.
 
-   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
-              Housley, R., and W. Polk, "Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
-              <http://www.rfc-editor.org/info/rfc5280>.
+
+
+
+
 
 
 
@@ -1065,6 +1065,12 @@ Huston, et al.           Expires January 9, 2017               [Page 19]
 
 Internet-Draft               RPKI Validation                   July 2016
 
+
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <http://www.rfc-editor.org/info/rfc5280>.
 
    [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
               for the Cryptographic Message Syntax (CMS) and the Public
@@ -1105,6 +1111,17 @@ Internet-Draft               RPKI Validation                   July 2016
 
 Authors' Addresses
 
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 20]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    Geoff Huston
    Asia Pacific Network Information Centre
    6 Cordelia St
@@ -1113,13 +1130,6 @@ Authors' Addresses
 
    Phone: +61 7 3858 3100
    Email: gih@apnic.net
-
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 20]
-
-Internet-Draft               RPKI Validation                   July 2016
 
 
    George Michaelson
@@ -1160,6 +1170,14 @@ Internet-Draft               RPKI Validation                   July 2016
    Email: andy@arin.net
 
 
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 21]
+
+Internet-Draft               RPKI Validation                   July 2016
+
+
    Daniel Shaw
    African Network Information Centre (AFRINIC)
    11th Floor, Standard Chartered Tower
@@ -1173,4 +1191,42 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 21]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 22]
