@@ -920,7 +920,7 @@ Internet-Draft               RPKI Validation                   July 2016
 
         Prefix 198.51.100.0/24, Max Length 24, ASN 64496
 
-       ROA2 is considered invalid because he embedded EE certificate is
+       ROA2 is considered invalid because the embedded EE certificate is
        considered invalid.
 
      BGPSec Certificate 1 (valid):
@@ -943,9 +943,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 5.  Deployment Considerations
 
-   Because the use of the version of [RFC6487] updated in in
-   Section 4.2.4 in RPKI certificates and objects will lead to the
-   rejection of such objects by Relying Party tools that do not
+   Because the use of the version of [RFC6487] updated in Section 4.2.4
+   in RPKI certificates and objects will lead to the rejection of such
+   objects by Relying Party tools that do not implement this updated
 
 
 
@@ -954,9 +954,8 @@ Huston, et al.           Expires January 9, 2017               [Page 17]
 Internet-Draft               RPKI Validation                   July 2016
 
 
-   implement this updated version, it is important that such tools are
-   updated before Certificate Authorities start to use this updated
-   specification.
+   version, it is important that such tools are updated before
+   Certificate Authorities start to use this updated specification.
 
    That being said it is important both Relying Party tools and
    Certificate Authority implementations are updated to use the updated
@@ -999,9 +998,10 @@ Internet-Draft               RPKI Validation                   July 2016
    IANA is to add the following to the SMI Security for PKIX Certificate
    Extension registry:
 
+         Decimal  Description                       References
 
-
-
+         TBD2     id-pe-ipAddrBlocks-v2            [this RFC]
+         TBD3     id-pe-autonomousSysIds-v2        [this RFC]
 
 
 
@@ -1009,11 +1009,6 @@ Huston, et al.           Expires January 9, 2017               [Page 18]
 
 Internet-Draft               RPKI Validation                   July 2016
 
-
-         Decimal  Description                       References
-
-         TBD2     id-pe-ipAddrBlocks-v2            [this RFC]
-         TBD3     id-pe-autonomousSysIds-v2        [this RFC]
 
    IANA is to add the following to the SMI Security for PKIX Module
    Identifier registry:
@@ -1054,6 +1049,11 @@ Internet-Draft               RPKI Validation                   July 2016
               DOI 10.17487/RFC3779, June 2004,
               <http://www.rfc-editor.org/info/rfc3779>.
 
+   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
+              Housley, R., and W. Polk, "Internet X.509 Public Key
+              Infrastructure Certificate and Certificate Revocation List
+              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
+              <http://www.rfc-editor.org/info/rfc5280>.
 
 
 
@@ -1065,12 +1065,6 @@ Huston, et al.           Expires January 9, 2017               [Page 19]
 
 Internet-Draft               RPKI Validation                   July 2016
 
-
-   [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
-              Housley, R., and W. Polk, "Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
-              <http://www.rfc-editor.org/info/rfc5280>.
 
    [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
               for the Cryptographic Message Syntax (CMS) and the Public
@@ -1111,17 +1105,6 @@ Internet-Draft               RPKI Validation                   July 2016
 
 Authors' Addresses
 
-
-
-
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 20]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Geoff Huston
    Asia Pacific Network Information Centre
    6 Cordelia St
@@ -1130,6 +1113,13 @@ Internet-Draft               RPKI Validation                   July 2016
 
    Phone: +61 7 3858 3100
    Email: gih@apnic.net
+
+
+
+
+Huston, et al.           Expires January 9, 2017               [Page 20]
+
+Internet-Draft               RPKI Validation                   July 2016
 
 
    George Michaelson
@@ -1170,14 +1160,6 @@ Internet-Draft               RPKI Validation                   July 2016
    Email: andy@arin.net
 
 
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 21]
-
-Internet-Draft               RPKI Validation                   July 2016
-
-
    Daniel Shaw
    African Network Information Centre (AFRINIC)
    11th Floor, Standard Chartered Tower
@@ -1191,42 +1173,4 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Huston, et al.           Expires January 9, 2017               [Page 22]
+Huston, et al.           Expires January 9, 2017               [Page 21]

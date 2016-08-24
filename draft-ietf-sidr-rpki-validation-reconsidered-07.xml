@@ -856,7 +856,7 @@
      
      Prefix 198.51.100.0/24, Max Length 24, ASN 64496
     
-    ROA2 is considered invalid because he embedded EE certificate is
+    ROA2 is considered invalid because the embedded EE certificate is
     considered invalid.
     
   BGPSec Certificate 1 (valid):
@@ -885,7 +885,7 @@
     <section title="Deployment Considerations">
     
        <t>Because the use of the version of <xref target="RFC6487" /> updated in
-       in <xref target="amended_6487" /> in RPKI certificates and objects will
+       <xref target="amended_6487" /> in RPKI certificates and objects will
        lead to the rejection of such objects by Relying Party tools that do not
        implement this updated version, it is important that such tools are
        updated before Certificate Authorities start to use this updated
