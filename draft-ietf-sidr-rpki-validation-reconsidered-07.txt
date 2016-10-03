@@ -7,13 +7,13 @@ Internet-Draft                                             G. Michaelson
 Updates: 3779 6482 6484 6487 (if                                   APNIC
          approved)                                           C. Martinez
 Intended status: Standards Track                                  LACNIC
-Expires: January 9, 2017                                  T. Bruijnzeels
+Expires: April 6, 2017                                    T. Bruijnzeels
                                                                 RIPE NCC
                                                                A. Newton
                                                                     ARIN
                                                                  D. Shaw
                                                                  AFRINIC
-                                                            July 8, 2016
+                                                         October 3, 2016
 
 
                       RPKI Validation Reconsidered
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 9, 2017.
+   This Internet-Draft will expire on April 6, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 1]
+Huston, et al.            Expires April 6, 2017                 [Page 1]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    (http://trustee.ietf.org/license-info) in effect on the date of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 2]
+Huston, et al.            Expires April 6, 2017                 [Page 2]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    "encompassed" by INRs on the issuing certificate.  The first
@@ -120,29 +120,29 @@ Internet-Draft               RPKI Validation                   July 2016
 
    For example, in the following sequence:
 
-     Certificate 1 (trust anchor):
-       Issuer TA,
-       Subject TA,
-       Resources 192.0.2.0/24, 198.51.100.0/24,
-                 2001:db8::/32, AS64496-AS64500
+   Certificate 1 (trust anchor):
+   Issuer TA,
+   Subject TA,
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+         2001:db8::/32, AS64496-AS64500
 
-     Certificate 2:
-      Issuer TA,
-      Subject CA1,
-      Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
+   Certificate 2:
+   Issuer TA,
+   Subject CA1,
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
-     Certificate 3:
-      Issuer CA1,
-      Subject CA2,
-      Resources 192.0.2.0/24, 2001:db8::/32
+   Certificate 3:
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.0.2.0/24, 2001:db8::/32
 
-     ROA 1:
-      Embedded Certificate 4 (EE certificate):
-       Issuer CA2,
-       Subject R1,
-       Resources 192.0.2.0/24
+   ROA 1:
+   Embedded Certificate 4 (EE certificate):
+   Issuer CA2,
+   Subject R1,
+   Resources 192.0.2.0/24
 
-       Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+   Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
    All certificates in this scenario are considered valid since the INRs
    of each certificate are encompassed by those of the issuing
@@ -165,9 +165,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 3]
+Huston, et al.            Expires April 6, 2017                 [Page 3]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    certificates that, temporarily, no longer encompass all of the INRs
@@ -175,29 +175,29 @@ Internet-Draft               RPKI Validation                   July 2016
 
    Consider the following sequence:
 
-     Certificate 1 (trust anchor):
-      Issuer TA,
-      Subject TA,
-      Resources 192.0.2.0/24, 198.51.100.0/24,
-                2001:db8::/32, AS64496-AS64500
+   Certificate 1 (trust anchor):
+   Issuer TA,
+   Subject TA,
+   Resources 192.0.2.0/24, 198.51.100.0/24,
+        2001:db8::/32, AS64496-AS64500
 
-     Certificate 2:
-      Issuer TA,
-      Subject CA1,
-      Resources 192.0.2.0/24, 2001:db8::/32
+   Certificate 2:
+   Issuer TA,
+   Subject CA1,
+   Resources 192.0.2.0/24, 2001:db8::/32
 
-     Certificate 3 (invalid):
-      Issuer CA1,
-      Subject CA2,
-      Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
+   Certificate 3 (invalid):
+   Issuer CA1,
+   Subject CA2,
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
-     ROA 1 (invalid):
-      Embedded Certificate 4 (EE certificate):
-       Issuer CA2,
-       Subject R1,
-       Resources 192.0.2.0/24
+   ROA 1 (invalid):
+   Embedded Certificate 4 (EE certificate):
+   Issuer CA2,
+   Subject R1,
+   Resources 192.0.2.0/24
 
-       Prefix 192.0.2.0/24, Max Length 24, ASN 64496
+   Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
    Here Certificate 2 from the previous example was re-issued by TA to
    CA1 and the prefix 198.51.100.0/24 was removed.  However, CA1 failed
@@ -221,9 +221,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 4]
+Huston, et al.            Expires April 6, 2017                 [Page 4]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
 4.  An Amended RPKI Certification Validation Process
@@ -262,13 +262,13 @@ Internet-Draft               RPKI Validation                   July 2016
 
    This policy has been assigned the following two OIDs:
 
-      id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
-                       identified-organization(3) dod(6) internet(1)
-                       security(5) mechanisms(5) pkix(7) cp(14) 2 }
+   id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
+               identified-organization(3) dod(6) internet(1)
+               security(5) mechanisms(5) pkix(7) cp(14) 2 }
 
-      id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
-                       identified-organization(3) dod(6) internet(1)
-                       security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
+   id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
+               identified-organization(3) dod(6) internet(1)
+               security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 
    id-cp-ipAddr-asNumber and the extensions defined in [RFC3779]
    indicate that the original certification path validation rules are to
@@ -277,9 +277,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 5]
+Huston, et al.            Expires April 6, 2017                 [Page 5]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    certification path validation rules defined in Section 4.2.4.4 are to
@@ -298,14 +298,14 @@ Internet-Draft               RPKI Validation                   July 2016
 
    The OID for this extension is id-pe-ipAddrBlocks-v2.
 
-      id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { TBD2 }
+   id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { TBD2 }
 
    where [RFC3280] defines:
 
-      id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-                  dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+   id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+          dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
-      id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+   id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
 4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
 
@@ -333,32 +333,32 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 6]
+Huston, et al.            Expires April 6, 2017                 [Page 6]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
-      id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+   id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
 
-      IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
+   IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
 
-      IPAddressFamily     ::= SEQUENCE {    -- AFI & optional SAFI --
-         addressFamily        OCTET STRING (SIZE (2..3)),
-         ipAddressChoice      IPAddressChoice }
+   IPAddressFamily     ::= SEQUENCE {    -- AFI & optional SAFI --
+   addressFamily        OCTET STRING (SIZE (2..3)),
+   ipAddressChoice      IPAddressChoice }
 
-      IPAddressChoice     ::= CHOICE {
-         inherit              NULL, -- inherit from issuer --
-         addressesOrRanges    SEQUENCE OF IPAddressOrRange }
+   IPAddressChoice     ::= CHOICE {
+   inherit              NULL, -- inherit from issuer --
+   addressesOrRanges    SEQUENCE OF IPAddressOrRange }
 
-      IPAddressOrRange    ::= CHOICE {
-         addressPrefix        IPAddress,
-         addressRange         IPAddressRange }
+   IPAddressOrRange    ::= CHOICE {
+   addressPrefix        IPAddress,
+   addressRange         IPAddressRange }
 
-      IPAddressRange      ::= SEQUENCE {
-         min                  IPAddress,
-         max                  IPAddress }
+   IPAddressRange      ::= SEQUENCE {
+   min                  IPAddress,
+   max                  IPAddress }
 
-      IPAddress           ::= BIT STRING
+   IPAddress           ::= BIT STRING
 
 
 4.2.2.3.  OID for id-pe-autonomousSysIds-v2
@@ -368,14 +368,14 @@ Internet-Draft               RPKI Validation                   July 2016
 
    The OID for this extension is id-pe-autonomousSysIds-v2.
 
-      id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
+   id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
 
    where [RFC3280] defines:
 
-      id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-                  dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
+   id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+          dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
-      id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+   id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
 4.2.2.4.  Syntax for id-pe-autonomousSysIds-v2
 
@@ -389,30 +389,30 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 7]
+Huston, et al.            Expires April 6, 2017                 [Page 7]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
-      id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+   id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
 
-      ASIdentifiers       ::= SEQUENCE {
-          asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
-          rdi                 [1] EXPLICIT ASIdentifierChoice OPTIONAL}
+   ASIdentifiers       ::= SEQUENCE {
+   asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
+   rdi                 [1] EXPLICIT ASIdentifierChoice OPTIONAL}
 
-      ASIdentifierChoice  ::= CHOICE {
-         inherit              NULL, -- inherit from issuer --
-         asIdsOrRanges        SEQUENCE OF ASIdOrRange }
+   ASIdentifierChoice  ::= CHOICE {
+   inherit              NULL, -- inherit from issuer --
+   asIdsOrRanges        SEQUENCE OF ASIdOrRange }
 
-      ASIdOrRange         ::= CHOICE {
-          id                  ASId,
-          range               ASRange }
+   ASIdOrRange         ::= CHOICE {
+   id                  ASId,
+   range               ASRange }
 
-      ASRange             ::= SEQUENCE {
-          min                 ASId,
-          max                 ASId }
+   ASRange             ::= SEQUENCE {
+   min                 ASId,
+   max                 ASId }
 
-      ASId                ::= INTEGER
+   ASId                ::= INTEGER
 
 
 4.2.2.5.  Amended IP Address Delegation Extension Certification Path
@@ -445,51 +445,51 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 8]
+Huston, et al.            Expires April 6, 2017                 [Page 8]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
-  IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
-           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
-           id-mod-ip-addr-and-as-ident-v2(TBD4) }
+IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
+   internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+   id-mod-ip-addr-and-as-ident-v2(TBD4) }
 
-  DEFINITIONS EXPLICIT TAGS ::=
+DEFINITIONS EXPLICIT TAGS ::=
 
-  BEGIN
+BEGIN
 
-  -- EXPORTS ALL --
+-- EXPORTS ALL --
 
-  IMPORTS
+IMPORTS
 
-  -- PKIX specific OIDs and arcs --
+-- PKIX specific OIDs and arcs --
 
-      id-pe FROM PKIX1Explicit88 { iso(1) identified-organization(3)
-                 dod(6) internet(1) security(5) mechanisms(5) pkix(7)
-                 id-mod(0) id-pkix1-explicit(18) }
+id-pe FROM PKIX1Explicit88 { iso(1) identified-organization(3)
+         dod(6) internet(1) security(5) mechanisms(5) pkix(7)
+         id-mod(0) id-pkix1-explicit(18) }
 
-  -- IP Address Block and AS Identifiers Syntax --
+-- IP Address Block and AS Identifiers Syntax --
 
-        IPAddrBlocks, ASIdentifiers FROM  IPAddrAndASCertExtn { iso(1)
-           identified-organization(3) dod(6) internet(1) security(5)
-           mechanisms(5) pkix(7) mod(0) id-mod-ip-addr-and-as-ident(30) }
-   ;
+IPAddrBlocks, ASIdentifiers FROM  IPAddrAndASCertExtn { iso(1)
+   identified-organization(3) dod(6) internet(1) security(5)
+   mechanisms(5) pkix(7) mod(0) id-mod-ip-addr-and-as-ident(30) }
+;
 
-  -- Validation Reconsidered IP Address Delegation Extension OID --
+-- Validation Reconsidered IP Address Delegation Extension OID --
 
-        id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
+id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
-  -- Validation Reconsidered IP Address Delegation Extension Syntax --
-  -- Syntax is imported from [RFC3779] --
+-- Validation Reconsidered IP Address Delegation Extension Syntax --
+-- Syntax is imported from [RFC3779] --
 
-  -- Validation Reconsidered Autonomous System Identifier Delegation Extension OID --
+-- Validation Reconsidered Autonomous System Identifier Delegation Extension OID --
 
-  id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
+id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
-  -- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
-  -- Syntax is imported from [RFC3779] --
+-- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+-- Syntax is imported from [RFC3779] --
 
-  END
+END
 
 4.2.3.  Addendum to RFC6268
 
@@ -501,9 +501,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017                [Page 9]
+Huston, et al.            Expires April 6, 2017                 [Page 9]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    The following is an additional module confirming to the 2008 version
@@ -557,9 +557,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 10]
+Huston, et al.            Expires April 6, 2017                [Page 10]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
         ext-pe-ipAddrBlocks-v2 | ext-pe-autonomousSysIds-v2
@@ -613,9 +613,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 11]
+Huston, et al.            Expires April 6, 2017                [Page 11]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
 4.2.4.2.  Amended IP Resources
@@ -669,9 +669,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 12]
+Huston, et al.            Expires April 6, 2017                [Page 12]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    [RFC5280], but modified to make use of the IP Address Delegation and
@@ -725,9 +725,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 13]
+Huston, et al.            Expires April 6, 2017                [Page 13]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
        for each of these extensions MUST be satisfy the constraints
@@ -781,9 +781,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 14]
+Huston, et al.            Expires April 6, 2017                [Page 14]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
           warning listing the over-claiming resources for certificate x
@@ -837,9 +837,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 15]
+Huston, et al.            Expires April 6, 2017                [Page 15]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
 4.2.6.  Changes to BGPSec PKI Profiles
@@ -893,9 +893,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 16]
+Huston, et al.            Expires April 6, 2017                [Page 16]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
        Subject R1,
@@ -949,35 +949,34 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 17]
+Huston, et al.            Expires April 6, 2017                [Page 17]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    version, it is important that such tools are updated before
    Certificate Authorities start to use this updated specification.
 
-   That being said it is important both Relying Party tools and
-   Certificate Authority implementations are updated to use the updated
-   specification within a reasonable time frame to ensure that
-   validation of RPKI certificates and objects is done in one consistent
-   way.
+   However, because the choice of algorithm is well-defined for each
+   certificate and/or RPKI signed object, there is no strict requirement
+   for all Certificate Authorities to migrate to this new algorithm
+   within a specific time period.  The choice to opt-in to this can be
+   made by each CA independently.  CAs MAY also choose to use the new
+   algorithm for new certificates or objects only, without pro-actively
+   re-issuing existing objects - for example because the latter would
+   require an active authorisation by a user of the system.
 
    Therefore the following deployment time line applies:
 
-   +------------+------------------------------------------------------+
-   |   Months   | Step                                                 |
-   | since RFC  |                                                      |
-   +------------+------------------------------------------------------+
-   |     6      | Relying Party tools MUST implement the updated       |
-   |            | specification.                                       |
-   |     9      | Certificate Authorities MAY implement the updated    |
-   |            | specification.                                       |
-   |     18     | Certificate Authorities MUST implement the updated   |
-   |            | specification.                                       |
-   |     24     | Relying Party tools SHOULD reject RPKI certificates  |
-   |            | and objects using the old specification.             |
-   +------------+------------------------------------------------------+
+   +---------------+---------------------------------------------------+
+   |  Months since | Step                                              |
+   |      RFC      |                                                   |
+   +---------------+---------------------------------------------------+
+   |       6       | Relying Party tools MUST implement the updated    |
+   |               | specification.                                    |
+   |       9       | Certificate Authorities MAY implement the updated |
+   |               | specification.                                    |
+   +---------------+---------------------------------------------------+
 
                                   Table 1
 
@@ -1005,9 +1004,10 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 18]
+
+Huston, et al.            Expires April 6, 2017                [Page 18]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    IANA is to add the following to the SMI Security for PKIX Module
@@ -1033,7 +1033,7 @@ Internet-Draft               RPKI Validation                   July 2016
 9.1.  Normative References
 
    [I-D.ietf-sidr-bgpsec-pki-profiles]
-              Reynolds, M., Turner, S., and D. Kent, "A Profile for
+              Reynolds, M., Turner, S., and S. Kent, "A Profile for
               BGPsec Router Certificates, Certificate Revocation Lists,
               and Certification Requests", draft-ietf-sidr-bgpsec-pki-
               profiles-18 (work in progress), July 2016.
@@ -1061,9 +1061,9 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 19]
+Huston, et al.            Expires April 6, 2017                [Page 19]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
@@ -1117,9 +1117,9 @@ Authors' Addresses
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 20]
+Huston, et al.            Expires April 6, 2017                [Page 20]
 
-Internet-Draft               RPKI Validation                   July 2016
+Internet-Draft               RPKI Validation                October 2016
 
 
    George Michaelson
@@ -1173,4 +1173,4 @@ Internet-Draft               RPKI Validation                   July 2016
 
 
 
-Huston, et al.           Expires January 9, 2017               [Page 21]
+Huston, et al.            Expires April 6, 2017                [Page 21]
