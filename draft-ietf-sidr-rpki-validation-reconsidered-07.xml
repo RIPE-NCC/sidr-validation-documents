@@ -453,11 +453,14 @@ id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 -- Validation Reconsidered IP Address Delegation Extension Syntax --
 -- Syntax is imported from [RFC3779] --
 
--- Validation Reconsidered Autonomous System Identifier Delegation Extension OID --
+-- Validation Reconsidered Autonomous System Identifier --
+--     Delegation Extension OID                         --
 
 id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
--- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+-- Validation Reconsidered Autonomous System Identifier --
+--     Delegation Extension Syntax                      --
+
 -- Syntax is imported from [RFC3779] --
 
 END
@@ -535,10 +538,13 @@ END
 
      id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
-     -- Validation Reconsidered IP Address Delegation Extension Syntax —
-     -- Syntax is imported from [RFC6268] —
+     -- Validation Reconsidered IP Address Delegation --
+     --      Extension Syntax                         --
+     
+     -- Syntax is imported from [RFC6268] --
 
-     -- Validation Reconsidered Autonomous System Identifier Delegation Extension OID —
+     -- Validation Reconsidered Autonomous System Identifier --
+     --      Delegation Extension OID                        --
 
      ext-pe-autonomousSysIds-v2 EXTENSION ::= {
        SYNTAX ASIdentifiers
@@ -547,7 +553,9 @@ END
 
      id-pe-autonomousSysIds OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
-  -- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+  -- Validation Reconsidered Autonomous System Identifier --
+  --      Delegation Extension Syntax                     --
+  
   -- Syntax is imported from [RFC6268] --
 
   END         

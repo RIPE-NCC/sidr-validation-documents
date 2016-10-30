@@ -402,7 +402,7 @@
 
   <meta name="dct.creator" content="Huston, G., Michaelson, G., Martinez, C., Bruijnzeels, T., Newton, A., and D. Shaw" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-sidr-rpki-validation-reconsidered-07" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-10-3" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-10-30" />
   <meta name="dct.abstract" content="This document proposes an update to the certificate validation procedure specified in RFC 6487 that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features." />
   <meta name="description" content="This document proposes an update to the certificate validation procedure specified in RFC 6487 that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features." />
 
@@ -434,7 +434,7 @@
   <td class="right">LACNIC</td>
 </tr>
 <tr>
-  <td class="left">Expires: April 6, 2017</td>
+  <td class="left">Expires: May 3, 2017</td>
   <td class="right">T. Bruijnzeels</td>
 </tr>
 <tr>
@@ -459,7 +459,7 @@
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">October 3, 2016</td>
+  <td class="right">October 30, 2016</td>
 </tr>
 
     	
@@ -479,7 +479,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on April 6, 2017.</p>
+<p>This Internet-Draft will expire on May 3, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -721,11 +721,14 @@ id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 -- Validation Reconsidered IP Address Delegation Extension Syntax --
 -- Syntax is imported from [RFC3779] --
 
--- Validation Reconsidered Autonomous System Identifier Delegation Extension OID --
+-- Validation Reconsidered Autonomous System Identifier --
+--     Delegation Extension OID                         --
 
 id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
--- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+-- Validation Reconsidered Autonomous System Identifier --
+--     Delegation Extension Syntax                      --
+
 -- Syntax is imported from [RFC3779] --
 
 END
@@ -790,10 +793,13 @@ END
 
      id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
-     -- Validation Reconsidered IP Address Delegation Extension Syntax &#8212;
-     -- Syntax is imported from [RFC6268] &#8212;
+     -- Validation Reconsidered IP Address Delegation --
+     --      Extension Syntax                         --
+     
+     -- Syntax is imported from [RFC6268] --
 
-     -- Validation Reconsidered Autonomous System Identifier Delegation Extension OID &#8212;
+     -- Validation Reconsidered Autonomous System Identifier --
+     --      Delegation Extension OID                        --
 
      ext-pe-autonomousSysIds-v2 EXTENSION ::= {
        SYNTAX ASIdentifiers
@@ -802,7 +808,9 @@ END
 
      id-pe-autonomousSysIds OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
-  -- Validation Reconsidered Autonomous System Identifier Delegation Extension Syntax --
+  -- Validation Reconsidered Autonomous System Identifier --
+  --      Delegation Extension Syntax                     --
+  
   -- Syntax is imported from [RFC6268] --
 
   END         
