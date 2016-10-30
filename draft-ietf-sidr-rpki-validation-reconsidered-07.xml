@@ -102,6 +102,18 @@ reduces aspects of operational fragility in the management of
 certificates in the RPKI, while retaining essential security
 features.</t>
 
+<t>The use of this updated procedure is signaled by form of an updated
+version of RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers,
+an updated version of the certificate policy for the Resource Public
+Key Infrastructure (RFC 6484).</t>
+
+<t>Furthermore this document updates ROA (RFC 6482), and BGPSec Router
+Certificate (BGPSec PKI Profiles - publication requested) validation.</t>
+
+<t>Examples in this document make use of IPv4 (RFC 5737) and IPv6 (RFC 3849)
+prefixes and Automous System Numbers (RFC 5398) that are reserved for
+documentation purposes.</t>
+
 </abstract>
 </front>
 
@@ -110,16 +122,6 @@ features.</t>
 <section title="Requirements notation">
   <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
   "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119" />.</t>
-</section>
-
-<section title="Introduction">
-
-<t>This document proposes an update to the certificate
-validation procedure specified in <xref target="RFC6487" /> that
-reduces aspects of operational fragility in the management of
-certificates in the RPKI, while retaining essential security
-features.</t>
-
 </section>
 
 <section title="Certificate Validation in the RPKI">
