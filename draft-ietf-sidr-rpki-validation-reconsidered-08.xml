@@ -111,10 +111,6 @@ defined in this document should be used.</t>
 <t>Furthermore this document provides and alternative to ROA (RFC 6482), and BGPSec Router
 Certificate (BGPSec PKI Profiles - publication requested) validation.</t>
 
-<t>Examples in this document make use of IPv4 (RFC 5737) and IPv6 (RFC 3849)
-prefixes and Automous System Numbers (RFC 5398) that are reserved for
-documentation purposes.</t>
-
 </abstract>
 </front>
 
@@ -306,7 +302,7 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
 id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 ]]></artwork></figure></t>
 
-  <t>where <xref target="RFC3280" /> defines:</t>
+  <t>where <xref target="RFC5280" /> defines:</t>
   <t><figure><artwork><![CDATA[ 
 id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
@@ -360,7 +356,7 @@ IPAddress           ::= BIT STRING
 id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 ]]></artwork></figure>
 
-  <t>where <xref target="RFC3280" /> defines:</t>
+  <t>where <xref target="RFC5280" /> defines:</t>
   <figure><artwork><![CDATA[ 
 id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
@@ -990,10 +986,8 @@ END
   <back>
     <references title="Normative References">
       <?rfc include="reference.RFC.2119.xml"?>
-      <?rfc include="reference.RFC.3280.xml"?>
       <?rfc include="reference.RFC.3779.xml"?>
       <?rfc include="reference.RFC.5280.xml"?>
-      <?rfc include="reference.RFC.6268.xml"?>
       <?rfc include="reference.RFC.6482.xml"?>
       <?rfc include="reference.RFC.6484.xml"?>
       <?rfc include="reference.RFC.6487.xml"?>
@@ -1001,9 +995,7 @@ END
     </references>
     
     <references title="Informative References">
-      <?rfc include="reference.RFC.3849.xml"?>
-      <?rfc include="reference.RFC.5398.xml"?>
-      <?rfc include="reference.RFC.5737.xml"?>
+      <?rfc include="reference.RFC.6268.xml"?>
     </references>
   </back>
 </rfc>

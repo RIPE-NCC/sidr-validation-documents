@@ -36,10 +36,6 @@ Abstract
    and BGPSec Router Certificate (BGPSec PKI Profiles - publication
    requested) validation.
 
-   Examples in this document make use of IPv4 (RFC 5737) and IPv6 (RFC
-   3849) prefixes and Automous System Numbers (RFC 5398) that are
-   reserved for documentation purposes.
-
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -50,6 +46,10 @@ Status of This Memo
    working documents as Internet-Drafts.  The list of current Internet-
    Drafts is at http://datatracker.ietf.org/drafts/current/.
 
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
 
 
 
@@ -57,11 +57,6 @@ Huston, et al.          Expires December 24, 2017               [Page 1]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-   Internet-Drafts are draft documents valid for a maximum of six months
-   and may be updated, replaced, or obsoleted by other documents at any
-   time.  It is inappropriate to use Internet-Drafts as reference
-   material or to cite them other than as "work in progress."
 
    This Internet-Draft will expire on December 24, 2017.
 
@@ -89,7 +84,7 @@ Table of Contents
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
      4.2.  Differences with existing standards . . . . . . . . . . .   5
        4.2.1.  Certificate Policy (CP) for use with validation
-               reconsidered in the Resource PKI (RPKI) . . . . . . .   6
+               reconsidered in the Resource PKI (RPKI) . . . . . . .   5
        4.2.2.  An alternative to RFC3779 X.509 Extensions for IP
                Addresses and AS Identifiers  . . . . . . . . . . . .   6
        4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  11
@@ -106,6 +101,11 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+
+
+
+
 
 
 
@@ -113,8 +113,6 @@ Huston, et al.          Expires December 24, 2017               [Page 2]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 1.  Requirements notation
 
@@ -161,6 +159,8 @@ Internet-Draft               RPKI Validation                   June 2017
 
    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
+   All certificates in this scenario are considered valid since the INRs
+   of each certificate are encompassed by those of the issuing
 
 
 
@@ -170,8 +170,6 @@ Huston, et al.          Expires December 24, 2017               [Page 3]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   All certificates in this scenario are considered valid since the INRs
-   of each certificate are encompassed by those of the issuing
    certificate.  ROA1 is valid because the specified prefix is
    encompassed by the embedded EE certificate, as required by [RFC6482].
 
@@ -217,7 +215,9 @@ Internet-Draft               RPKI Validation                   June 2017
 
    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
-
+   Here Certificate 2 from the previous example was re-issued by TA to
+   CA1 and the prefix 198.51.100.0/24 was removed.  However, CA1 failed
+   to re-issue a new Certificate 3 to CA2.  As a result Certificate 3 is
 
 
 
@@ -226,9 +226,6 @@ Huston, et al.          Expires December 24, 2017               [Page 4]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   Here Certificate 2 from the previous example was re-issued by TA to
-   CA1 and the prefix 198.51.100.0/24 was removed.  However, CA1 failed
-   to re-issue a new Certificate 3 to CA2.  As a result Certificate 3 is
    now over-claiming and considered invalid; by recursion the embedded
    Certificate 4 used for ROA1 is also invalid.  And ROA1 is invalid
    because the specified prefix contained in the ROA is no longer
@@ -271,8 +268,11 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.  Differences with existing standards
 
+4.2.1.  Certificate Policy (CP) for use with validation reconsidered in
+        the Resource PKI (RPKI)
 
-
+   Note that section 1.2 of [RFC6484] defines the "Certificate Policy
+   (CP) for the Resource PKI (RPKI)" with the following OID:
 
 
 
@@ -281,12 +281,6 @@ Huston, et al.          Expires December 24, 2017               [Page 5]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-4.2.1.  Certificate Policy (CP) for use with validation reconsidered in
-        the Resource PKI (RPKI)
-
-   Note that section 1.2 of [RFC6484] defines the "Certificate Policy
-   (CP) for the Resource PKI (RPKI)" with the following OID:
 
    id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
            identified-organization(3) dod(6) internet(1)
@@ -323,12 +317,18 @@ Internet-Draft               RPKI Validation                   June 2017
 
    id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
-   where [RFC3280] defines:
+   where [RFC5280] defines:
 
    id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
           dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+
+4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
+
+
+
+
 
 
 
@@ -337,8 +337,6 @@ Huston, et al.          Expires December 24, 2017               [Page 6]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
 
    id-pe-ipAddrBlocks-v2      OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
@@ -378,12 +376,14 @@ Internet-Draft               RPKI Validation                   June 2017
 
    id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
-   where [RFC3280] defines:
+   where [RFC5280] defines:
 
    id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
           dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
+
+
 
 
 
@@ -1122,12 +1122,6 @@ Huston, et al.          Expires December 24, 2017              [Page 20]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   [RFC3280]  Housley, R., Polk, W., Ford, W., and D. Solo, "Internet
-              X.509 Public Key Infrastructure Certificate and
-              Certificate Revocation List (CRL) Profile", RFC 3280,
-              DOI 10.17487/RFC3280, April 2002,
-              <http://www.rfc-editor.org/info/rfc3280>.
-
    [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
               Addresses and AS Identifiers", RFC 3779,
               DOI 10.17487/RFC3779, June 2004,
@@ -1138,12 +1132,6 @@ Internet-Draft               RPKI Validation                   June 2017
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <http://www.rfc-editor.org/info/rfc5280>.
-
-   [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
-              for the Cryptographic Message Syntax (CMS) and the Public
-              Key Infrastructure Using X.509 (PKIX)", RFC 6268,
-              DOI 10.17487/RFC6268, July 2011,
-              <http://www.rfc-editor.org/info/rfc6268>.
 
    [RFC6482]  Lepinski, M., Kent, S., and D. Kong, "A Profile for Route
               Origin Authorizations (ROAs)", RFC 6482,
@@ -1162,26 +1150,11 @@ Internet-Draft               RPKI Validation                   June 2017
 
 9.2.  Informative References
 
-   [RFC3849]  Huston, G., Lord, A., and P. Smith, "IPv6 Address Prefix
-              Reserved for Documentation", RFC 3849,
-              DOI 10.17487/RFC3849, July 2004,
-              <http://www.rfc-editor.org/info/rfc3849>.
-
-   [RFC5398]  Huston, G., "Autonomous System (AS) Number Reservation for
-              Documentation Use", RFC 5398, DOI 10.17487/RFC5398,
-              December 2008, <http://www.rfc-editor.org/info/rfc5398>.
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 21]
-
-Internet-Draft               RPKI Validation                   June 2017
-
-
-   [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
-              Reserved for Documentation", RFC 5737,
-              DOI 10.17487/RFC5737, January 2010,
-              <http://www.rfc-editor.org/info/rfc5737>.
+   [RFC6268]  Schaad, J. and S. Turner, "Additional New ASN.1 Modules
+              for the Cryptographic Message Syntax (CMS) and the Public
+              Key Infrastructure Using X.509 (PKIX)", RFC 6268,
+              DOI 10.17487/RFC6268, July 2011,
+              <http://www.rfc-editor.org/info/rfc6268>.
 
 Authors' Addresses
 
@@ -1193,6 +1166,16 @@ Authors' Addresses
 
    Phone: +61 7 3858 3100
    Email: gih@apnic.net
+
+
+
+
+
+
+
+Huston, et al.          Expires December 24, 2017              [Page 21]
+
+Internet-Draft               RPKI Validation                   June 2017
 
 
    George Michaelson
@@ -1224,16 +1207,6 @@ Authors' Addresses
    Email: tim@ripe.net
 
 
-
-
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 22]
-
-Internet-Draft               RPKI Validation                   June 2017
-
-
    Andrew Lee Newton
    American Registry for Internet Numbers
    3635 Concorde Parkway
@@ -1256,33 +1229,4 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 23]
+Huston, et al.          Expires December 24, 2017              [Page 22]
