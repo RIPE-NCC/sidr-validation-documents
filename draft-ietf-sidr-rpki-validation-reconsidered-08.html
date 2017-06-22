@@ -384,8 +384,8 @@
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers">
 <link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Addendum to RFC6268">
 <link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 An alternative to RFC6487 Profile for X.509 PKIX Resource Certificates">
-<link href="#rfc.section.4.2.5" rel="Chapter" title="4.2.5 Differences with RFC6482">
-<link href="#rfc.section.4.2.6" rel="Chapter" title="4.2.6 Changes to BGPSec PKI Profiles">
+<link href="#rfc.section.4.2.5" rel="Chapter" title="4.2.5 An alternative ROA validation RFC6482">
+<link href="#rfc.section.4.2.6" rel="Chapter" title="4.2.6 An alternative to BGPSec Router Certificate Validation">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example">
 <link href="#rfc.section.5" rel="Chapter" title="5 Deployment Considerations">
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
@@ -508,9 +508,9 @@
 </li>
 <li>4.2.4.   <a href="#rfc.section.4.2.4">An alternative to RFC6487 Profile for X.509 PKIX Resource Certificates</a>
 </li>
-<li>4.2.5.   <a href="#rfc.section.4.2.5">Differences with RFC6482</a>
+<li>4.2.5.   <a href="#rfc.section.4.2.5">An alternative ROA validation RFC6482</a>
 </li>
-<li>4.2.6.   <a href="#rfc.section.4.2.6">Changes to BGPSec PKI Profiles</a>
+<li>4.2.6.   <a href="#rfc.section.4.2.6">An alternative to BGPSec Router Certificate Validation</a>
 </li>
 </ul><li>4.3.   <a href="#rfc.section.4.3">An example</a>
 </li>
@@ -934,18 +934,18 @@ END
 </ol>
 <p id="rfc.section.4.2.4.4.p.7">These rules allow a CA certificate to contain resources that are not present in (all of) the certificates along the path from the trust anchor to the CA certificate. If none of the resources in the CA certificate are present in all certificates along the path, no subordinate certificates could be valid. However, the certificate is not immediately rejected as this may be a transient condition. Not immediately rejecting the certificate does not result in a security problem because the associated VRS sets accurately reflect the resources validly associated with the certificate in question.</p>
 <h1 id="rfc.section.4.2.5">
-<a href="#rfc.section.4.2.5">4.2.5.</a> Differences with RFC6482</h1>
+<a href="#rfc.section.4.2.5">4.2.5.</a> An alternative ROA validation RFC6482</h1>
 <p id="rfc.section.4.2.5.p.1">Section 4 of <a href="#RFC6482" class="xref">[RFC6482]</a> currently has the following text on the validation of resources on a ROA:</p>
 
 <ul><li>The IP address delegation extension [RFC3779] is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the set of IP addresses specified by the EE certificate's IP address delegation extension.</li></ul>
-<p id="rfc.section.4.2.5.p.2">The following is an amended specification to be used in place of this text.</p>
+<p id="rfc.section.4.2.5.p.2">If the end-entity certificate uses the Certificate Policy defined in <a href="#amended_6487_cp" class="xref">Section 4.2.4.1</a>, then the following approach must be used instead.</p>
 
-<ul><li>The IP address delegation extension [RFC3779] is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the VRS-IP set that is specified as an outcome of EE certificate validation.</li></ul>
+<ul><li>The amended IP address delegation extension described in <a href="#amended_6487_ip" class="xref">Section 4.2.4.2</a> is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the VRS-IP set that is specified as an outcome of EE certificate validation described in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a>.</li></ul>
 <p id="rfc.section.4.2.5.p.3">Note that this ensures that ROAs can be valid only, if all IP address prefixes in the ROA are encompassed by the VRS-IP of all certificates along the path to the trust anchor used to verify it.</p>
 <p id="rfc.section.4.2.5.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of on IP address prefix from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
 <h1 id="rfc.section.4.2.6">
-<a href="#rfc.section.4.2.6">4.2.6.</a> Changes to BGPSec PKI Profiles</h1>
-<p id="rfc.section.4.2.6.p.1">In addition to the BGPsec Router Certificate Validation defined in section 3.3 of <a href="#I-D.ietf-sidr-bgpsec-pki-profiles" class="xref">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>, the following constraint MUST be met: </p>
+<a href="#rfc.section.4.2.6">4.2.6.</a> An alternative to BGPSec Router Certificate Validation</h1>
+<p id="rfc.section.4.2.6.p.1">If a BGPsec Router Certificate (<a href="#I-D.ietf-sidr-bgpsec-pki-profiles" class="xref">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>) uses the Certificate Policy defined in <a href="#amended_6487_cp" class="xref">Section 4.2.4.1</a>, then in addition to the BGPsec Router Certificate Validation defined in section 3.3 of <a href="#I-D.ietf-sidr-bgpsec-pki-profiles" class="xref">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>, the following constraint MUST be met: </p>
 
 <ul><li>The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs in the AS Resource Identifier Delegation extension.</li></ul>
 
@@ -1030,27 +1030,9 @@ END
 </pre>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> Deployment Considerations</h1>
-<p id="rfc.section.5.p.1">Because the use of the version of <a href="#RFC6487" class="xref">[RFC6487]</a> updated in <a href="#amended_6487" class="xref">Section 4.2.4</a> in RPKI certificates and objects will lead to the rejection of such objects by Relying Party tools that do not implement this updated version, it is important that such tools are updated before Certificate Authorities start to use this updated specification.</p>
-<p id="rfc.section.5.p.2">However, because the choice of algorithm is well-defined for each certificate and/or RPKI signed object, there is no strict requirement for all Certificate Authorities to migrate to this new algorithm within a specific time period. The choice to opt-in to this can be made by each CA independently. CAs MAY also choose to use the new algorithm for new certificates or objects only, without pro-actively re-issuing existing objects - for example because the latter would require an active authorisation by a user of the system.</p>
-<p id="rfc.section.5.p.3">Therefore the following deployment time line applies:</p>
-<div id="rfc.table.1"></div>
-<div id="table_deployment"></div>
-<table cellpadding="3" cellspacing="0" class="tt full center">
-<thead><tr>
-<th class="center">Months since RFC</th>
-<th class="left">Step</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="center">6</td>
-<td class="left">Relying Party tools MUST implement the updated specification.</td>
-</tr>
-<tr>
-<td class="center">9</td>
-<td class="left">Certificate Authorities MAY implement the updated specification.</td>
-</tr>
-</tbody>
-</table>
+<p id="rfc.section.5.p.1">Because this document introduces new OIDs and an alternative the Profile for X.509 PKIX Resource Certificates described in <a href="#RFC6487" class="xref">[RFC6487]</a>, the use of such certificates in the global RPKI will lead to the rejection of such certificates by Relying Party tools that do not (yet) implement the alternative profile described in this document.</p>
+<p id="rfc.section.5.p.2">For this reason it is important that such tools are updated before Certificate Authorities start to use this specification.</p>
+<p id="rfc.section.5.p.3">However, because the choice of algorithm is well-defined for each certificate and/or RPKI signed object, there is no strict requirement for all Certificate Authorities to migrate to this new algorithm within a specific time period. The choice to opt-in to this can be made by each CA independently. CAs MAY also choose to use the new algorithm for new certificates or objects only, without pro-actively re-issuing existing objects - for example because the latter would require an active authorisation by a user of the system.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> Security Considerations</h1>
 <p id="rfc.section.6.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI.</p>

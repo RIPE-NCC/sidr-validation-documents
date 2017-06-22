@@ -89,14 +89,15 @@ Table of Contents
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
      4.2.  Differences with existing standards . . . . . . . . . . .   5
        4.2.1.  Certificate Policy (CP) for use with validation
-               reconsidered in the Resource PKI (RPKI) . . . . . . .   5
+               reconsidered in the Resource PKI (RPKI) . . . . . . .   6
        4.2.2.  An alternative to RFC3779 X.509 Extensions for IP
                Addresses and AS Identifiers  . . . . . . . . . . . .   6
        4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  11
        4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX
                Resource Certificates . . . . . . . . . . . . . . . .  12
-       4.2.5.  Differences with RFC6482  . . . . . . . . . . . . . .  16
-       4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  17
+       4.2.5.  An alternative ROA validation RFC6482 . . . . . . . .  16
+       4.2.6.  An alternative to BGPSec Router Certificate
+               Validation  . . . . . . . . . . . . . . . . . . . . .  17
      4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  17
    5.  Deployment Considerations . . . . . . . . . . . . . . . . . .  19
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
@@ -105,7 +106,6 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 
 
@@ -113,6 +113,8 @@ Huston, et al.          Expires December 24, 2017               [Page 2]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
 
 1.  Requirements notation
 
@@ -159,8 +161,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
-   All certificates in this scenario are considered valid since the INRs
-   of each certificate are encompassed by those of the issuing
 
 
 
@@ -170,6 +170,8 @@ Huston, et al.          Expires December 24, 2017               [Page 3]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+   All certificates in this scenario are considered valid since the INRs
+   of each certificate are encompassed by those of the issuing
    certificate.  ROA1 is valid because the specified prefix is
    encompassed by the embedded EE certificate, as required by [RFC6482].
 
@@ -215,9 +217,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
    Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
-   Here Certificate 2 from the previous example was re-issued by TA to
-   CA1 and the prefix 198.51.100.0/24 was removed.  However, CA1 failed
-   to re-issue a new Certificate 3 to CA2.  As a result Certificate 3 is
+
 
 
 
@@ -226,6 +226,9 @@ Huston, et al.          Expires December 24, 2017               [Page 4]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+   Here Certificate 2 from the previous example was re-issued by TA to
+   CA1 and the prefix 198.51.100.0/24 was removed.  However, CA1 failed
+   to re-issue a new Certificate 3 to CA2.  As a result Certificate 3 is
    now over-claiming and considered invalid; by recursion the embedded
    Certificate 4 used for ROA1 is also invalid.  And ROA1 is invalid
    because the specified prefix contained in the ROA is no longer
@@ -268,11 +271,8 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.  Differences with existing standards
 
-4.2.1.  Certificate Policy (CP) for use with validation reconsidered in
-        the Resource PKI (RPKI)
 
-   Note that section 1.2 of [RFC6484] defines the "Certificate Policy
-   (CP) for the Resource PKI (RPKI)" with the following OID:
+
 
 
 
@@ -281,6 +281,12 @@ Huston, et al.          Expires December 24, 2017               [Page 5]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+4.2.1.  Certificate Policy (CP) for use with validation reconsidered in
+        the Resource PKI (RPKI)
+
+   Note that section 1.2 of [RFC6484] defines the "Certificate Policy
+   (CP) for the Resource PKI (RPKI)" with the following OID:
 
    id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
            identified-organization(3) dod(6) internet(1)
@@ -324,12 +330,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
-4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
-
-
-
-
-
 
 
 
@@ -337,6 +337,8 @@ Huston, et al.          Expires December 24, 2017               [Page 6]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
 
    id-pe-ipAddrBlocks-v2      OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
@@ -382,8 +384,6 @@ Internet-Draft               RPKI Validation                   June 2017
           dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
-
-
 
 
 
@@ -870,7 +870,7 @@ Internet-Draft               RPKI Validation                   June 2017
    problem because the associated VRS sets accurately reflect the
    resources validly associated with the certificate in question.
 
-4.2.5.  Differences with RFC6482
+4.2.5.  An alternative ROA validation RFC6482
 
    Section 4 of [RFC6482] currently has the following text on the
    validation of resources on a ROA:
@@ -881,14 +881,14 @@ Internet-Draft               RPKI Validation                   June 2017
       addresses specified by the EE certificate's IP address delegation
       extension.
 
-   The following is an amended specification to be used in place of this
-   text.
+   If the end-entity certificate uses the Certificate Policy defined in
+   Section 4.2.4.1, then the following approach must be used instead.
 
-   o  The IP address delegation extension [RFC3779] is present in the
-      end-entity (EE) certificate (contained within the ROA), and each
-      IP address prefix(es) in the ROA is contained within the VRS-IP
-      set that is specified as an outcome of EE certificate validation.
-
+   o  The amended IP address delegation extension described in
+      Section 4.2.4.2 is present in the end-entity (EE) certificate
+      (contained within the ROA), and each IP address prefix(es) in the
+      ROA is contained within the VRS-IP set that is specified as an
+      outcome of EE certificate validation described in Section 4.2.4.4.
 
 
 
@@ -907,9 +907,11 @@ Internet-Draft               RPKI Validation                   June 2017
    along the path to the trust anchor would not invalidate
    authorizations for other IP address prefixes.
 
-4.2.6.  Changes to BGPSec PKI Profiles
+4.2.6.  An alternative to BGPSec Router Certificate Validation
 
-   In addition to the BGPsec Router Certificate Validation defined in
+   If a BGPsec Router Certificate ([I-D.ietf-sidr-bgpsec-pki-profiles])
+   uses the Certificate Policy defined in Section 4.2.4.1, then in
+   addition to the BGPsec Router Certificate Validation defined in
    section 3.3 of [I-D.ietf-sidr-bgpsec-pki-profiles], the following
    constraint MUST be met:
 
@@ -944,8 +946,6 @@ Internet-Draft               RPKI Validation                   June 2017
                               2001:db8::/32, AS64496
        Warnings: none
 
-     Certificate 3:
-      Issuer CA1,
 
 
 
@@ -954,6 +954,8 @@ Huston, et al.          Expires December 24, 2017              [Page 17]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+     Certificate 3:
+      Issuer CA1,
       Subject CA2,
       Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
 
@@ -1001,8 +1003,6 @@ Internet-Draft               RPKI Validation                   June 2017
       Subject ALL-ROUTERS
       Resources AS64496-AS64497
 
-       EE certificate is invalid due to over-claim for AS64497
-
 
 
 Huston, et al.          Expires December 24, 2017              [Page 18]
@@ -1010,16 +1010,21 @@ Huston, et al.          Expires December 24, 2017              [Page 18]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+       EE certificate is invalid due to over-claim for AS64497
+
        This problem can be mitigated by issuing separate certificates
        for each AS number.
 
 5.  Deployment Considerations
 
-   Because the use of the version of [RFC6487] updated in Section 4.2.4
-   in RPKI certificates and objects will lead to the rejection of such
-   objects by Relying Party tools that do not implement this updated
-   version, it is important that such tools are updated before
-   Certificate Authorities start to use this updated specification.
+   Because this document introduces new OIDs and an alternative the
+   Profile for X.509 PKIX Resource Certificates described in [RFC6487],
+   the use of such certificates in the global RPKI will lead to the
+   rejection of such certificates by Relying Party tools that do not
+   (yet) implement the alternative profile described in this document.
+
+   For this reason it is important that such tools are updated before
+   Certificate Authorities start to use this specification.
 
    However, because the choice of algorithm is well-defined for each
    certificate and/or RPKI signed object, there is no strict requirement
@@ -1029,20 +1034,6 @@ Internet-Draft               RPKI Validation                   June 2017
    algorithm for new certificates or objects only, without pro-actively
    re-issuing existing objects - for example because the latter would
    require an active authorisation by a user of the system.
-
-   Therefore the following deployment time line applies:
-
-   +---------------+---------------------------------------------------+
-   |  Months since | Step                                              |
-   |      RFC      |                                                   |
-   +---------------+---------------------------------------------------+
-   |       6       | Relying Party tools MUST implement the updated    |
-   |               | specification.                                    |
-   |       9       | Certificate Authorities MAY implement the updated |
-   |               | specification.                                    |
-   +---------------+---------------------------------------------------+
-
-                                  Table 1
 
 6.  Security Considerations
 
@@ -1058,14 +1049,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
          TBD1     id-cp-ipAddr-asNumber-v2          [this RFC]
 
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 19]
-
-Internet-Draft               RPKI Validation                   June 2017
-
-
    IANA is to add the following to the SMI Security for PKIX Certificate
    Extension registry:
 
@@ -1073,6 +1056,15 @@ Internet-Draft               RPKI Validation                   June 2017
 
          TBD2     id-pe-ipAddrBlocks-v2            [this RFC]
          TBD3     id-pe-autonomousSysIds-v2        [this RFC]
+
+
+
+
+
+Huston, et al.          Expires December 24, 2017              [Page 19]
+
+Internet-Draft               RPKI Validation                   June 2017
+
 
    IANA is to add the following to the SMI Security for PKIX Module
    Identifier registry:
@@ -1113,6 +1105,14 @@ Internet-Draft               RPKI Validation                   June 2017
               DOI 10.17487/RFC3280, April 2002,
               <http://www.rfc-editor.org/info/rfc3280>.
 
+   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
+              Addresses and AS Identifiers", RFC 3779,
+              DOI 10.17487/RFC3779, June 2004,
+              <http://www.rfc-editor.org/info/rfc3779>.
+
+
+
+
 
 
 
@@ -1121,11 +1121,6 @@ Huston, et al.          Expires December 24, 2017              [Page 20]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
-              Addresses and AS Identifiers", RFC 3779,
-              DOI 10.17487/RFC3779, June 2004,
-              <http://www.rfc-editor.org/info/rfc3779>.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -1170,6 +1165,11 @@ Internet-Draft               RPKI Validation                   June 2017
               DOI 10.17487/RFC5737, January 2010,
               <http://www.rfc-editor.org/info/rfc5737>.
 
+Authors' Addresses
+
+
+
+
 
 
 
@@ -1177,8 +1177,6 @@ Huston, et al.          Expires December 24, 2017              [Page 21]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-Authors' Addresses
 
    Geoff Huston
    Asia Pacific Network Information Centre
@@ -1226,6 +1224,8 @@ Authors' Addresses
    USA
 
    Email: andy@arin.net
+
+
 
 
 
