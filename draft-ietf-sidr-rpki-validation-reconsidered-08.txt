@@ -149,7 +149,7 @@ Internet-Draft               RPKI Validation                   June 2017
    Certificate 3:
    Issuer CA1,
    Subject CA2,
-   Resources 192.0.2.0/24, 2001:db8::/32
+   Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
    ROA 1:
    Embedded Certificate 4 (EE certificate):
@@ -208,7 +208,7 @@ Internet-Draft               RPKI Validation                   June 2017
    Resources 192.0.2.0/24, 198.51.100.0/24, 2001:db8::/32
 
    ROA 1 (invalid):
-   Embedded Certificate 4 (EE certificate):
+   Embedded Certificate 4 (EE certificate, invalid):
    Issuer CA2,
    Subject R1,
    Resources 192.0.2.0/24
