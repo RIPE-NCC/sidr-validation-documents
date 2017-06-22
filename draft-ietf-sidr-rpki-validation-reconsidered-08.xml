@@ -867,8 +867,7 @@ END
      Prefix 192.0.2.0/24, Max Length 24, ASN 64496
     
     ROA1 is considered valid because the prefix matches the Verified
-    Resource Set on the embedded EE certificate, as required by
-    RFC 6482.
+    Resource Set on the embedded EE certificate.
 
   ROA 2 (invalid):
    Embedded Certificate 5 (EE certificate invalid):

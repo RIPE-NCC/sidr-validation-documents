@@ -983,8 +983,7 @@ Internet-Draft               RPKI Validation                   June 2017
         Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 
        ROA1 is considered valid because the prefix matches the Verified
-       Resource Set on the embedded EE certificate, as required by
-       RFC 6482.
+       Resource Set on the embedded EE certificate.
 
      ROA 2 (invalid):
       Embedded Certificate 5 (EE certificate invalid):
@@ -1002,6 +1001,7 @@ Internet-Draft               RPKI Validation                   June 2017
      BGPSec Certificate 1 (valid):
       Issuer CA2
       Subject ROUTER-64496
+      Resources AS64496
 
 
 
@@ -1009,8 +1009,6 @@ Huston, et al.          Expires December 24, 2017              [Page 18]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-      Resources AS64496
 
        Verified resources: AS64496
        Warnings: none
@@ -1057,7 +1055,9 @@ Internet-Draft               RPKI Validation                   June 2017
    IANA is to add the following to the SMI Security for PKIX Certificate
    Policies registry:
 
+         Decimal  Description                       References
 
+         TBD1     id-cp-ipAddr-asNumber-v2          [section 4.2.1]
 
 
 
@@ -1065,10 +1065,6 @@ Huston, et al.          Expires December 24, 2017              [Page 19]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-         Decimal  Description                       References
-
-         TBD1     id-cp-ipAddr-asNumber-v2          [section 4.2.1]
 
    IANA is to add the following to the SMI Security for PKIX Certificate
    Extension registry:
@@ -1111,6 +1107,10 @@ Internet-Draft               RPKI Validation                   June 2017
               DOI 10.17487/RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
+   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
+              Addresses and AS Identifiers", RFC 3779,
+              DOI 10.17487/RFC3779, June 2004,
+              <http://www.rfc-editor.org/info/rfc3779>.
 
 
 
@@ -1121,11 +1121,6 @@ Huston, et al.          Expires December 24, 2017              [Page 20]
 
 Internet-Draft               RPKI Validation                   June 2017
 
-
-   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
-              Addresses and AS Identifiers", RFC 3779,
-              DOI 10.17487/RFC3779, June 2004,
-              <http://www.rfc-editor.org/info/rfc3779>.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -1166,6 +1161,11 @@ Authors' Addresses
 
    Phone: +61 7 3858 3100
    Email: gih@apnic.net
+
+
+
+
+
 
 
 
