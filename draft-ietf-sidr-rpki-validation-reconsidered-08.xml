@@ -573,15 +573,15 @@ END
       </section>
       
       
-      <section title="Differences with RFC6487" anchor="amended_6487">
+      <section title="An alternative to RFC6487 Profile for X.509 PKIX Resource Certificates" anchor="amended_6487">
       
-         <t>Certificate Authorities MUST issue certificates either as specified
-         in <xref target="RFC6487" /> or with all the amendments specified in
-         the following sections.</t>
-      
+         <t>This document defines an alternative Profile for X.509 PKIX Resource
+         Certificates. This profile follows all definitions and procedures described
+         in <xref target="RFC6487" /> with the following notable exceptions.</t>
+         
       <section title="Amended Certificate Policies">
       
-         <t>The following is an amended specification to be used in place of
+         <t>The following is an amended specification to be used in this profile, in place of
          section 4.8.9 of <xref target="RFC6487" />.</t>
          
          <t>This extension MUST be present and MUST be marked critical.  It MUST
@@ -593,7 +593,7 @@ END
       
       <section title="Amended IP Resources">
       
-          <t>The following is an amended specification to be used in place of
+          <t>The following is an amended specification to be used in this profile, in place of
           section 4.8.10 of <xref target="RFC6487" />.</t>
           
           <t>Either the IP Resources extension, or the AS Resources extension, or
@@ -616,7 +616,7 @@ END
       
       <section title="Amended AS Resources">
       
-          <t>The following is an amended specification to be used in place of
+          <t>The following is an amended specification to be used in this profile, in place of
           section 4.8.11 of <xref target="RFC6487" />.</t>
           
           <t>Either the AS Resources extension, or the IP Resources extension, or
@@ -637,8 +637,8 @@ END
       
       <section title="Amended Resource Certificate Path Validation" anchor="reconsidered_path_validation">
 
-        <t>The following is an amended specification to be used in place of
-        section 7.2 of <xref target="RFC6487" />.</t>
+        <t>The following is an amended specification for path validation to be used in 
+        this profile, in place of section 7.2 of <xref target="RFC6487" />.</t>
         
         <t>The following algorithm is employed to validate CA and EE resources
         certificates. It is modeled on the path validation algorithm from

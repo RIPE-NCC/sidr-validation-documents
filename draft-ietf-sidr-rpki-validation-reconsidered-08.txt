@@ -93,7 +93,8 @@ Table of Contents
        4.2.2.  An alternative to RFC3779 X.509 Extensions for IP
                Addresses and AS Identifiers  . . . . . . . . . . . .   6
        4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  11
-       4.2.4.  Differences with RFC6487  . . . . . . . . . . . . . .  12
+       4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX
+               Resource Certificates . . . . . . . . . . . . . . . .  12
        4.2.5.  Differences with RFC6482  . . . . . . . . . . . . . .  16
        4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  17
      4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  17
@@ -105,7 +106,6 @@ Table of Contents
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
-
 
 
 
@@ -660,12 +660,12 @@ Internet-Draft               RPKI Validation                   June 2017
    END
 
 
-4.2.4.  Differences with RFC6487
+4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX Resource
+        Certificates
 
-   Certificate Authorities MUST issue certificates either as specified
-   in [RFC6487] or with all the amendments specified in the following
-   sections.
-
+   This document defines an alternative Profile for X.509 PKIX Resource
+   Certificates.  This profile follows all definitions and procedures
+   described in [RFC6487] with the following notable exceptions.
 
 
 
@@ -676,8 +676,8 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.4.1.  Amended Certificate Policies
 
-   The following is an amended specification to be used in place of
-   section 4.8.9 of [RFC6487].
+   The following is an amended specification to be used in this profile,
+   in place of section 4.8.9 of [RFC6487].
 
    This extension MUST be present and MUST be marked critical.  It MUST
    include exactly one policy of type id-cp-ipAddr-asNumber-v2, as
@@ -685,8 +685,8 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.4.2.  Amended IP Resources
 
-   The following is an amended specification to be used in place of
-   section 4.8.10 of [RFC6487].
+   The following is an amended specification to be used in this profile,
+   in place of section 4.8.10 of [RFC6487].
 
    Either the IP Resources extension, or the AS Resources extension, or
    both, MUST be present in all RPKI certificates, and if present, MUST
@@ -706,8 +706,8 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.4.3.  Amended AS Resources
 
-   The following is an amended specification to be used in place of
-   section 4.8.11 of [RFC6487].
+   The following is an amended specification to be used in this profile,
+   in place of section 4.8.11 of [RFC6487].
 
    Either the AS Resources extension, or the IP Resources extension, or
    both, MUST be present in all RPKI certificates, and if present, MUST
@@ -732,8 +732,8 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.4.4.  Amended Resource Certificate Path Validation
 
-   The following is an amended specification to be used in place of
-   section 7.2 of [RFC6487].
+   The following is an amended specification for path validation to be
+   used in this profile, in place of section 7.2 of [RFC6487].
 
    The following algorithm is employed to validate CA and EE resources
    certificates.  It is modeled on the path validation algorithm from

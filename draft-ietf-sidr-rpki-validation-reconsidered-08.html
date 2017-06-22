@@ -383,7 +383,7 @@
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Certificate Policy (CP) for use with validation reconsidered in the Resource PKI (RPKI)">
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers">
 <link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Addendum to RFC6268">
-<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 Differences with RFC6487">
+<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 An alternative to RFC6487 Profile for X.509 PKIX Resource Certificates">
 <link href="#rfc.section.4.2.5" rel="Chapter" title="4.2.5 Differences with RFC6482">
 <link href="#rfc.section.4.2.6" rel="Chapter" title="4.2.6 Changes to BGPSec PKI Profiles">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 An example">
@@ -506,7 +506,7 @@
 </li>
 <li>4.2.3.   <a href="#rfc.section.4.2.3">Addendum to RFC6268</a>
 </li>
-<li>4.2.4.   <a href="#rfc.section.4.2.4">Differences with RFC6487</a>
+<li>4.2.4.   <a href="#rfc.section.4.2.4">An alternative to RFC6487 Profile for X.509 PKIX Resource Certificates</a>
 </li>
 <li>4.2.5.   <a href="#rfc.section.4.2.5">Differences with RFC6482</a>
 </li>
@@ -864,29 +864,29 @@ END
 </pre>
 <p></p>
 <h1 id="rfc.section.4.2.4">
-<a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#amended_6487" id="amended_6487">Differences with RFC6487</a>
+<a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#amended_6487" id="amended_6487">An alternative to RFC6487 Profile for X.509 PKIX Resource Certificates</a>
 </h1>
-<p id="rfc.section.4.2.4.p.1">Certificate Authorities MUST issue certificates either as specified in <a href="#RFC6487" class="xref">[RFC6487]</a> or with all the amendments specified in the following sections.</p>
+<p id="rfc.section.4.2.4.p.1">This document defines an alternative Profile for X.509 PKIX Resource Certificates. This profile follows all definitions and procedures described in <a href="#RFC6487" class="xref">[RFC6487]</a> with the following notable exceptions.</p>
 <h1 id="rfc.section.4.2.4.1">
 <a href="#rfc.section.4.2.4.1">4.2.4.1.</a> Amended Certificate Policies</h1>
-<p id="rfc.section.4.2.4.1.p.1">The following is an amended specification to be used in place of section 4.8.9 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.4.1.p.1">The following is an amended specification to be used in this profile, in place of section 4.8.9 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.1.p.2">This extension MUST be present and MUST be marked critical.  It MUST include exactly one policy of type id-cp-ipAddr-asNumber-v2, as specified in the updated RPKI CP in <a href="#amended_validation_policy" class="xref">Section 4.2.1</a> of [this document].</p>
 <h1 id="rfc.section.4.2.4.2">
 <a href="#rfc.section.4.2.4.2">4.2.4.2.</a> Amended IP Resources</h1>
-<p id="rfc.section.4.2.4.2.p.1">The following is an amended specification to be used in place of section 4.8.10 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.4.2.p.1">The following is an amended specification to be used in this profile, in place of section 4.8.10 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.2.p.2">Either the IP Resources extension, or the AS Resources extension, or both, MUST be present in all RPKI certificates, and if present, MUST be marked critical.</p>
 <p id="rfc.section.4.2.4.2.p.3">This extension contains the list of IP address resources as per <a href="#amended_ip_ext" class="xref">Section 4.2.2.1</a> of [this document].  The value may specify the "inherit" element for a particular Address Family Identifier (AFI) value.  In the context of resource certificates describing public number resources for use in the public Internet, the Subsequent AFI (SAFI) value MUST NOT be used.</p>
 <p id="rfc.section.4.2.4.2.p.4">This extension MUST either specify a non-empty set of IP address records, or use the "inherit" setting to indicate that the IP address resource set of this certificate is inherited from that of the certificate's issuer.</p>
 <h1 id="rfc.section.4.2.4.3">
 <a href="#rfc.section.4.2.4.3">4.2.4.3.</a> Amended AS Resources</h1>
-<p id="rfc.section.4.2.4.3.p.1">The following is an amended specification to be used in place of section 4.8.11 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.4.3.p.1">The following is an amended specification to be used in this profile, in place of section 4.8.11 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.3.p.2">Either the AS Resources extension, or the IP Resources extension, or both, MUST be present in all RPKI certificates, and if present, MUST be marked critical.</p>
 <p id="rfc.section.4.2.4.3.p.3">This extension contains the list of AS number resources as per <a href="#amended_as_ext" class="xref">Section 4.2.2.3</a> of [this document], or it may specify the "inherit" element.  Routing Domain Identifier (RDI) values are NOT supported in this profile and MUST NOT be used.</p>
 <p id="rfc.section.4.2.4.3.p.4">This extension MUST either specify a non-empty set of AS number records, or use the "inherit" setting to indicate that the AS number resource set of this certificate is inherited from that of the certificate's issuer.</p>
 <h1 id="rfc.section.4.2.4.4">
 <a href="#rfc.section.4.2.4.4">4.2.4.4.</a> <a href="#reconsidered_path_validation" id="reconsidered_path_validation">Amended Resource Certificate Path Validation</a>
 </h1>
-<p id="rfc.section.4.2.4.4.p.1">The following is an amended specification to be used in place of section 7.2 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.4.4.p.1">The following is an amended specification for path validation to be used in this profile, in place of section 7.2 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.4.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280" class="xref">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <p id="rfc.section.4.2.4.4.p.3">There are two inputs to the validation algorithm:</p>
 
