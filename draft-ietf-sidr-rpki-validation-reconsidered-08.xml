@@ -4,7 +4,7 @@
 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
 ]>
 
-<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-08" ipr="trust200902" updates="3779 6482 6484 6487">
+<rfc category="std" docName="draft-ietf-sidr-rpki-validation-reconsidered-08" ipr="trust200902">
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc toc="yes" ?>
 <?rfc compact="yes" ?>
@@ -96,18 +96,19 @@
 
 <abstract>
 
-<t>This document proposes an update to the certificate
+<t>This document proposes an alternative to the certificate
 validation procedure specified in RFC 6487 that
 reduces aspects of operational fragility in the management of
 certificates in the RPKI, while retaining essential security
 features.</t>
 
-<t>The use of this updated procedure is signaled by form of an updated
+<t>The use of this updated procedure is signaled by form of a set of
+alternative Object Identifiers (OIDs) indicating that the alternative
 version of RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers,
-an updated version of the certificate policy for the Resource Public
-Key Infrastructure (RFC 6484).</t>
+and certificate policy for the Resource Public Key Infrastructure (RFC 6484)
+defined in this document should be used.</t>
 
-<t>Furthermore this document updates ROA (RFC 6482), and BGPSec Router
+<t>Furthermore this document provides and alternative to ROA (RFC 6482), and BGPSec Router
 Certificate (BGPSec PKI Profiles - publication requested) validation.</t>
 
 <t>Examples in this document make use of IPv4 (RFC 5737) and IPv6 (RFC 3849)
