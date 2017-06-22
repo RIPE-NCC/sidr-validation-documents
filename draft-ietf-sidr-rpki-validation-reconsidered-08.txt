@@ -422,16 +422,16 @@ Internet-Draft               RPKI Validation                   June 2017
 
    If the extension OID defined in Section 4.2.2.1 is used, then
    Certificate path validation is performed as specified in
-   Section 4.2.4.4 of [this document] rather than the procedure
-   described in section 2.3 of [RFC3779].
+   Section 4.2.4.4 of rather than the procedure described in section 2.3
+   of [RFC3779].
 
 4.2.2.6.  Amended Autonomous System Identifier Delegation Extension
           Certification Path Validation
 
    If the extension OID defined in Section 4.2.2.3 is used, then
    Certificate path validation is performed as specified in
-   Section 4.2.4.4 of [this document] rather than the procedure
-   described in section 3.3 of [RFC3779].
+   Section 4.2.4.4 of rather than the procedure described in section 3.3
+   of [RFC3779].
 
 4.2.2.7.  Amended ASN.1 module
 
@@ -577,8 +577,8 @@ Internet-Draft               RPKI Validation                   June 2017
    normative version.
 
    The following is an additional module confirming to the 2008 version
-   of ASN.1 to be used with the updated version of [RFC3779] defined in
-   [this document].
+   of ASN.1 to be used with the extensions defined in Section 4.2.2.1
+   and Section 4.2.2.3.
 
    IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
             internet(1) security(5) mechanisms(5) pkix(7) mod(0)
@@ -688,7 +688,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
    This extension MUST be present and MUST be marked critical.  It MUST
    include exactly one policy of type id-cp-ipAddr-asNumber-v2, as
-   specified in the updated RPKI CP in Section 4.2.1 of [this document].
+   specified in the updated RPKI CP in Section 4.2.1.
 
 4.2.4.2.  Amended IP Resources
 
@@ -700,11 +700,11 @@ Internet-Draft               RPKI Validation                   June 2017
    be marked critical.
 
    This extension contains the list of IP address resources as per
-   Section 4.2.2.1 of [this document].  The value may specify the
-   "inherit" element for a particular Address Family Identifier (AFI)
-   value.  In the context of resource certificates describing public
-   number resources for use in the public Internet, the Subsequent AFI
-   (SAFI) value MUST NOT be used.
+   Section 4.2.2.1.  The value may specify the "inherit" element for a
+   particular Address Family Identifier (AFI) value.  In the context of
+   resource certificates describing public number resources for use in
+   the public Internet, the Subsequent AFI (SAFI) value MUST NOT be
+   used.
 
    This extension MUST either specify a non-empty set of IP address
    records, or use the "inherit" setting to indicate that the IP address
@@ -721,7 +721,7 @@ Internet-Draft               RPKI Validation                   June 2017
    be marked critical.
 
    This extension contains the list of AS number resources as per
-   Section 4.2.2.3 of [this document], or it may specify the "inherit"
+   Section 4.2.2.3, or it may specify the "inherit" element.  Routing
 
 
 
@@ -730,8 +730,8 @@ Huston, et al.          Expires December 24, 2017              [Page 13]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   element.  Routing Domain Identifier (RDI) values are NOT supported in
-   this profile and MUST NOT be used.
+   Domain Identifier (RDI) values are NOT supported in this profile and
+   MUST NOT be used.
 
    This extension MUST either specify a non-empty set of AS number
    records, or use the "inherit" setting to indicate that the AS number

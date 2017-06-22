@@ -397,7 +397,7 @@ ASId                ::= INTEGER
 
   <t>If the extension OID defined in <xref target="amended_ip_ext" /> is used, then Certificate
   path validation is performed as specified in <xref target="reconsidered_path_validation" />
-  of [this document] rather than the procedure described in section 2.3 of <xref target="RFC3779" />.</t>
+  of rather than the procedure described in section 2.3 of <xref target="RFC3779" />.</t>
 
 </section>
 
@@ -406,7 +406,7 @@ Path Validation">
 
   <t>If the extension OID defined in <xref target="amended_as_ext" /> is used, then Certificate
   path validation is performed as specified in <xref target="reconsidered_path_validation" />
-  of [this document] rather than the procedure described in section 3.3 of <xref target="RFC3779" />.</t>
+  of rather than the procedure described in section 3.3 of <xref target="RFC3779" />.</t>
 
 </section>
 
@@ -490,8 +490,8 @@ END
          <xref target="amended_3779_module" /> remain the normative version.</t>
          
          <t>The following is an additional module confirming to the 2008 version
-         of ASN.1 to be used with the updated version of <xref target="RFC3779" />
-         defined in [this document].</t>
+         of ASN.1 to be used with the extensions defined in <xref target="amended_ip_ext" />
+         and <xref target="amended_as_ext" />.</t>
          
          <t><figure><artwork><![CDATA[ 
   IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
@@ -590,8 +590,7 @@ END
          
          <t>This extension MUST be present and MUST be marked critical.  It MUST
          include exactly one policy of type id-cp-ipAddr-asNumber-v2, as
-         specified in the updated RPKI CP in
-         <xref target="amended_validation_policy" /> of [this document].</t>
+         specified in the updated RPKI CP in <xref target="amended_validation_policy" />.</t>
       
       </section>
       
@@ -605,7 +604,7 @@ END
           be marked critical.</t>
           
           <t>This extension contains the list of IP address resources as per
-          <xref target="amended_ip_ext" /> of [this document].  The value may
+          <xref target="amended_ip_ext" />.  The value may
           specify the "inherit" element for a particular Address Family
           Identifier (AFI) value.  In the context of resource certificates
           describing public number resources for use in the public Internet, the
@@ -628,7 +627,7 @@ END
           be marked critical.</t>
           
           <t>This extension contains the list of AS number resources as per
-          <xref target="amended_as_ext" /> of [this document], or it may specify
+          <xref target="amended_as_ext" />, or it may specify
           the "inherit" element.  Routing Domain Identifier (RDI) values are NOT
           supported in this profile and MUST NOT be used.</t>
           
