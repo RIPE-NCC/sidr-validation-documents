@@ -868,17 +868,20 @@ END
 </h1>
 <p id="rfc.section.4.2.4.p.1">This document defines an alternative Profile for X.509 PKIX Resource Certificates. This profile follows all definitions and procedures described in <a href="#RFC6487" class="xref">[RFC6487]</a> with the following notable exceptions.</p>
 <h1 id="rfc.section.4.2.4.1">
-<a href="#rfc.section.4.2.4.1">4.2.4.1.</a> Amended Certificate Policies</h1>
+<a href="#rfc.section.4.2.4.1">4.2.4.1.</a> <a href="#amended_6487_cp" id="amended_6487_cp">Amended Certificate Policies</a>
+</h1>
 <p id="rfc.section.4.2.4.1.p.1">The following is an amended specification to be used in this profile, in place of section 4.8.9 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.1.p.2">This extension MUST be present and MUST be marked critical.  It MUST include exactly one policy of type id-cp-ipAddr-asNumber-v2, as specified in the updated RPKI CP in <a href="#amended_validation_policy" class="xref">Section 4.2.1</a> of [this document].</p>
 <h1 id="rfc.section.4.2.4.2">
-<a href="#rfc.section.4.2.4.2">4.2.4.2.</a> Amended IP Resources</h1>
+<a href="#rfc.section.4.2.4.2">4.2.4.2.</a> <a href="#amended_6487_ip" id="amended_6487_ip">Amended IP Resources</a>
+</h1>
 <p id="rfc.section.4.2.4.2.p.1">The following is an amended specification to be used in this profile, in place of section 4.8.10 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.2.p.2">Either the IP Resources extension, or the AS Resources extension, or both, MUST be present in all RPKI certificates, and if present, MUST be marked critical.</p>
 <p id="rfc.section.4.2.4.2.p.3">This extension contains the list of IP address resources as per <a href="#amended_ip_ext" class="xref">Section 4.2.2.1</a> of [this document].  The value may specify the "inherit" element for a particular Address Family Identifier (AFI) value.  In the context of resource certificates describing public number resources for use in the public Internet, the Subsequent AFI (SAFI) value MUST NOT be used.</p>
 <p id="rfc.section.4.2.4.2.p.4">This extension MUST either specify a non-empty set of IP address records, or use the "inherit" setting to indicate that the IP address resource set of this certificate is inherited from that of the certificate's issuer.</p>
 <h1 id="rfc.section.4.2.4.3">
-<a href="#rfc.section.4.2.4.3">4.2.4.3.</a> Amended AS Resources</h1>
+<a href="#rfc.section.4.2.4.3">4.2.4.3.</a> <a href="#amended_6487_as" id="amended_6487_as">Amended AS Resources</a>
+</h1>
 <p id="rfc.section.4.2.4.3.p.1">The following is an amended specification to be used in this profile, in place of section 4.8.11 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
 <p id="rfc.section.4.2.4.3.p.2">Either the AS Resources extension, or the IP Resources extension, or both, MUST be present in all RPKI certificates, and if present, MUST be marked critical.</p>
 <p id="rfc.section.4.2.4.3.p.3">This extension contains the list of AS number resources as per <a href="#amended_as_ext" class="xref">Section 4.2.2.3</a> of [this document], or it may specify the "inherit" element.  Routing Domain Identifier (RDI) values are NOT supported in this profile and MUST NOT be used.</p>
@@ -886,7 +889,7 @@ END
 <h1 id="rfc.section.4.2.4.4">
 <a href="#rfc.section.4.2.4.4">4.2.4.4.</a> <a href="#reconsidered_path_validation" id="reconsidered_path_validation">Amended Resource Certificate Path Validation</a>
 </h1>
-<p id="rfc.section.4.2.4.4.p.1">The following is an amended specification for path validation to be used in this profile, in place of section 7.2 of <a href="#RFC6487" class="xref">[RFC6487]</a>.</p>
+<p id="rfc.section.4.2.4.4.p.1">The following is an amended specification for path validation to be used in place of section 7.2 of <a href="#RFC6487" class="xref">[RFC6487]</a> allowing for the validation of both certificates following the profile defined in <a href="#RFC6487" class="xref">[RFC6487]</a>, as well as certificates following the profile described above.</p>
 <p id="rfc.section.4.2.4.4.p.2">The following algorithm is employed to validate CA and EE resources certificates. It is modeled on the path validation algorithm from <a href="#RFC5280" class="xref">[RFC5280]</a>, but modified to make use of the IP Address Delegation and AS Identifier Delegation Extensions from <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <p id="rfc.section.4.2.4.4.p.3">There are two inputs to the validation algorithm:</p>
 
@@ -909,25 +912,22 @@ END
 <li>The signature of certificate x (x&gt;1) is verified using the public key of the issuer&#8217;s certificate (x-1), using the signature algorithm specified for that public key (in certificate x-1).</li>
 <li>The current time lies within the interval defined by the NotBefore and NotAfter values in the Validity field of certificate x.</li>
 <li>The Version, Issuer, and Subject fields of certificate x satisfy the constraints established in Section 4.1-4.7 of this specification.</li>
-<li>Certificate x contains all the extensions that MUST be present, as defined in Section 4.8 of this specification. The value(s) for each of these extensions MUST be satisfy the constraints established for each extension in the respective sections. Any extension not identified in Section 4.8 MUST NOT appear in certificate x.</li>
+<li>If certificate x uses the Certificate Policy defined in section 4.8.9 of <a href="#RFC6487" class="xref">[RFC6487]</a>, then the certificate MUST contain all extensions defined in section 4.8 of <a href="#RFC6487" class="xref">[RFC6487]</a> that must be present.  The value(s) for each of these extensions MUST satisfy the constraints established for each extension in the respective sections. Any extension not thus identified MUST NOT appear in certificate x.</li>
+<li>If certificate x uses the Certificate Policy defined in <a href="#amended_6487_cp" class="xref">Section 4.2.4.1</a>, then all extensions defined in section 4.8 of <a href="#RFC6487" class="xref">[RFC6487]</a>, except sections 4.8.9, 4.8.10 and 4.8.10 MUST be present. The certificate MUST contain an extension as defined in <a href="#amended_6487_ip" class="xref">Section 4.2.4.2</a> or <a href="#amended_6487_as" class="xref">Section 4.2.4.3</a>, or both. The value(s) for each of these extensions MUST satisfy the constraints established for each extension in the respective sections. Any extension not thus identified MUST NOT appear in certificate x.</li>
 <li>Certificate x MUST NOT have been revoked, i.e., it MUST NOT appear on a CRL issued by the CA represented by certificate x-1</li>
 <li>Compute the VRS-IP and VRS-AS set values as indicated below: <ul>
-<li>If the IP Address Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li>
+<li>If the IP Address Delegation extension is present in certificate x and x=1, set the VRS-IP to the resources found in this extension.</li>
+<li>If the IP Address Delegation extension is present in certificate x and x&gt;1, set the VRS-IP to the intersection of the resources between this extension and the value of the VRS-IP computed for certificate x-1.</li>
 <li>If the IP Address Delegation extension is absent in certificate x, set the VRS-IP to NULL.</li>
-<li>If the AS Identifier Delegation extension is present in certificate x, compute the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li>
+<li>If the IP Address Delegation extension is present in certificate x and x=1, set the VRS-IP to the resources found in this extension.</li>
+<li>If the AS Identifier Delegation extension is present in certificate x and x&gt;1, set the VRS-AS to the intersection of the resources between this extension and the value of the VRS-AS computed for certificate x-1</li>
 <li>If the AS Identifier Delegation extension is absent in certificate x, set the VRS-AS to NULL.</li>
-<li>If x = n (i.e., this is the certificate being validated), then:<ol>
-<li>If IP Address Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li>
-<li>If an AS Identifier Delegation extension is present, it is replaced with the intersection of the values from that extension and the current value of the VRS-IP.</li>
-</ol>
-</li>
-<li>If an RP is caching the results of validation, these values MAY be stored along with the certificate, to facilitate incremental validation based on cached results.</li>
 </ul>
 <p> </p>
 </li>
 <li>If there is any difference in resources in the VRS-IP and the IP Address Delegation extension on certificate x, or the VRS-AS and the AS Identifier Delegation extension on certificate x, then: <ul>
-<li>If certificate x uses the updated version of <a href="#RFC6487" class="xref">[RFC6487]</a> with the amended policy and extension defined in <a href="#amended_6487" class="xref">Section 4.2.4</a> a warning listing the over-claiming resources for certificate x SHOULD be issued.</li>
-<li>If certificate x uses the original version of <a href="#RFC6487" class="xref">[RFC6487]</a>, then certificate x MUST be rejected.</li>
+<li>If certificate x uses the Certificate Policy defined in <a href="#amended_6487_cp" class="xref">Section 4.2.4.1</a> a warning listing the over-claiming resources for certificate x SHOULD be issued.</li>
+<li>If certificate x uses the Certificate Policy defined in section 4.8.9 of <a href="#RFC6487" class="xref">[RFC6487]</a>, then certificate x MUST be rejected.</li>
 </ul>
 <p> </p>
 </li>

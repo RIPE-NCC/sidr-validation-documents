@@ -105,7 +105,7 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 
 
@@ -733,7 +733,9 @@ Internet-Draft               RPKI Validation                   June 2017
 4.2.4.4.  Amended Resource Certificate Path Validation
 
    The following is an amended specification for path validation to be
-   used in this profile, in place of section 7.2 of [RFC6487].
+   used in place of section 7.2 of [RFC6487] allowing for the validation
+   of both certificates following the profile defined in [RFC6487], as
+   well as certificates following the profile described above.
 
    The following algorithm is employed to validate CA and EE resources
    certificates.  It is modeled on the path validation algorithm from
@@ -775,9 +777,7 @@ Internet-Draft               RPKI Validation                   June 2017
        key of the issuer's certificate (x-1), using the signature
        algorithm specified for that public key (in certificate x-1).
 
-   2.  The current time lies within the interval defined by the
-       NotBefore and NotAfter values in the Validity field of
-       certificate x.
+
 
 
 
@@ -786,54 +786,54 @@ Huston, et al.          Expires December 24, 2017              [Page 14]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+   2.  The current time lies within the interval defined by the
+       NotBefore and NotAfter values in the Validity field of
+       certificate x.
+
    3.  The Version, Issuer, and Subject fields of certificate x satisfy
        the constraints established in Section 4.1-4.7 of this
        specification.
 
-   4.  Certificate x contains all the extensions that MUST be present,
-       as defined in Section 4.8 of this specification.  The value(s)
-       for each of these extensions MUST be satisfy the constraints
-       established for each extension in the respective sections.  Any
-       extension not identified in Section 4.8 MUST NOT appear in
+   4.  If certificate x uses the Certificate Policy defined in section
+       4.8.9 of [RFC6487], then the certificate MUST contain all
+       extensions defined in section 4.8 of [RFC6487] that must be
+       present.  The value(s) for each of these extensions MUST satisfy
+       the constraints established for each extension in the respective
+       sections.  Any extension not thus identified MUST NOT appear in
        certificate x.
 
-   5.  Certificate x MUST NOT have been revoked, i.e., it MUST NOT
+   5.  If certificate x uses the Certificate Policy defined in
+       Section 4.2.4.1, then all extensions defined in section 4.8 of
+       [RFC6487], except sections 4.8.9, 4.8.10 and 4.8.10 MUST be
+       present.  The certificate MUST contain an extension as defined in
+       Section 4.2.4.2 or Section 4.2.4.3, or both.  The value(s) for
+       each of these extensions MUST satisfy the constraints established
+       for each extension in the respective sections.  Any extension not
+       thus identified MUST NOT appear in certificate x.
+
+   6.  Certificate x MUST NOT have been revoked, i.e., it MUST NOT
        appear on a CRL issued by the CA represented by certificate x-1
 
-   6.  Compute the VRS-IP and VRS-AS set values as indicated below:
+   7.  Compute the VRS-IP and VRS-AS set values as indicated below:
 
        *  If the IP Address Delegation extension is present in
-          certificate x, compute the intersection of the resources
-          between this extension and the value of the VRS-IP computed
-          for certificate x-1.
+          certificate x and x=1, set the VRS-IP to the resources found
+          in this extension.
+
+       *  If the IP Address Delegation extension is present in
+          certificate x and x>1, set the VRS-IP to the intersection of
+          the resources between this extension and the value of the VRS-
+          IP computed for certificate x-1.
 
        *  If the IP Address Delegation extension is absent in
           certificate x, set the VRS-IP to NULL.
 
+       *  If the IP Address Delegation extension is present in
+          certificate x and x=1, set the VRS-IP to the resources found
+          in this extension.
+
        *  If the AS Identifier Delegation extension is present in
-          certificate x, compute the intersection of the resources
-          between this extension and the value of the VRS-AS computed
-          for certificate x-1
-
-       *  If the AS Identifier Delegation extension is absent in
-          certificate x, set the VRS-AS to NULL.
-
-       *  If x = n (i.e., this is the certificate being validated),
-          then:
-
-          1.  If IP Address Delegation extension is present, it is
-              replaced with the intersection of the values from that
-              extension and the current value of the VRS-IP.
-
-          2.  If an AS Identifier Delegation extension is present, it is
-              replaced with the intersection of the values from that
-              extension and the current value of the VRS-IP.
-
-       *  If an RP is caching the results of validation, these values
-          MAY be stored along with the certificate, to facilitate
-          incremental validation based on cached results.
-
-
+          certificate x and x>1, set the VRS-AS to the intersection of
 
 
 
@@ -842,17 +842,23 @@ Huston, et al.          Expires December 24, 2017              [Page 15]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   7.  If there is any difference in resources in the VRS-IP and the IP
+          the resources between this extension and the value of the VRS-
+          AS computed for certificate x-1
+
+       *  If the AS Identifier Delegation extension is absent in
+          certificate x, set the VRS-AS to NULL.
+
+   8.  If there is any difference in resources in the VRS-IP and the IP
        Address Delegation extension on certificate x, or the VRS-AS and
        the AS Identifier Delegation extension on certificate x, then:
 
-       *  If certificate x uses the updated version of [RFC6487] with
-          the amended policy and extension defined in Section 4.2.4 a
-          warning listing the over-claiming resources for certificate x
-          SHOULD be issued.
+       *  If certificate x uses the Certificate Policy defined in
+          Section 4.2.4.1 a warning listing the over-claiming resources
+          for certificate x SHOULD be issued.
 
-       *  If certificate x uses the original version of [RFC6487], then
-          certificate x MUST be rejected.
+       *  If certificate x uses the Certificate Policy defined in
+          section 4.8.9 of [RFC6487], then certificate x MUST be
+          rejected.
 
    These rules allow a CA certificate to contain resources that are not
    present in (all of) the certificates along the path from the trust
@@ -883,12 +889,6 @@ Internet-Draft               RPKI Validation                   June 2017
       IP address prefix(es) in the ROA is contained within the VRS-IP
       set that is specified as an outcome of EE certificate validation.
 
-   Note that this ensures that ROAs can be valid only, if all IP address
-   prefixes in the ROA are encompassed by the VRS-IP of all certificates
-   along the path to the trust anchor used to verify it.
-
-   Operators MAY issue separate ROAs for each IP address prefix, so that
-   the loss of on IP address prefix from the VRS-IP of any certificate
 
 
 
@@ -898,6 +898,12 @@ Huston, et al.          Expires December 24, 2017              [Page 16]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+   Note that this ensures that ROAs can be valid only, if all IP address
+   prefixes in the ROA are encompassed by the VRS-IP of all certificates
+   along the path to the trust anchor used to verify it.
+
+   Operators MAY issue separate ROAs for each IP address prefix, so that
+   the loss of on IP address prefix from the VRS-IP of any certificate
    along the path to the trust anchor would not invalidate
    authorizations for other IP address prefixes.
 
@@ -940,12 +946,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
      Certificate 3:
       Issuer CA1,
-      Subject CA2,
-      Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
-
-       Verified Resource Set: 192.0.2.0/24, AS64496
-       Warnings: over-claim for 198.51.100.0/24
-
 
 
 
@@ -953,6 +953,12 @@ Huston, et al.          Expires December 24, 2017              [Page 17]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+      Subject CA2,
+      Resources 192.0.2.0/24, 198.51.100.0/24, AS64496
+
+       Verified Resource Set: 192.0.2.0/24, AS64496
+       Warnings: over-claim for 198.51.100.0/24
 
      ROA 1 (valid):
       Embedded Certificate 4 (EE certificate):
@@ -997,18 +1003,15 @@ Internet-Draft               RPKI Validation                   June 2017
 
        EE certificate is invalid due to over-claim for AS64497
 
-       This problem can be mitigated by issuing separate certificates
-       for each AS number.
-
-
-
-
 
 
 Huston, et al.          Expires December 24, 2017              [Page 18]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+       This problem can be mitigated by issuing separate certificates
+       for each AS number.
 
 5.  Deployment Considerations
 
@@ -1055,9 +1058,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
          TBD1     id-cp-ipAddr-asNumber-v2          [this RFC]
 
-   IANA is to add the following to the SMI Security for PKIX Certificate
-   Extension registry:
-
 
 
 
@@ -1065,6 +1065,9 @@ Huston, et al.          Expires December 24, 2017              [Page 19]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   IANA is to add the following to the SMI Security for PKIX Certificate
+   Extension registry:
 
          Decimal  Description                       References
 
@@ -1110,10 +1113,7 @@ Internet-Draft               RPKI Validation                   June 2017
               DOI 10.17487/RFC3280, April 2002,
               <http://www.rfc-editor.org/info/rfc3280>.
 
-   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
-              Addresses and AS Identifiers", RFC 3779,
-              DOI 10.17487/RFC3779, June 2004,
-              <http://www.rfc-editor.org/info/rfc3779>.
+
 
 
 
@@ -1121,6 +1121,11 @@ Huston, et al.          Expires December 24, 2017              [Page 20]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
+              Addresses and AS Identifiers", RFC 3779,
+              DOI 10.17487/RFC3779, June 2004,
+              <http://www.rfc-editor.org/info/rfc3779>.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -1165,11 +1170,6 @@ Internet-Draft               RPKI Validation                   June 2017
               DOI 10.17487/RFC5737, January 2010,
               <http://www.rfc-editor.org/info/rfc5737>.
 
-Authors' Addresses
-
-
-
-
 
 
 
@@ -1177,6 +1177,8 @@ Huston, et al.          Expires December 24, 2017              [Page 21]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+Authors' Addresses
 
    Geoff Huston
    Asia Pacific Network Information Centre
@@ -1224,8 +1226,6 @@ Internet-Draft               RPKI Validation                   June 2017
    USA
 
    Email: andy@arin.net
-
-
 
 
 

@@ -579,7 +579,7 @@ END
          Certificates. This profile follows all definitions and procedures described
          in <xref target="RFC6487" /> with the following notable exceptions.</t>
          
-      <section title="Amended Certificate Policies">
+      <section title="Amended Certificate Policies" anchor="amended_6487_cp">
       
          <t>The following is an amended specification to be used in this profile, in place of
          section 4.8.9 of <xref target="RFC6487" />.</t>
@@ -591,7 +591,7 @@ END
       
       </section>
       
-      <section title="Amended IP Resources">
+      <section title="Amended IP Resources" anchor="amended_6487_ip">
       
           <t>The following is an amended specification to be used in this profile, in place of
           section 4.8.10 of <xref target="RFC6487" />.</t>
@@ -614,7 +614,7 @@ END
       
       </section>
       
-      <section title="Amended AS Resources">
+      <section title="Amended AS Resources" anchor="amended_6487_as">
       
           <t>The following is an amended specification to be used in this profile, in place of
           section 4.8.11 of <xref target="RFC6487" />.</t>
@@ -637,8 +637,10 @@ END
       
       <section title="Amended Resource Certificate Path Validation" anchor="reconsidered_path_validation">
 
-        <t>The following is an amended specification for path validation to be used in 
-        this profile, in place of section 7.2 of <xref target="RFC6487" />.</t>
+        <t>The following is an amended specification for path validation to be used in
+        place of section 7.2 of <xref target="RFC6487" /> allowing for the validation of
+        both certificates following the profile defined in <xref target="RFC6487" />, as
+        well as certificates following the profile described above.</t>
         
         <t>The following algorithm is employed to validate CA and EE resources
         certificates. It is modeled on the path validation algorithm from
@@ -690,47 +692,47 @@ END
             the constraints established in Section 4.1-4.7 of this
             specification.</t>
             
-            <t>Certificate x contains all the extensions that MUST be present,
-            as defined in Section 4.8 of this specification. The value(s) for
-            each of these extensions MUST be satisfy the constraints established
-            for each extension in the respective sections. Any extension not
-            identified in Section 4.8 MUST NOT appear in certificate x.</t>
+            <t>If certificate x uses the Certificate Policy defined in section 4.8.9 of
+               <xref target="RFC6487" />, then the certificate MUST contain all extensions
+               defined in section 4.8 of <xref target="RFC6487" /> that must be present.
+               The value(s) for each of these extensions MUST satisfy the constraints
+               established for each extension in the respective sections. Any extension not
+               thus identified MUST NOT appear in certificate x.</t>
+                
+            <t>If certificate x uses the Certificate Policy defined in <xref target="amended_6487_cp" />,
+               then all extensions defined in section 4.8 of <xref target="RFC6487" />,
+               except sections 4.8.9, 4.8.10 and 4.8.10 MUST be present. The certificate
+               MUST contain an extension as defined in <xref target="amended_6487_ip" /> or
+               <xref target="amended_6487_as" />, or both. The value(s) for each of these
+               extensions MUST satisfy the constraints established for each extension
+               in the respective sections. Any extension not thus identified MUST NOT
+               appear in certificate x.</t>
             
             <t>Certificate x MUST NOT have been revoked, i.e., it MUST NOT
             appear on a CRL issued by the CA represented by certificate x-1</t>
             
             <t>Compute the VRS-IP and VRS-AS set values as indicated below:
                 <list style="symbols">
-                    <t>If the IP Address Delegation extension is present in
-                    certificate x, compute the intersection of the resources
-                    between this extension and the value of the VRS-IP computed
-                    for certificate x-1.</t>
+                    <t>If the IP Address Delegation extension is present in certificate x
+                    and x=1, set the VRS-IP to the resources found in this extension.</t>
+                
+                    <t>If the IP Address Delegation extension is present in certificate x
+                    and x>1, set the VRS-IP to the intersection of the resources between
+                    this extension and the value of the VRS-IP computed for certificate x-1.</t>
                     
                     <t>If the IP Address Delegation extension is absent in
                     certificate x, set the VRS-IP to NULL.</t>
                     
-                    <t>If the AS Identifier Delegation extension is present in
-                    certificate x, compute the intersection of the resources
-                    between this extension and the value of the VRS-AS computed
-                    for certificate x-1</t>
+                    <t>If the IP Address Delegation extension is present in certificate x
+                    and x=1, set the VRS-IP to the resources found in this extension.</t>
+
+                    <t>If the AS Identifier Delegation extension is present in certificate x
+                    and x>1, set the VRS-AS to the intersection of the resources between
+                    this extension and the value of the VRS-AS computed for certificate x-1</t>
                     
-                    <t>If the AS Identifier Delegation extension is absent in
-                    certificate x, set the VRS-AS to NULL.</t>
+                    <t>If the AS Identifier Delegation extension is absent in certificate x,
+                    set the VRS-AS to NULL.</t>
                     
-                    <t>If x = n (i.e., this is the certificate being validated),
-                    then:<list style="numbers">
-                        <t>If IP Address Delegation extension is present, it is
-                        replaced with the intersection of the values from that
-                        extension and the current value of the VRS-IP.</t>
-                        <t>If an AS Identifier Delegation extension is present,
-                        it is replaced with the intersection of the values from
-                        that extension and the current value of the VRS-IP.</t>
-                    </list></t>
-                    
-                    <t>If an RP is caching the results of validation, these
-                    values MAY be stored along with the certificate, to
-                    facilitate incremental validation based on cached
-                    results.</t>
                 </list>
             </t>
             
@@ -738,11 +740,10 @@ END
             Address Delegation extension on certificate x, or the VRS-AS and the
             AS Identifier Delegation extension on certificate x, then:
             <list style="symbols">
-               <t>If certificate x uses the updated version of
-               <xref target="RFC6487" /> with the amended policy and extension
-               defined in <xref target="amended_6487" /> a warning listing the
+               <t>If certificate x uses the Certificate Policy defined in
+               <xref target="amended_6487_cp" /> a warning listing the
                over-claiming resources for certificate x SHOULD be issued.</t>
-               <t>If certificate x uses the original version of
+               <t>If certificate x uses the Certificate Policy defined in section 4.8.9 of
                <xref target="RFC6487" />, then certificate x MUST be rejected.</t>
                </list>
             </t>
