@@ -928,7 +928,9 @@ END
     <section title="Security Considerations">
     
       <t>The authors believe that the revised validation algorithm introduces no
-      new security vulnerabilities into the RPKI.</t>
+      new security vulnerabilities into the RPKI, because it cannot lead to any
+      ROA and/or Router Certificates to be accepted if they contain resources
+      that are not held by the issuer.</t>
 
     </section>
     
