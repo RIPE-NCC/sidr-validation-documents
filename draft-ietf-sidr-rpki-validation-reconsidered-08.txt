@@ -21,7 +21,7 @@ Expires: December 24, 2017                                   C. Martinez
 
 Abstract
 
-   This document proposes an alternative to the certificate validation
+   This document specifies an alternative to the certificate validation
    procedure specified in RFC 6487 that reduces aspects of operational
    fragility in the management of certificates in the RPKI, while
    retaining essential security features.
