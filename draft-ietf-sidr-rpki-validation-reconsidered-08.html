@@ -381,7 +381,7 @@
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Verified Resource Sets">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Differences with existing standards">
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Certificate Policy (CP) for use with validation reconsidered in the Resource PKI (RPKI)">
-<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Differences with RFC3779">
+<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers">
 <link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Addendum to RFC6268">
 <link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 Differences with RFC6487">
 <link href="#rfc.section.4.2.5" rel="Chapter" title="4.2.5 Differences with RFC6482">
@@ -502,7 +502,7 @@
 </li>
 <ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Certificate Policy (CP) for use with validation reconsidered in the Resource PKI (RPKI)</a>
 </li>
-<li>4.2.2.   <a href="#rfc.section.4.2.2">Differences with RFC3779</a>
+<li>4.2.2.   <a href="#rfc.section.4.2.2">An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers</a>
 </li>
 <li>4.2.3.   <a href="#rfc.section.4.2.3">Addendum to RFC6268</a>
 </li>
@@ -624,30 +624,33 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
         identified-organization(3) dod(6) internet(1)
         security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 </pre>
+<p id="rfc.section.4.2.1.p.3">This alternative Certificate Policy is the same as the Certificate Policy described in <a href="#RFC6484" class="xref">[RFC6484]</a>, except that it indicates that the validation rules described in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> are to be used.</p>
 <h1 id="rfc.section.4.2.2">
-<a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#amended_3779" id="amended_3779">Differences with RFC3779</a>
+<a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#amended_3779" id="amended_3779">An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers</a>
 </h1>
-<p id="rfc.section.4.2.2.p.1">To ensure that Relying Parties use the reconsidered certification path validation rules defined in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a>, the following amended version of <a href="#RFC3779" class="xref">[RFC3779]</a> is to be used.  </p>
+<p id="rfc.section.4.2.2.p.1">This document defines an alternative to <a href="#RFC3779" class="xref">[RFC3779]</a>. All specifications and procedures described in <a href="#RFC3779" class="xref">[RFC3779]</a> apply, with the following notable exceptions.</p>
 <h1 id="rfc.section.4.2.2.1">
 <a href="#rfc.section.4.2.2.1">4.2.2.1.</a> <a href="#amended_ip_ext" id="amended_ip_ext">OID for id-pe-ipAddrBlocks-v2</a>
 </h1>
-<p id="rfc.section.4.2.2.1.p.1">The following is an amended specification to be used in place of section 2.2.1 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.1.p.2">The OID for this extension is id-pe-ipAddrBlocks-v2.</p>
+<p id="rfc.section.4.2.2.1.p.1">This document request an OID for the extension id-pe-ipAddrBlocks-v2 (id-pe TBD2).</p>
+<p id="rfc.section.4.2.2.1.p.2">The following is an amended specification to be used as an alternative to the specification in section 2.2.1 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.1.p.3">The OID for this extension is id-pe-ipAddrBlocks-v2.</p>
 <pre> 
-id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { TBD2 }
+id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 </pre>
-<p id="rfc.section.4.2.2.1.p.3">where <a href="#RFC3280" class="xref">[RFC3280]</a> defines:</p>
+<p></p>
+<p id="rfc.section.4.2.2.1.p.5">where <a href="#RFC3280" class="xref">[RFC3280]</a> defines:</p>
 <pre> 
 id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
 id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 </pre>
+<p></p>
 <h1 id="rfc.section.4.2.2.2">
 <a href="#rfc.section.4.2.2.2">4.2.2.2.</a> Syntax for id-pe-ipAddrBlocks-v2</h1>
-<p id="rfc.section.4.2.2.2.p.1">The following is amended specification to be used in place of section 2.2.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <pre> 
-id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+id-pe-ipAddrBlocks-v2      OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
 IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
 
@@ -671,15 +674,17 @@ IPAddress           ::= BIT STRING
   
 </pre>
 <p></p>
+<p id="rfc.section.4.2.2.2.p.2">Note that the descriptions of objects referenced in the syntax above are defined in sections 2.2.3.1 through 2.2.3.9 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <h1 id="rfc.section.4.2.2.3">
 <a href="#rfc.section.4.2.2.3">4.2.2.3.</a> <a href="#amended_as_ext" id="amended_as_ext">OID for id-pe-autonomousSysIds-v2</a>
 </h1>
-<p id="rfc.section.4.2.2.3.p.1">The following is an amended specification to be used in place of section 3.2.1 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.3.p.2">The OID for this extension is id-pe-autonomousSysIds-v2.</p>
+<p id="rfc.section.4.2.2.3.p.1">This document request an OID for the extension id-pe-autonomousSysIds-v2 ( id-pe TBD3).</p>
+<p id="rfc.section.4.2.2.3.p.2">The following is an amended specification to be used as an alternative to the specification in section 3.2.1 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.3.p.3">The OID for this extension is id-pe-autonomousSysIds-v2.</p>
 <pre> 
-id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
+id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 </pre>
-<p id="rfc.section.4.2.2.3.p.3">where <a href="#RFC3280" class="xref">[RFC3280]</a> defines:</p>
+<p id="rfc.section.4.2.2.3.p.4">where <a href="#RFC3280" class="xref">[RFC3280]</a> defines:</p>
 <pre> 
 id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
@@ -688,9 +693,8 @@ id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 </pre>
 <h1 id="rfc.section.4.2.2.4">
 <a href="#rfc.section.4.2.2.4">4.2.2.4.</a> Syntax for id-pe-autonomousSysIds-v2</h1>
-<p id="rfc.section.4.2.2.4.p.1">The following is an amended specification to be used in place of section 3.2.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <pre> 
-id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
 ASIdentifiers       ::= SEQUENCE {
 asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
@@ -714,17 +718,21 @@ ASId                ::= INTEGER
 <p></p>
 <h1 id="rfc.section.4.2.2.5">
 <a href="#rfc.section.4.2.2.5">4.2.2.5.</a> Amended IP Address Delegation Extension Certification Path Validation</h1>
-<p id="rfc.section.4.2.2.5.p.1">The following is an amended specification to be used in place of section 2.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.5.p.2">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> of [this document].</p>
+<p id="rfc.section.4.2.2.5.p.1">If the extension OID defined in <a href="#amended_ip_ext" class="xref">Section 4.2.2.1</a> is used, then Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> of [this document] rather than the procedure described in section 2.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <h1 id="rfc.section.4.2.2.6">
 <a href="#rfc.section.4.2.2.6">4.2.2.6.</a> Amended Autonomous System Identifier Delegation Extension Certification Path Validation</h1>
-<p id="rfc.section.4.2.2.6.p.1">The following is an amended specification to be used in place of section 3.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.6.p.2">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> of [this document].</p>
+<p id="rfc.section.4.2.2.6.p.1">If the extension OID defined in <a href="#amended_as_ext" class="xref">Section 4.2.2.3</a> is used, then Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> of [this document] rather than the procedure described in section 3.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <h1 id="rfc.section.4.2.2.7">
 <a href="#rfc.section.4.2.2.7">4.2.2.7.</a> <a href="#amended_3779_module" id="amended_3779_module">Amended ASN.1 module</a>
 </h1>
-<p id="rfc.section.4.2.2.7.p.1">The following is an amended specification to be used in place of appendix A of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
-<p id="rfc.section.4.2.2.7.p.2">This normative appendix describes the IP address and AS identifiers extensions used by conforming PKI components in ASN.1 syntax.</p>
+<p id="rfc.section.4.2.2.7.p.1">This document requests an OID for IPAddrAndASCertExtn-v2, as follows:</p>
+<pre> 
+IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
+   internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+   id-mod-ip-addr-and-as-ident-v2(TBD4) }   
+   </pre>
+<p id="rfc.section.4.2.2.7.p.2">The following is an amended specification to be used as an alternative to the specification in section appendix A of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.7.p.3">This normative appendix describes the IP address and AS identifiers extensions used by conforming PKI components in ASN.1 syntax.</p>
 <pre> 
 IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
    internet(1) security(5) mechanisms(5) pkix(7) mod(0)

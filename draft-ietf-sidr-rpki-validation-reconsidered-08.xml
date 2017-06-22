@@ -282,42 +282,44 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
         security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 ]]></artwork></figure>
 
+<t>This alternative Certificate Policy is the same as the Certificate Policy described in
+   <xref target="RFC6484" />, except that it indicates that the validation rules described
+   in <xref target="reconsidered_path_validation" /> are to be used.</t>
+
 </section>
 
-<section title="Differences with RFC3779" anchor="amended_3779">
+<section title="An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers" anchor="amended_3779">
 
-<t>To ensure that Relying Parties use the reconsidered certification
-path validation rules defined in <xref target="reconsidered_path_validation" />,
-the following amended version of <xref target="RFC3779" /> is to be used.
-</t>
+<t>This document defines an alternative to <xref target="RFC3779" />. All specifications
+   and procedures described in <xref target="RFC3779" /> apply, with the following
+   notable exceptions.</t>
 
-<section title="OID for id-pe-ipAddrBlocks-v2" anchor="amended_ip_ext">
+   <section title="OID for id-pe-ipAddrBlocks-v2" anchor="amended_ip_ext">
 
-  <t>The following is an amended specification to be used in place of
-  section 2.2.1 of <xref target="RFC3779" />.</t>
+    <t>This document request an OID for the extension id-pe-ipAddrBlocks-v2 (id-pe TBD2).</t>
+    
+    <t>The following is an amended specification to be used as an alternative to the
+    specification in section 2.2.1 of <xref target="RFC3779" />.</t>
   
   <t>The OID for this extension is id-pe-ipAddrBlocks-v2.</t>
-  <figure><artwork><![CDATA[ 
-id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { TBD2 }
-]]></artwork></figure>
+  <t><figure><artwork><![CDATA[ 
+id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
+]]></artwork></figure></t>
 
   <t>where <xref target="RFC3280" /> defines:</t>
-  <figure><artwork><![CDATA[ 
+  <t><figure><artwork><![CDATA[ 
 id-pkix  OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
        dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
 id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
-]]></artwork></figure>
+]]></artwork></figure></t>
 
 </section>
 
 <section title="Syntax for id-pe-ipAddrBlocks-v2">
 
-  <t>The following is amended specification to be used in place of
-  section 2.2.3 of <xref target="RFC3779" />.</t>
-
   <t><figure><artwork><![CDATA[ 
-id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+id-pe-ipAddrBlocks-v2      OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
 IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
 
@@ -340,17 +342,22 @@ max                  IPAddress }
 IPAddress           ::= BIT STRING          
   
 ]]></artwork></figure></t>
+
+  <t>Note that the descriptions of objects referenced in the syntax above are defined
+  in sections 2.2.3.1 through 2.2.3.9 of <xref target="RFC3779" />.</t>
   
 </section> 
 
 <section title="OID for id-pe-autonomousSysIds-v2" anchor="amended_as_ext">
 
-  <t>The following is an amended specification to be used in place of
-  section 3.2.1 of <xref target="RFC3779" />.</t>
+  <t>This document request an OID for the extension id-pe-autonomousSysIds-v2 ( id-pe TBD3).</t>
+
+  <t>The following is an amended specification to be used as an alternative to the
+    specification in section 3.2.1 of <xref target="RFC3779" />.</t>
   
   <t>The OID for this extension is id-pe-autonomousSysIds-v2.</t>
   <figure><artwork><![CDATA[ 
-id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
+id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 ]]></artwork></figure>
 
   <t>where <xref target="RFC3280" /> defines:</t>
@@ -365,11 +372,8 @@ id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
 <section title="Syntax for id-pe-autonomousSysIds-v2">
 
-  <t>The following is an amended specification to be used in place of
-  section 3.2.3 of <xref target="RFC3779" />.</t>
-
   <t><figure><artwork><![CDATA[ 
-id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
 ASIdentifiers       ::= SEQUENCE {
 asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
@@ -395,29 +399,32 @@ ASId                ::= INTEGER
 
 <section title="Amended IP Address Delegation Extension Certification Path Validation">
 
-  <t>The following is an amended specification to be used in place of
-  section 2.3 of <xref target="RFC3779" />.</t>
-  
-  <t>Certificate path validation is performed as specified in
-  <xref target="reconsidered_path_validation" /> of [this document].</t>
+  <t>If the extension OID defined in <xref target="amended_ip_ext" /> is used, then Certificate
+  path validation is performed as specified in <xref target="reconsidered_path_validation" />
+  of [this document] rather than the procedure described in section 2.3 of <xref target="RFC3779" />.</t>
 
 </section>
 
 <section title="Amended Autonomous System Identifier Delegation Extension Certification
 Path Validation">
 
-  <t>The following is an amended specification to be used in place of
-  section 3.3 of <xref target="RFC3779" />.</t>
-  
-  <t>Certificate path validation is performed as specified in
-  <xref target="reconsidered_path_validation" /> of [this document].</t>
+  <t>If the extension OID defined in <xref target="amended_as_ext" /> is used, then Certificate
+  path validation is performed as specified in <xref target="reconsidered_path_validation" />
+  of [this document] rather than the procedure described in section 3.3 of <xref target="RFC3779" />.</t>
 
 </section>
 
 <section title="Amended ASN.1 module" anchor="amended_3779_module">
 
-   <t>The following is an amended specification to be used in place of
-   appendix A of <xref target="RFC3779" />.</t>
+   <t>This document requests an OID for IPAddrAndASCertExtn-v2, as follows:</t>
+   <figure><artwork><![CDATA[ 
+IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
+   internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+   id-mod-ip-addr-and-as-ident-v2(TBD4) }   
+   ]]></artwork></figure>
+
+   <t>The following is an amended specification to be used as an alternative to the
+    specification in section appendix A of <xref target="RFC3779" />.</t>
    
    <t>This normative appendix describes the IP address and AS identifiers
    extensions used by conforming PKI components in ASN.1 syntax.</t>

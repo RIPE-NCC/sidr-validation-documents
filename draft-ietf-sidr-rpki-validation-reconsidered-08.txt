@@ -90,21 +90,21 @@ Table of Contents
      4.2.  Differences with existing standards . . . . . . . . . . .   5
        4.2.1.  Certificate Policy (CP) for use with validation
                reconsidered in the Resource PKI (RPKI) . . . . . . .   5
-       4.2.2.  Differences with RFC3779  . . . . . . . . . . . . . .   6
-       4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  10
-       4.2.4.  Differences with RFC6487  . . . . . . . . . . . . . .  11
-       4.2.5.  Differences with RFC6482  . . . . . . . . . . . . . .  15
-       4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  16
-     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  16
-   5.  Deployment Considerations . . . . . . . . . . . . . . . . . .  18
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
-   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  19
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
-
+       4.2.2.  An alternative to RFC3779 X.509 Extensions for IP
+               Addresses and AS Identifiers  . . . . . . . . . . . .   6
+       4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  11
+       4.2.4.  Differences with RFC6487  . . . . . . . . . . . . . .  12
+       4.2.5.  Differences with RFC6482  . . . . . . . . . . . . . .  16
+       4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  17
+     4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  17
+   5.  Deployment Considerations . . . . . . . . . . . . . . . . . .  19
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  20
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
 
 
 
@@ -294,20 +294,28 @@ Internet-Draft               RPKI Validation                   June 2017
            identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 
-4.2.2.  Differences with RFC3779
+   This alternative Certificate Policy is the same as the Certificate
+   Policy described in [RFC6484], except that it indicates that the
+   validation rules described in Section 4.2.4.4 are to be used.
 
-   To ensure that Relying Parties use the reconsidered certification
-   path validation rules defined in Section 4.2.4.4, the following
-   amended version of [RFC3779] is to be used.
+4.2.2.  An alternative to RFC3779 X.509 Extensions for IP Addresses and
+        AS Identifiers
+
+   This document defines an alternative to [RFC3779].  All
+   specifications and procedures described in [RFC3779] apply, with the
+   following notable exceptions.
 
 4.2.2.1.  OID for id-pe-ipAddrBlocks-v2
 
-   The following is an amended specification to be used in place of
-   section 2.2.1 of [RFC3779].
+   This document request an OID for the extension id-pe-ipAddrBlocks-v2
+   (id-pe TBD2).
+
+   The following is an amended specification to be used as an
+   alternative to the specification in section 2.2.1 of [RFC3779].
 
    The OID for this extension is id-pe-ipAddrBlocks-v2.
 
-   id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { TBD2 }
+   id-pe-ipAddrBlocks-v2  OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
    where [RFC3280] defines:
 
@@ -317,14 +325,6 @@ Internet-Draft               RPKI Validation                   June 2017
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
 
 4.2.2.2.  Syntax for id-pe-ipAddrBlocks-v2
-
-   The following is amended specification to be used in place of section
-   2.2.3 of [RFC3779].
-
-
-
-
-
 
 
 
@@ -338,7 +338,7 @@ Huston, et al.          Expires December 24, 2017               [Page 6]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   id-pe-ipAddrBlocks      OBJECT IDENTIFIER ::= { TBD2 }
+   id-pe-ipAddrBlocks-v2      OBJECT IDENTIFIER ::= { id-pe TBD2 }
 
    IPAddrBlocks        ::= SEQUENCE OF IPAddressFamily
 
@@ -361,14 +361,20 @@ Internet-Draft               RPKI Validation                   June 2017
    IPAddress           ::= BIT STRING
 
 
+   Note that the descriptions of objects referenced in the syntax above
+   are defined in sections 2.2.3.1 through 2.2.3.9 of [RFC3779].
+
 4.2.2.3.  OID for id-pe-autonomousSysIds-v2
 
-   The following is an amended specification to be used in place of
-   section 3.2.1 of [RFC3779].
+   This document request an OID for the extension id-pe-
+   autonomousSysIds-v2 ( id-pe TBD3).
+
+   The following is an amended specification to be used as an
+   alternative to the specification in section 3.2.1 of [RFC3779].
 
    The OID for this extension is id-pe-autonomousSysIds-v2.
 
-   id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { TBD3 }
+   id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
    where [RFC3280] defines:
 
@@ -376,12 +382,6 @@ Internet-Draft               RPKI Validation                   June 2017
           dod(6) internet(1) security(5) mechanisms(5) pkix(7) }
 
    id-pe    OBJECT IDENTIFIER ::= { id-pkix 1 }
-
-4.2.2.4.  Syntax for id-pe-autonomousSysIds-v2
-
-   The following is an amended specification to be used in place of
-   section 3.2.3 of [RFC3779].
-
 
 
 
@@ -394,7 +394,9 @@ Huston, et al.          Expires December 24, 2017               [Page 7]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   id-pe-autonomousSysIds  OBJECT IDENTIFIER ::= { TBD3 }
+4.2.2.4.  Syntax for id-pe-autonomousSysIds-v2
+
+   id-pe-autonomousSysIds-v2  OBJECT IDENTIFIER ::= { id-pe TBD3 }
 
    ASIdentifiers       ::= SEQUENCE {
    asnum               [0] EXPLICIT ASIdentifierChoice OPTIONAL,
@@ -418,25 +420,38 @@ Internet-Draft               RPKI Validation                   June 2017
 4.2.2.5.  Amended IP Address Delegation Extension Certification Path
           Validation
 
-   The following is an amended specification to be used in place of
-   section 2.3 of [RFC3779].
-
+   If the extension OID defined in Section 4.2.2.1 is used, then
    Certificate path validation is performed as specified in
-   Section 4.2.4.4 of [this document].
+   Section 4.2.4.4 of [this document] rather than the procedure
+   described in section 2.3 of [RFC3779].
 
 4.2.2.6.  Amended Autonomous System Identifier Delegation Extension
           Certification Path Validation
 
-   The following is an amended specification to be used in place of
-   section 3.3 of [RFC3779].
-
+   If the extension OID defined in Section 4.2.2.3 is used, then
    Certificate path validation is performed as specified in
-   Section 4.2.4.4 of [this document].
+   Section 4.2.4.4 of [this document] rather than the procedure
+   described in section 3.3 of [RFC3779].
 
 4.2.2.7.  Amended ASN.1 module
 
-   The following is an amended specification to be used in place of
-   appendix A of [RFC3779].
+   This document requests an OID for IPAddrAndASCertExtn-v2, as follows:
+
+   IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
+      internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+      id-mod-ip-addr-and-as-ident-v2(TBD4) }
+
+
+
+
+
+Huston, et al.          Expires December 24, 2017               [Page 8]
+
+Internet-Draft               RPKI Validation                   June 2017
+
+
+   The following is an amended specification to be used as an
+   alternative to the specification in section appendix A of [RFC3779].
 
    This normative appendix describes the IP address and AS identifiers
    extensions used by conforming PKI components in ASN.1 syntax.
@@ -445,7 +460,48 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017               [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.          Expires December 24, 2017               [Page 9]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -501,7 +557,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017               [Page 9]
+Huston, et al.          Expires December 24, 2017              [Page 10]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -557,7 +613,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 10]
+Huston, et al.          Expires December 24, 2017              [Page 11]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -613,7 +669,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 11]
+Huston, et al.          Expires December 24, 2017              [Page 12]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -669,7 +725,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 12]
+Huston, et al.          Expires December 24, 2017              [Page 13]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -725,7 +781,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 13]
+Huston, et al.          Expires December 24, 2017              [Page 14]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -781,7 +837,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 14]
+Huston, et al.          Expires December 24, 2017              [Page 15]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -837,7 +893,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 15]
+Huston, et al.          Expires December 24, 2017              [Page 16]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -893,7 +949,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 16]
+Huston, et al.          Expires December 24, 2017              [Page 17]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -949,7 +1005,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 17]
+Huston, et al.          Expires December 24, 2017              [Page 18]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -1005,7 +1061,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 18]
+Huston, et al.          Expires December 24, 2017              [Page 19]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -1061,7 +1117,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 19]
+Huston, et al.          Expires December 24, 2017              [Page 20]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -1117,7 +1173,7 @@ Authors' Addresses
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 20]
+Huston, et al.          Expires December 24, 2017              [Page 21]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -1173,7 +1229,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 21]
+Huston, et al.          Expires December 24, 2017              [Page 22]
 
 Internet-Draft               RPKI Validation                   June 2017
 
@@ -1229,4 +1285,4 @@ Internet-Draft               RPKI Validation                   June 2017
 
 
 
-Huston, et al.          Expires December 24, 2017              [Page 22]
+Huston, et al.          Expires December 24, 2017              [Page 23]
