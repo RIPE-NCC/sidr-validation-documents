@@ -87,12 +87,13 @@ Table of Contents
    3.  Operational Considerations  . . . . . . . . . . . . . . . . .   4
    4.  An Amended RPKI Certification Validation Process  . . . . . .   5
      4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
-     4.2.  Changes to existing standards . . . . . . . . . . . . . .   5
-       4.2.1.  Changes to RFC6484  . . . . . . . . . . . . . . . . .   5
-       4.2.2.  Changes to RFC3779  . . . . . . . . . . . . . . . . .   6
+     4.2.  Differences with existing standards . . . . . . . . . . .   5
+       4.2.1.  Certificate Policy (CP) for use with validation
+               reconsidered in the Resource PKI (RPKI) . . . . . . .   5
+       4.2.2.  Differences with RFC3779  . . . . . . . . . . . . . .   6
        4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  10
-       4.2.4.  Changes to RFC6487  . . . . . . . . . . . . . . . . .  11
-       4.2.5.  Changes to RFC6482  . . . . . . . . . . . . . . . . .  15
+       4.2.4.  Differences with RFC6487  . . . . . . . . . . . . . .  11
+       4.2.5.  Differences with RFC6482  . . . . . . . . . . . . . .  15
        4.2.6.  Changes to BGPSec PKI Profiles  . . . . . . . . . . .  16
      4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  16
    5.  Deployment Considerations . . . . . . . . . . . . . . . . . .  18
@@ -103,7 +104,6 @@ Table of Contents
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
-
 
 
 
@@ -266,13 +266,13 @@ Internet-Draft               RPKI Validation                   June 2017
    Resource Set (VRS) for each certificate that is separate from the
    INRs found in the [RFC3779] resource extension in the certificate.
 
-4.2.  Changes to existing standards
+4.2.  Differences with existing standards
 
-4.2.1.  Changes to RFC6484
+4.2.1.  Certificate Policy (CP) for use with validation reconsidered in
+        the Resource PKI (RPKI)
 
-   The following is an amended specification to be used in place of
-   section 1.2 of [RFC6484].
-
+   Note that section 1.2 of [RFC6484] defines the "Certificate Policy
+   (CP) for the Resource PKI (RPKI)" with the following OID:
 
 
 
@@ -282,27 +282,19 @@ Huston, et al.          Expires December 24, 2017               [Page 5]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   The name of this document is "Certificate Policy (CP) for the
-   Resource PKI (RPKI)".
-
-   This policy has been assigned the following two OIDs:
-
    id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
            identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) cp(14) 2 }
+
+   This document requests an assignment of a new OID for an alternative
+   "Certificate Policy (CP) for use with validation reconsidered in the
+   Resource PKI (RPKI)" as follows:
 
    id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
            identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 
-   id-cp-ipAddr-asNumber and the extensions defined in [RFC3779]
-   indicate that the original certification path validation rules are to
-   be used.  id-cp-ipAddr-asNumber-v2 and the extensions defined in
-   [this document] indicate that the validation reconsidered
-   certification path validation rules defined in Section 4.2.4.4 are to
-   be used.
-
-4.2.2.  Changes to RFC3779
+4.2.2.  Differences with RFC3779
 
    To ensure that Relying Parties use the reconsidered certification
    path validation rules defined in Section 4.2.4.4, the following
@@ -328,6 +320,14 @@ Internet-Draft               RPKI Validation                   June 2017
 
    The following is amended specification to be used in place of section
    2.2.3 of [RFC3779].
+
+
+
+
+
+
+
+
 
 
 
@@ -604,7 +604,7 @@ Internet-Draft               RPKI Validation                   June 2017
    END
 
 
-4.2.4.  Changes to RFC6487
+4.2.4.  Differences with RFC6487
 
    Certificate Authorities MUST issue certificates either as specified
    in [RFC6487] or with all the amendments specified in the following
@@ -808,7 +808,7 @@ Internet-Draft               RPKI Validation                   June 2017
    problem because the associated VRS sets accurately reflect the
    resources validly associated with the certificate in question.
 
-4.2.5.  Changes to RFC6482
+4.2.5.  Differences with RFC6482
 
    Section 4 of [RFC6482] currently has the following text on the
    validation of resources on a ROA:

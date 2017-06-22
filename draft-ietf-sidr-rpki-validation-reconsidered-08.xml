@@ -262,37 +262,29 @@ it makes was not affected by the reduced scope of CA1’s certificate.</t>
 
 </section>
 
-<section title="Changes to existing standards">
+<section title="Differences with existing standards">
 
-<section title="Changes to RFC6484" anchor="amended_validation_policy">
+<section title="Certificate Policy (CP) for use with validation reconsidered in the Resource PKI (RPKI)" anchor="amended_validation_policy">
 
-<t>The following is an amended specification to be used in place of
-section 1.2 of <xref target="RFC6484" />.</t>
-
-<t>The name of this document is "Certificate Policy (CP) for the
-Resource PKI (RPKI)”.</t>
-
-<t>This policy has been assigned the following two OIDs:</t>
-
+<t>Note that section 1.2 of <xref target="RFC6484" /> defines the "Certificate Policy
+   (CP) for the Resource PKI (RPKI)" with the following OID:</t>
 <figure><artwork><![CDATA[ 
 id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
         identified-organization(3) dod(6) internet(1)
         security(5) mechanisms(5) pkix(7) cp(14) 2 }
+]]></artwork></figure>
 
+<t>This document requests an assignment of a new OID for an alternative "Certificate Policy
+   (CP) for use with validation reconsidered in the Resource PKI (RPKI)" as follows:</t>
+<figure><artwork><![CDATA[ 
 id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
         identified-organization(3) dod(6) internet(1)
         security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 ]]></artwork></figure>
-<t>id-cp-ipAddr-asNumber and the extensions defined in
-<xref target="RFC3779" /> indicate that the original certification path
-validation rules are to be used.  id-cp-ipAddr-asNumber-v2 and the
-extensions defined in [this document] indicate that the validation
-reconsidered certification path validation rules defined in
-<xref target="reconsidered_path_validation" /> are to be used.</t>
 
 </section>
 
-<section title="Changes to RFC3779" anchor="amended_3779">
+<section title="Differences with RFC3779" anchor="amended_3779">
 
 <t>To ensure that Relying Parties use the reconsidered certification
 path validation rules defined in <xref target="reconsidered_path_validation" />,
@@ -574,7 +566,7 @@ END
       </section>
       
       
-      <section title="Changes to RFC6487" anchor="amended_6487">
+      <section title="Differences with RFC6487" anchor="amended_6487">
       
          <t>Certificate Authorities MUST issue certificates either as specified
          in <xref target="RFC6487" /> or with all the amendments specified in
@@ -764,7 +756,7 @@ END
       
       </section>
       
-      <section title="Changes to RFC6482">
+      <section title="Differences with RFC6482">
            
         <t>Section 4 of <xref target="RFC6482" /> currently has the following
         text on the validation of resources on a ROA:<list style="symbols">
