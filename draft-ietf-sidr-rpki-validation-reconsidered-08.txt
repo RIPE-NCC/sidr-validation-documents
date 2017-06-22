@@ -94,7 +94,7 @@ Table of Contents
                Addresses and AS Identifiers  . . . . . . . . . . . .   6
        4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  11
        4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX
-               Resource Certificates . . . . . . . . . . . . . . . .  12
+               Resource Certificates . . . . . . . . . . . . . . . .  13
        4.2.5.  An alternative ROA validation RFC6482 . . . . . . . .  16
        4.2.6.  An alternative to BGPSec Router Certificate
                Validation  . . . . . . . . . . . . . . . . . . . . .  17
@@ -114,7 +114,7 @@ Huston, et al.          Expires December 24, 2017               [Page 2]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 1.  Requirements notation
 
@@ -435,12 +435,12 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.2.7.  Amended ASN.1 module
 
-   This document requests an OID for IPAddrAndASCertExtn-v2, as follows:
+   This document requests an OID for id-mod-ip-addr-and-as-ident-v2, as
+   follows:
 
    IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
       internet(1) security(5) mechanisms(5) pkix(7) mod(0)
       id-mod-ip-addr-and-as-ident-v2(TBD4) }
-
 
 
 
@@ -564,6 +564,13 @@ Internet-Draft               RPKI Validation                   June 2017
 
 4.2.3.  Addendum to RFC6268
 
+   This document requests an OID for id-mod-ip-addr-and-as-ident-2v2 as
+   follows:
+
+   IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
+            internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+            id-mod-ip-addr-and-as-ident-2v2(TBD5) }
+
    [RFC6268] is an informational RFC that updates some auxiliary ASN.1
    modules to conform to the 2008 version of ASN.1; the 1988 ASN.1
    modules for which we provided an update in Section 4.2.2.7 remain the
@@ -603,13 +610,6 @@ Internet-Draft               RPKI Validation                   June 2017
       IPAddrBlocks, ASIdentifiers
       FROM IPAddrAndASCertExtn-2010
          { iso(1) identified-organization(3) dod(6)
-           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
-           id-mod-ip-addr-and-as-ident-2(72) }
-      ;
-
-      --
-      -- Extensions contains the set of extensions defined in this
-      -- module
 
 
 
@@ -618,6 +618,13 @@ Huston, et al.          Expires December 24, 2017              [Page 11]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+           id-mod-ip-addr-and-as-ident-2(72) }
+      ;
+
+      --
+      -- Extensions contains the set of extensions defined in this
+      -- module
       --
       -- These are intended to be placed in public key certificates
       -- and thus should be added to the CertExtensions extension
@@ -660,19 +667,19 @@ Internet-Draft               RPKI Validation                   June 2017
    END
 
 
-4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX Resource
-        Certificates
-
-   This document defines an alternative Profile for X.509 PKIX Resource
-   Certificates.  This profile follows all definitions and procedures
-   described in [RFC6487] with the following notable exceptions.
-
 
 
 Huston, et al.          Expires December 24, 2017              [Page 12]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX Resource
+        Certificates
+
+   This document defines an alternative Profile for X.509 PKIX Resource
+   Certificates.  This profile follows all definitions and procedures
+   described in [RFC6487] with the following notable exceptions.
 
 4.2.4.1.  Amended Certificate Policies
 
@@ -715,13 +722,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
    This extension contains the list of AS number resources as per
    Section 4.2.2.3 of [this document], or it may specify the "inherit"
-   element.  Routing Domain Identifier (RDI) values are NOT supported in
-   this profile and MUST NOT be used.
-
-   This extension MUST either specify a non-empty set of AS number
-   records, or use the "inherit" setting to indicate that the AS number
-   resource set of this certificate is inherited from that of the
-   certificate's issuer.
 
 
 
@@ -729,6 +729,14 @@ Huston, et al.          Expires December 24, 2017              [Page 13]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   element.  Routing Domain Identifier (RDI) values are NOT supported in
+   this profile and MUST NOT be used.
+
+   This extension MUST either specify a non-empty set of AS number
+   records, or use the "inherit" setting to indicate that the AS number
+   resource set of this certificate is inherited from that of the
+   certificate's issuer.
 
 4.2.4.4.  Amended Resource Certificate Path Validation
 
@@ -769,14 +777,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
    d.  for all 'x' in {1, ..., n}, certificate 'x' is valid.
 
-   Certificate validation requires verifying that all of the following
-   conditions hold, in addition to the certification path validation
-   criteria specified in Section 6 of [RFC5280].
-
-   1.  The signature of certificate x (x>1) is verified using the public
-       key of the issuer's certificate (x-1), using the signature
-       algorithm specified for that public key (in certificate x-1).
-
 
 
 
@@ -785,6 +785,14 @@ Huston, et al.          Expires December 24, 2017              [Page 14]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   Certificate validation requires verifying that all of the following
+   conditions hold, in addition to the certification path validation
+   criteria specified in Section 6 of [RFC5280].
+
+   1.  The signature of certificate x (x>1) is verified using the public
+       key of the issuer's certificate (x-1), using the signature
+       algorithm specified for that public key (in certificate x-1).
 
    2.  The current time lies within the interval defined by the
        NotBefore and NotAfter values in the Validity field of
@@ -825,6 +833,15 @@ Internet-Draft               RPKI Validation                   June 2017
           the resources between this extension and the value of the VRS-
           IP computed for certificate x-1.
 
+
+
+
+
+Huston, et al.          Expires December 24, 2017              [Page 15]
+
+Internet-Draft               RPKI Validation                   June 2017
+
+
        *  If the IP Address Delegation extension is absent in
           certificate x, set the VRS-IP to NULL.
 
@@ -834,14 +851,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
        *  If the AS Identifier Delegation extension is present in
           certificate x and x>1, set the VRS-AS to the intersection of
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 15]
-
-Internet-Draft               RPKI Validation                   June 2017
-
-
           the resources between this extension and the value of the VRS-
           AS computed for certificate x-1
 
@@ -881,6 +890,14 @@ Internet-Draft               RPKI Validation                   June 2017
       addresses specified by the EE certificate's IP address delegation
       extension.
 
+
+
+
+Huston, et al.          Expires December 24, 2017              [Page 16]
+
+Internet-Draft               RPKI Validation                   June 2017
+
+
    If the end-entity certificate uses the Certificate Policy defined in
    Section 4.2.4.1, then the following approach must be used instead.
 
@@ -889,14 +906,6 @@ Internet-Draft               RPKI Validation                   June 2017
       (contained within the ROA), and each IP address prefix(es) in the
       ROA is contained within the VRS-IP set that is specified as an
       outcome of EE certificate validation described in Section 4.2.4.4.
-
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 16]
-
-Internet-Draft               RPKI Validation                   June 2017
-
 
    Note that this ensures that ROAs can be valid only, if all IP address
    prefixes in the ROA are encompassed by the VRS-IP of all certificates
@@ -937,6 +946,14 @@ Internet-Draft               RPKI Validation                   June 2017
                               2001:db8::/32, AS64496-AS64500
        Warnings: none
 
+
+
+
+Huston, et al.          Expires December 24, 2017              [Page 17]
+
+Internet-Draft               RPKI Validation                   June 2017
+
+
      Certificate 2:
       Issuer TA,
       Subject CA1,
@@ -945,14 +962,6 @@ Internet-Draft               RPKI Validation                   June 2017
        Verified Resource Set: 192.0.2.0/24,
                               2001:db8::/32, AS64496
        Warnings: none
-
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 17]
-
-Internet-Draft               RPKI Validation                   June 2017
-
 
      Certificate 3:
       Issuer CA1,
@@ -993,6 +1002,14 @@ Internet-Draft               RPKI Validation                   June 2017
      BGPSec Certificate 1 (valid):
       Issuer CA2
       Subject ROUTER-64496
+
+
+
+Huston, et al.          Expires December 24, 2017              [Page 18]
+
+Internet-Draft               RPKI Validation                   June 2017
+
+
       Resources AS64496
 
        Verified resources: AS64496
@@ -1002,13 +1019,6 @@ Internet-Draft               RPKI Validation                   June 2017
       Issuer CA2
       Subject ALL-ROUTERS
       Resources AS64496-AS64497
-
-
-
-Huston, et al.          Expires December 24, 2017              [Page 18]
-
-Internet-Draft               RPKI Validation                   June 2017
-
 
        EE certificate is invalid due to over-claim for AS64497
 
@@ -1038,24 +1048,14 @@ Internet-Draft               RPKI Validation                   June 2017
 6.  Security Considerations
 
    The authors believe that the revised validation algorithm introduces
-   no new security vulnerabilities into the RPKI.
+   no new security vulnerabilities into the RPKI, because it cannot lead
+   to any ROA and/or Router Certificates to be accepted if they contain
+   resources that are not held by the issuer.
 
 7.  IANA Considerations
 
    IANA is to add the following to the SMI Security for PKIX Certificate
    Policies registry:
-
-         Decimal  Description                       References
-
-         TBD1     id-cp-ipAddr-asNumber-v2          [this RFC]
-
-   IANA is to add the following to the SMI Security for PKIX Certificate
-   Extension registry:
-
-         Decimal  Description                       References
-
-         TBD2     id-pe-ipAddrBlocks-v2            [this RFC]
-         TBD3     id-pe-autonomousSysIds-v2        [this RFC]
 
 
 
@@ -1066,13 +1066,25 @@ Huston, et al.          Expires December 24, 2017              [Page 19]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+         Decimal  Description                       References
+
+         TBD1     id-cp-ipAddr-asNumber-v2          [section 4.2.1]
+
+   IANA is to add the following to the SMI Security for PKIX Certificate
+   Extension registry:
+
+         Decimal  Description                       References
+
+         TBD2     id-pe-ipAddrBlocks-v2            [section 4.2.2.1]
+         TBD3     id-pe-autonomousSysIds-v2        [section 4.2.2.3]
+
    IANA is to add the following to the SMI Security for PKIX Module
    Identifier registry:
 
          Decimal  Description                       References
 
-         TBD4   IPAddrAndASCertExtn-v2             [this RFC]
-         TBD5   IPAddrAndASCertExtn-2010v2         [this RFC]
+         TBD4   id-mod-ip-addr-and-as-ident-v2      [section 4.2.2.7]
+         TBD5   id-mod-ip-addr-and-as-ident-2v2     [section 4.2.3]
 
 8.  Acknowledgements
 
@@ -1099,18 +1111,6 @@ Internet-Draft               RPKI Validation                   June 2017
               DOI 10.17487/RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC3280]  Housley, R., Polk, W., Ford, W., and D. Solo, "Internet
-              X.509 Public Key Infrastructure Certificate and
-              Certificate Revocation List (CRL) Profile", RFC 3280,
-              DOI 10.17487/RFC3280, April 2002,
-              <http://www.rfc-editor.org/info/rfc3280>.
-
-   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
-              Addresses and AS Identifiers", RFC 3779,
-              DOI 10.17487/RFC3779, June 2004,
-              <http://www.rfc-editor.org/info/rfc3779>.
-
-
 
 
 
@@ -1121,6 +1121,17 @@ Huston, et al.          Expires December 24, 2017              [Page 20]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   [RFC3280]  Housley, R., Polk, W., Ford, W., and D. Solo, "Internet
+              X.509 Public Key Infrastructure Certificate and
+              Certificate Revocation List (CRL) Profile", RFC 3280,
+              DOI 10.17487/RFC3280, April 2002,
+              <http://www.rfc-editor.org/info/rfc3280>.
+
+   [RFC3779]  Lynn, C., Kent, S., and K. Seo, "X.509 Extensions for IP
+              Addresses and AS Identifiers", RFC 3779,
+              DOI 10.17487/RFC3779, June 2004,
+              <http://www.rfc-editor.org/info/rfc3779>.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -1160,23 +1171,19 @@ Internet-Draft               RPKI Validation                   June 2017
               Documentation Use", RFC 5398, DOI 10.17487/RFC5398,
               December 2008, <http://www.rfc-editor.org/info/rfc5398>.
 
-   [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
-              Reserved for Documentation", RFC 5737,
-              DOI 10.17487/RFC5737, January 2010,
-              <http://www.rfc-editor.org/info/rfc5737>.
-
-Authors' Addresses
-
-
-
-
-
 
 
 Huston, et al.          Expires December 24, 2017              [Page 21]
 
 Internet-Draft               RPKI Validation                   June 2017
 
+
+   [RFC5737]  Arkko, J., Cotton, M., and L. Vegoda, "IPv4 Address Blocks
+              Reserved for Documentation", RFC 5737,
+              DOI 10.17487/RFC5737, January 2010,
+              <http://www.rfc-editor.org/info/rfc5737>.
+
+Authors' Addresses
 
    Geoff Huston
    Asia Pacific Network Information Centre
@@ -1217,13 +1224,6 @@ Internet-Draft               RPKI Validation                   June 2017
    Email: tim@ripe.net
 
 
-   Andrew Lee Newton
-   American Registry for Internet Numbers
-   3635 Concorde Parkway
-   Chantilly, VA  20151
-   USA
-
-   Email: andy@arin.net
 
 
 
@@ -1234,6 +1234,15 @@ Huston, et al.          Expires December 24, 2017              [Page 22]
 Internet-Draft               RPKI Validation                   June 2017
 
 
+   Andrew Lee Newton
+   American Registry for Internet Numbers
+   3635 Concorde Parkway
+   Chantilly, VA  20151
+   USA
+
+   Email: andy@arin.net
+
+
    Daniel Shaw
    African Network Information Centre (AFRINIC)
    11th Floor, Standard Chartered Tower
@@ -1242,15 +1251,6 @@ Internet-Draft               RPKI Validation                   June 2017
 
    Phone: +230 403 51 00
    Email: daniel@afrinic.net
-
-
-
-
-
-
-
-
-
 
 
 

@@ -725,7 +725,7 @@ ASId                ::= INTEGER
 <h1 id="rfc.section.4.2.2.7">
 <a href="#rfc.section.4.2.2.7">4.2.2.7.</a> <a href="#amended_3779_module" id="amended_3779_module">Amended ASN.1 module</a>
 </h1>
-<p id="rfc.section.4.2.2.7.p.1">This document requests an OID for IPAddrAndASCertExtn-v2, as follows:</p>
+<p id="rfc.section.4.2.2.7.p.1">This document requests an OID for id-mod-ip-addr-and-as-ident-v2, as follows:</p>
 <pre> 
 IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
    internet(1) security(5) mechanisms(5) pkix(7) mod(0)
@@ -780,8 +780,14 @@ END
 </pre>
 <h1 id="rfc.section.4.2.3">
 <a href="#rfc.section.4.2.3">4.2.3.</a> Addendum to RFC6268</h1>
+<p id="rfc.section.4.2.3.p.1">This document requests an OID for id-mod-ip-addr-and-as-ident-2v2 as follows:</p>
+<pre> 
+  IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
+           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
+           id-mod-ip-addr-and-as-ident-2v2(TBD5) }
+</pre>
 <p><a href="#RFC6268" class="xref">[RFC6268]</a> is an informational RFC that updates some auxiliary ASN.1 modules to conform to the 2008 version of ASN.1; the 1988 ASN.1 modules for which we provided an update in <a href="#amended_3779_module" class="xref">Section 4.2.2.7</a> remain the normative version.</p>
-<p id="rfc.section.4.2.3.p.2">The following is an additional module confirming to the 2008 version of ASN.1 to be used with the updated version of <a href="#RFC3779" class="xref">[RFC3779]</a> defined in [this document].</p>
+<p id="rfc.section.4.2.3.p.3">The following is an additional module confirming to the 2008 version of ASN.1 to be used with the updated version of <a href="#RFC3779" class="xref">[RFC3779]</a> defined in [this document].</p>
 <pre> 
   IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
            internet(1) security(5) mechanisms(5) pkix(7) mod(0)
@@ -1035,30 +1041,30 @@ END
 <p id="rfc.section.5.p.3">However, because the choice of algorithm is well-defined for each certificate and/or RPKI signed object, there is no strict requirement for all Certificate Authorities to migrate to this new algorithm within a specific time period. The choice to opt-in to this can be made by each CA independently. CAs MAY also choose to use the new algorithm for new certificates or objects only, without pro-actively re-issuing existing objects - for example because the latter would require an active authorisation by a user of the system.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> Security Considerations</h1>
-<p id="rfc.section.6.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI.</p>
+<p id="rfc.section.6.p.1">The authors believe that the revised validation algorithm introduces no new security vulnerabilities into the RPKI, because it cannot lead to any ROA and/or Router Certificates to be accepted if they contain resources that are not held by the issuer.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> IANA Considerations</h1>
 <p id="rfc.section.7.p.1">IANA is to add the following to the SMI Security for PKIX Certificate Policies registry:</p>
 <pre>
       Decimal  Description                       References
 
-      TBD1     id-cp-ipAddr-asNumber-v2          [this RFC]
+      TBD1     id-cp-ipAddr-asNumber-v2          [section 4.2.1]
 </pre>
 <p></p>
 <p id="rfc.section.7.p.3">IANA is to add the following to the SMI Security for PKIX Certificate Extension registry:</p>
 <pre> 
       Decimal  Description                       References
 
-      TBD2     id-pe-ipAddrBlocks-v2            [this RFC]
-      TBD3     id-pe-autonomousSysIds-v2        [this RFC]
+      TBD2     id-pe-ipAddrBlocks-v2            [section 4.2.2.1]
+      TBD3     id-pe-autonomousSysIds-v2        [section 4.2.2.3]
 </pre>
 <p></p>
 <p id="rfc.section.7.p.5">IANA is to add the following to the SMI Security for PKIX Module Identifier registry:</p>
 <pre> 
       Decimal  Description                       References
 
-      TBD4   IPAddrAndASCertExtn-v2             [this RFC]
-      TBD5   IPAddrAndASCertExtn-2010v2         [this RFC]
+      TBD4   id-mod-ip-addr-and-as-ident-v2      [section 4.2.2.7]
+      TBD5   id-mod-ip-addr-and-as-ident-2v2     [section 4.2.3]
 </pre>
 <p></p>
 <h1 id="rfc.section.8">
