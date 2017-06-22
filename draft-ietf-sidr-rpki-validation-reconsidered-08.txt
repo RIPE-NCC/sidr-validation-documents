@@ -252,8 +252,8 @@ Internet-Draft               RPKI Validation                   June 2017
    hierarchy, as this would invalidate the entirety of the sub-tree
    located below this point.
 
-   The changes proposed here to the validation procedure in [RFC6487] do
-   not change the probability of this problem, but they do limit the
+   The changes specified here to the validation procedure in [RFC6487]
+   do not change the probability of this problem, but they do limit the
    impact to just the over-claimed resources.  This revised validation
    algorithm is intended to avoid causing CA certificates to be treated
    as completely invalid as a result of over-claims.  However, these
@@ -262,7 +262,7 @@ Internet-Draft               RPKI Validation                   June 2017
    only if all of the resources contained in them are encompassed by all
    superior certificates along a path to a trust anchor.
 
-   The way this is achieved conceptually is by maintaining Verified
+   The way this is achieved conceptually is by maintaining a Verified
    Resource Set (VRS) for each certificate that is separate from the
    INRs found in the [RFC3779] resource extension in the certificate.
 
@@ -573,8 +573,7 @@ Internet-Draft               RPKI Validation                   June 2017
 
    [RFC6268] is an informational RFC that updates some auxiliary ASN.1
    modules to conform to the 2008 version of ASN.1; the 1988 ASN.1
-   modules for which we provided an update in Section 4.2.2.7 remain the
-   normative version.
+   modules in Section 4.2.2.7 remain the normative version.
 
    The following is an additional module confirming to the 2008 version
    of ASN.1 to be used with the extensions defined in Section 4.2.2.1
@@ -610,6 +609,7 @@ Internet-Draft               RPKI Validation                   June 2017
       IPAddrBlocks, ASIdentifiers
       FROM IPAddrAndASCertExtn-2010
          { iso(1) identified-organization(3) dod(6)
+           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
 
 
 
@@ -618,7 +618,6 @@ Huston, et al.          Expires December 24, 2017              [Page 11]
 Internet-Draft               RPKI Validation                   June 2017
 
 
-           internet(1) security(5) mechanisms(5) pkix(7) mod(0)
            id-mod-ip-addr-and-as-ident-2(72) }
       ;
 
@@ -665,6 +664,7 @@ Internet-Draft               RPKI Validation                   June 2017
    -- Syntax is imported from [RFC6268] --
 
    END
+
 
 
 
@@ -912,8 +912,8 @@ Internet-Draft               RPKI Validation                   June 2017
    along the path to the trust anchor used to verify it.
 
    Operators MAY issue separate ROAs for each IP address prefix, so that
-   the loss of on IP address prefix from the VRS-IP of any certificate
-   along the path to the trust anchor would not invalidate
+   the loss of one or more IP address prefixes from the VRS-IP of any
+   certificate along the path to the trust anchor would not invalidate
    authorizations for other IP address prefixes.
 
 4.2.6.  An alternative to BGPSec Router Certificate Validation
@@ -927,10 +927,10 @@ Internet-Draft               RPKI Validation                   June 2017
    o  The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs
       in the AS Resource Identifier Delegation extension.
 
-   Furthermore we wish to note that operators MAY issue separate BGPsec
-   Router Certificates for different ASNs, so that the loss of on ASN
-   from the VRS-AS of any certificate along the path to the trust anchor
-   would not invalidate router keys for other ASNs.
+   Operators MAY issue separate BGPsec Router Certificates for different
+   ASNs, so that the loss of on ASN from the VRS-AS of any certificate
+   along the path to the trust anchor would not invalidate router keys
+   for other ASNs.
 
 4.3.  An example
 

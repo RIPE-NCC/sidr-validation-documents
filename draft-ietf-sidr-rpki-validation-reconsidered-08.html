@@ -604,8 +604,8 @@ Prefix 192.0.2.0/24, Max Length 24, ASN 64496
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> Verified Resource Sets</h1>
 <p id="rfc.section.4.1.p.1">The problem described above can be considered as a low probability problem today. However the potential impact on routing security would be high if an over-claiming occurred near the apex of the RPKI hierarchy, as this would invalidate the entirety of the sub-tree located below this point.</p>
-<p id="rfc.section.4.1.p.2">The changes proposed here to the validation procedure in <a href="#RFC6487" class="xref">[RFC6487]</a> do not change the probability of this problem, but they do limit the impact to just the over-claimed resources. This revised validation algorithm is intended to avoid causing CA certificates to be treated as completely invalid as a result of over-claims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, ROAs and router certificates will be treated as valid only if all of the resources contained in them are encompassed by all superior certificates along a path to a trust anchor.</p>
-<p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining Verified Resource Set (VRS) for each certificate that is separate from the INRs found in the <a href="#RFC3779" class="xref">[RFC3779]</a> resource extension in the certificate.</p>
+<p id="rfc.section.4.1.p.2">The changes specified here to the validation procedure in <a href="#RFC6487" class="xref">[RFC6487]</a> do not change the probability of this problem, but they do limit the impact to just the over-claimed resources. This revised validation algorithm is intended to avoid causing CA certificates to be treated as completely invalid as a result of over-claims. However, these changes are designed to not degrade the security offered by the RPKI. Specifically, ROAs and router certificates will be treated as valid only if all of the resources contained in them are encompassed by all superior certificates along a path to a trust anchor.</p>
+<p id="rfc.section.4.1.p.3">The way this is achieved conceptually is by maintaining a Verified Resource Set (VRS) for each certificate that is separate from the INRs found in the <a href="#RFC3779" class="xref">[RFC3779]</a> resource extension in the certificate.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> Differences with existing standards</h1>
 <h1 id="rfc.section.4.2.1">
@@ -785,7 +785,7 @@ END
            internet(1) security(5) mechanisms(5) pkix(7) mod(0)
            id-mod-ip-addr-and-as-ident-2v2(TBD5) }
 </pre>
-<p><a href="#RFC6268" class="xref">[RFC6268]</a> is an informational RFC that updates some auxiliary ASN.1 modules to conform to the 2008 version of ASN.1; the 1988 ASN.1 modules for which we provided an update in <a href="#amended_3779_module" class="xref">Section 4.2.2.7</a> remain the normative version.</p>
+<p><a href="#RFC6268" class="xref">[RFC6268]</a> is an informational RFC that updates some auxiliary ASN.1 modules to conform to the 2008 version of ASN.1; the 1988 ASN.1 modules in <a href="#amended_3779_module" class="xref">Section 4.2.2.7</a> remain the normative version.</p>
 <p id="rfc.section.4.2.3.p.3">The following is an additional module confirming to the 2008 version of ASN.1 to be used with the extensions defined in <a href="#amended_ip_ext" class="xref">Section 4.2.2.1</a> and <a href="#amended_as_ext" class="xref">Section 4.2.2.3</a>.</p>
 <pre> 
   IPAddrAndASCertExtn-2010v2 { iso(1) identified-organization(3) dod(6)
@@ -947,7 +947,7 @@ END
 
 <ul><li>The amended IP address delegation extension described in <a href="#amended_6487_ip" class="xref">Section 4.2.4.2</a> is present in the end-entity (EE) certificate (contained within the ROA), and each IP address prefix(es) in the ROA is contained within the VRS-IP set that is specified as an outcome of EE certificate validation described in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a>.</li></ul>
 <p id="rfc.section.4.2.5.p.3">Note that this ensures that ROAs can be valid only, if all IP address prefixes in the ROA are encompassed by the VRS-IP of all certificates along the path to the trust anchor used to verify it.</p>
-<p id="rfc.section.4.2.5.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of on IP address prefix from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
+<p id="rfc.section.4.2.5.p.4">Operators MAY issue separate ROAs for each IP address prefix, so that the loss of one or more IP address prefixes from the VRS-IP of any certificate along the path to the trust anchor would not invalidate authorizations for other IP address prefixes.</p>
 <h1 id="rfc.section.4.2.6">
 <a href="#rfc.section.4.2.6">4.2.6.</a> An alternative to BGPSec Router Certificate Validation</h1>
 <p id="rfc.section.4.2.6.p.1">If a BGPsec Router Certificate (<a href="#I-D.ietf-sidr-bgpsec-pki-profiles" class="xref">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>) uses the Certificate Policy defined in <a href="#amended_6487_cp" class="xref">Section 4.2.4.1</a>, then in addition to the BGPsec Router Certificate Validation defined in section 3.3 of <a href="#I-D.ietf-sidr-bgpsec-pki-profiles" class="xref">[I-D.ietf-sidr-bgpsec-pki-profiles]</a>, the following constraint MUST be met: </p>
@@ -955,7 +955,7 @@ END
 <ul><li>The VRS-AS of BGPsec Router Certificates MUST encompass all ASNs in the AS Resource Identifier Delegation extension.</li></ul>
 
 <p> </p>
-<p id="rfc.section.4.2.6.p.2">Furthermore we wish to note that operators MAY issue separate BGPsec Router Certificates for different ASNs, so that the loss of on ASN from the VRS-AS of any certificate along the path to the trust anchor would not invalidate router keys for other ASNs.</p>
+<p id="rfc.section.4.2.6.p.2">Operators MAY issue separate BGPsec Router Certificates for different ASNs, so that the loss of on ASN from the VRS-AS of any certificate along the path to the trust anchor would not invalidate router keys for other ASNs.</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> An example</h1>
 <p id="rfc.section.4.3.p.1">Consider the following example under the amended approach:</p>

@@ -240,7 +240,7 @@ it makes was not affected by the reduced scope of CA1’s certificate.</t>
  hierarchy, as this would invalidate the entirety of the sub-tree
  located below this point.</t>
 
- <t>The changes proposed here to the validation procedure in
+ <t>The changes specified here to the validation procedure in
  <xref target="RFC6487" /> do not change the probability of this
  problem, but they do limit the impact to just the over-claimed
  resources. This revised validation algorithm is intended to avoid
@@ -251,7 +251,7 @@ it makes was not affected by the reduced scope of CA1’s certificate.</t>
  contained in them are encompassed by all superior certificates along a
  path to a trust anchor.</t>
 
- <t>The way this is achieved conceptually is by maintaining Verified
+ <t>The way this is achieved conceptually is by maintaining a Verified
  Resource Set (VRS) for each certificate that is separate from the INRs
  found in the <xref target="RFC3779" /> resource extension in the
  certificate.</t>
@@ -486,8 +486,8 @@ END
 
          <t><xref target="RFC6268" /> is an informational RFC that updates some
          auxiliary ASN.1 modules to conform to the 2008 version of ASN.1; the
-         1988 ASN.1 modules for which we provided an update in
-         <xref target="amended_3779_module" /> remain the normative version.</t>
+         1988 ASN.1 modules in <xref target="amended_3779_module" />
+         remain the normative version.</t>
          
          <t>The following is an additional module confirming to the 2008 version
          of ASN.1 to be used with the extensions defined in <xref target="amended_ip_ext" />
@@ -796,7 +796,7 @@ END
         along the path to the trust anchor used to verify it.</t>
 
         <t>Operators MAY issue separate ROAs for each IP address prefix, so that
-        the loss of on IP address prefix from the VRS-IP of any certificate
+        the loss of one or more IP address prefixes from the VRS-IP of any certificate
         along the path to the trust anchor would not invalidate authorizations
         for other IP address prefixes.</t>
         
@@ -815,10 +815,9 @@ END
         </list>
         </t>        
           
-        <t>Furthermore we wish to note that operators MAY issue separate BGPsec
-        Router Certificates for different ASNs, so that the loss of on ASN from
-        the VRS-AS of any certificate along the path to the trust anchor would
-        not invalidate router keys for other ASNs.</t>
+        <t>Operators MAY issue separate BGPsec Router Certificates for different ASNs, so
+        that the loss of on ASN from the VRS-AS of any certificate along the path to the
+        trust anchor would not invalidate router keys for other ASNs.</t>
           
       </section>
    
