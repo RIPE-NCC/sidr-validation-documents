@@ -102,13 +102,13 @@ reduces aspects of operational fragility in the management of
 certificates in the RPKI, while retaining essential security
 features.</t>
 
-<t>The use of this updated procedure is signaled by form of a set of
+<t>The use of this updated procedure is signalled by form of a set of
 alternative Object Identifiers (OIDs) indicating that the alternative
 version of RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers,
 and certificate policy for the Resource Public Key Infrastructure (RFC 6484)
 defined in this document should be used.</t>
 
-<t>Furthermore this document provides and alternative to ROA (RFC 6482), and BGPSec Router
+<t>Furthermore this document provides an alternative to ROA (RFC 6482), and BGPSec Router
 Certificate (BGPSec PKI Profiles - publication requested) validation.</t>
 
 </abstract>
@@ -397,7 +397,7 @@ ASId                ::= INTEGER
 
   <t>If the extension OID defined in <xref target="amended_ip_ext" /> is used, then Certificate
   path validation is performed as specified in <xref target="reconsidered_path_validation" />
-  of rather than the procedure described in section 2.3 of <xref target="RFC3779" />.</t>
+  rather than the procedure described in section 2.3 of <xref target="RFC3779" />.</t>
 
 </section>
 
@@ -646,7 +646,7 @@ END
         well as certificates following the profile described above.</t>
         
         <t>The following algorithm is employed to validate CA and EE resources
-        certificates. It is modeled on the path validation algorithm from
+        certificates. It is modelled on the path validation algorithm from
         <xref target="RFC5280" />, but modified to make use of the IP Address
         Delegation and AS Identifier Delegation Extensions from
         <xref target="RFC3779" />.</t>
