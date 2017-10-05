@@ -471,7 +471,8 @@
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>This document specifies an alternative to the certificate validation procedure specified in RFC 6487 that reduces aspects of operational fragility in the management of certificates in the RPKI, while retaining essential security features.</p>
-<p>The use of this updated procedure is signalled by form of a set of alternative Object Identifiers (OIDs) indicating that the alternative version of RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers, and certificate policy for the Resource Public Key Infrastructure (RFC 6484) defined in this document should be used.</p>
+<p>Where the procedure specified in RFC 6487 requires that Resource Certificates are rejecting entirely if they are found to over-claim any resources not contained on the issuing certificate, the validation process defined here allows an issuing Certificate Authority to chose to communicate that such Resource Certificates should be accepted for the intersection of their resources and the issuing certificate.</p>
+<p>This choice is signalled by form of a set of alternative Object Identifiers (OIDs) of RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers, and certificate policy for the Resource Public Key Infrastructure (RFC 6484). It should be noted that in case these OIDs are not used for any certificate under a Trust Anchor, the validation procedure defined here has the same outcome as the procedure defined in RFC 6487</p>
 <p>Furthermore this document provides an alternative to ROA (RFC 6482), and BGPSec Router Certificate (BGPSec PKI Profiles - publication requested) validation.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
@@ -623,7 +624,7 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
         identified-organization(3) dod(6) internet(1)
         security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 </pre>
-<p id="rfc.section.4.2.1.p.3">This alternative Certificate Policy is the same as the Certificate Policy described in <a href="#RFC6484" class="xref">[RFC6484]</a>, except that it indicates that the validation rules described in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> are to be used.</p>
+<p id="rfc.section.4.2.1.p.3">This alternative Certificate Policy is the same as the Certificate Policy described in <a href="#RFC6484" class="xref">[RFC6484]</a>, except that it is used to drive the decision in step 8 of the validation procedure described in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a>.</p>
 <h1 id="rfc.section.4.2.2">
 <a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#amended_3779" id="amended_3779">An alternative to RFC3779 X.509 Extensions for IP Addresses and AS Identifiers</a>
 </h1>
@@ -631,7 +632,7 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
 <h1 id="rfc.section.4.2.2.1">
 <a href="#rfc.section.4.2.2.1">4.2.2.1.</a> <a href="#amended_ip_ext" id="amended_ip_ext">OID for id-pe-ipAddrBlocks-v2</a>
 </h1>
-<p id="rfc.section.4.2.2.1.p.1">This document request an OID for the extension id-pe-ipAddrBlocks-v2 (id-pe TBD2).</p>
+<p id="rfc.section.4.2.2.1.p.1">This document request an OID for the extension id-pe-ipAddrBlocks-v2 (id-pe TBD2).  This OID MUST only be used in conjunction with the alternative Certificate Policy OID defined in <a href="#amended_validation_policy" class="xref">Section 4.2.1</a>.</p>
 <p id="rfc.section.4.2.2.1.p.2">The following is an amended specification to be used as an alternative to the specification in section 2.2.1 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <p id="rfc.section.4.2.2.1.p.3">The OID for this extension is id-pe-ipAddrBlocks-v2.</p>
 <pre> 
@@ -677,7 +678,7 @@ IPAddress           ::= BIT STRING
 <h1 id="rfc.section.4.2.2.3">
 <a href="#rfc.section.4.2.2.3">4.2.2.3.</a> <a href="#amended_as_ext" id="amended_as_ext">OID for id-pe-autonomousSysIds-v2</a>
 </h1>
-<p id="rfc.section.4.2.2.3.p.1">This document request an OID for the extension id-pe-autonomousSysIds-v2 ( id-pe TBD3).</p>
+<p id="rfc.section.4.2.2.3.p.1">This document request an OID for the extension id-pe-autonomousSysIds-v2 ( id-pe TBD3).  This OID MUST only be used in conjunction with the alternative Certificate Policy OID defined in <a href="#amended_validation_policy" class="xref">Section 4.2.1</a>.</p>
 <p id="rfc.section.4.2.2.3.p.2">The following is an amended specification to be used as an alternative to the specification in section 3.2.1 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
 <p id="rfc.section.4.2.2.3.p.3">The OID for this extension is id-pe-autonomousSysIds-v2.</p>
 <pre> 
@@ -717,10 +718,10 @@ ASId                ::= INTEGER
 <p></p>
 <h1 id="rfc.section.4.2.2.5">
 <a href="#rfc.section.4.2.2.5">4.2.2.5.</a> Amended IP Address Delegation Extension Certification Path Validation</h1>
-<p id="rfc.section.4.2.2.5.p.1">If the extension OID defined in <a href="#amended_ip_ext" class="xref">Section 4.2.2.1</a> is used, then Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> rather than the procedure described in section 2.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.5.p.1">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a>.</p>
 <h1 id="rfc.section.4.2.2.6">
 <a href="#rfc.section.4.2.2.6">4.2.2.6.</a> Amended Autonomous System Identifier Delegation Extension Certification Path Validation</h1>
-<p id="rfc.section.4.2.2.6.p.1">If the extension OID defined in <a href="#amended_as_ext" class="xref">Section 4.2.2.3</a> is used, then Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a> of rather than the procedure described in section 3.3 of <a href="#RFC3779" class="xref">[RFC3779]</a>.</p>
+<p id="rfc.section.4.2.2.6.p.1">Certificate path validation is performed as specified in <a href="#reconsidered_path_validation" class="xref">Section 4.2.4.4</a>.</p>
 <h1 id="rfc.section.4.2.2.7">
 <a href="#rfc.section.4.2.2.7">4.2.2.7.</a> <a href="#amended_3779_module" id="amended_3779_module">Amended ASN.1 module</a>
 </h1>

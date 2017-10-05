@@ -26,15 +26,37 @@ Abstract
    fragility in the management of certificates in the RPKI, while
    retaining essential security features.
 
-   The use of this updated procedure is signalled by form of a set of
-   alternative Object Identifiers (OIDs) indicating that the alternative
-   version of RFC 3779 X.509 Extensions for IP Addresses and AS
-   Identifiers, and certificate policy for the Resource Public Key
-   Infrastructure (RFC 6484) defined in this document should be used.
+   Where the procedure specified in RFC 6487 requires that Resource
+   Certificates are rejecting entirely if they are found to over-claim
+   any resources not contained on the issuing certificate, the
+   validation process defined here allows an issuing Certificate
+   Authority to chose to communicate that such Resource Certificates
+   should be accepted for the intersection of their resources and the
+   issuing certificate.
+
+   This choice is signalled by form of a set of alternative Object
+   Identifiers (OIDs) of RFC 3779 X.509 Extensions for IP Addresses and
+   AS Identifiers, and certificate policy for the Resource Public Key
+   Infrastructure (RFC 6484).  It should be noted that in case these
+   OIDs are not used for any certificate under a Trust Anchor, the
+   validation procedure defined here has the same outcome as the
+   procedure defined in RFC 6487
 
    Furthermore this document provides an alternative to ROA (RFC 6482),
    and BGPSec Router Certificate (BGPSec PKI Profiles - publication
    requested) validation.
+
+
+
+
+
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 1]
+
+Internet-Draft               RPKI Validation                October 2017
+
 
 Status of This Memo
 
@@ -50,13 +72,6 @@ Status of This Memo
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
-
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 1]
-
-Internet-Draft               RPKI Validation                October 2017
-
 
    This Internet-Draft will expire on April 8, 2018.
 
@@ -81,16 +96,24 @@ Table of Contents
    2.  Certificate Validation in the RPKI  . . . . . . . . . . . . .   3
    3.  Operational Considerations  . . . . . . . . . . . . . . . . .   4
    4.  An Amended RPKI Certification Validation Process  . . . . . .   5
-     4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   5
-     4.2.  Differences with existing standards . . . . . . . . . . .   5
+     4.1.  Verified Resource Sets  . . . . . . . . . . . . . . . . .   6
+     4.2.  Differences with existing standards . . . . . . . . . . .   6
        4.2.1.  Certificate Policy (CP) for use with validation
-               reconsidered in the Resource PKI (RPKI) . . . . . . .   5
+               reconsidered in the Resource PKI (RPKI) . . . . . . .   6
        4.2.2.  An alternative to RFC3779 X.509 Extensions for IP
-               Addresses and AS Identifiers  . . . . . . . . . . . .   6
+               Addresses and AS Identifiers  . . . . . . . . . . . .   7
        4.2.3.  Addendum to RFC6268 . . . . . . . . . . . . . . . . .  11
        4.2.4.  An alternative to RFC6487 Profile for X.509 PKIX
                Resource Certificates . . . . . . . . . . . . . . . .  13
        4.2.5.  An alternative ROA validation RFC6482 . . . . . . . .  16
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 2]
+
+Internet-Draft               RPKI Validation                October 2017
+
+
        4.2.6.  An alternative to BGPSec Router Certificate
                Validation  . . . . . . . . . . . . . . . . . . . . .  17
      4.3.  An example  . . . . . . . . . . . . . . . . . . . . . . .  17
@@ -102,17 +125,6 @@ Table of Contents
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
-
-
-
-
-
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 2]
-
-Internet-Draft               RPKI Validation                October 2017
-
 
 1.  Requirements notation
 
@@ -134,6 +146,29 @@ Internet-Draft               RPKI Validation                October 2017
    resources are considered valid by definition.
 
    For example, in the following sequence:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 3]
+
+Internet-Draft               RPKI Validation                October 2017
+
 
    Certificate 1 (trust anchor):
    Issuer TA,
@@ -161,15 +196,6 @@ Internet-Draft               RPKI Validation                October 2017
 
    All certificates in this scenario are considered valid since the INRs
    of each certificate are encompassed by those of the issuing
-
-
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 3]
-
-Internet-Draft               RPKI Validation                October 2017
-
-
    certificate.  ROA1 is valid because the specified prefix is
    encompassed by the embedded EE certificate, as required by [RFC6482].
 
@@ -190,6 +216,15 @@ Internet-Draft               RPKI Validation                October 2017
    of subordinate certificates.
 
    Consider the following sequence:
+
+
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 4]
+
+Internet-Draft               RPKI Validation                October 2017
+
 
    Certificate 1 (trust anchor):
    Issuer TA,
@@ -218,14 +253,6 @@ Internet-Draft               RPKI Validation                October 2017
    Here Certificate 2 from the previous example was re-issued by TA to
    CA1 and the prefix 198.51.100.0/24 was removed.  However, CA1 failed
    to re-issue a new Certificate 3 to CA2.  As a result Certificate 3 is
-
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 4]
-
-Internet-Draft               RPKI Validation                October 2017
-
-
    now over-claiming and considered invalid; by recursion the embedded
    Certificate 4 used for ROA1 is also invalid.  And ROA1 is invalid
    because the specified prefix contained in the ROA is no longer
@@ -243,6 +270,17 @@ Internet-Draft               RPKI Validation                October 2017
    scope of CA1's certificate.
 
 4.  An Amended RPKI Certification Validation Process
+
+
+
+
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 5]
+
+Internet-Draft               RPKI Validation                October 2017
+
 
 4.1.  Verified Resource Sets
 
@@ -274,14 +312,6 @@ Internet-Draft               RPKI Validation                October 2017
    Note that section 1.2 of [RFC6484] defines the "Certificate Policy
    (CP) for the Resource PKI (RPKI)" with the following OID:
 
-
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 5]
-
-Internet-Draft               RPKI Validation                October 2017
-
-
    id-cp-ipAddr-asNumber OBJECT IDENTIFIER ::= { iso(1)
            identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) cp(14) 2 }
@@ -295,8 +325,18 @@ Internet-Draft               RPKI Validation                October 2017
            security(5) mechanisms(5) pkix(7) cp(14) TBD1 }
 
    This alternative Certificate Policy is the same as the Certificate
-   Policy described in [RFC6484], except that it indicates that the
-   validation rules described in Section 4.2.4.4 are to be used.
+   Policy described in [RFC6484], except that it is used to drive the
+   decision in step 8 of the validation procedure described in
+   Section 4.2.4.4.
+
+
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 6]
+
+Internet-Draft               RPKI Validation                October 2017
+
 
 4.2.2.  An alternative to RFC3779 X.509 Extensions for IP Addresses and
         AS Identifiers
@@ -308,7 +348,8 @@ Internet-Draft               RPKI Validation                October 2017
 4.2.2.1.  OID for id-pe-ipAddrBlocks-v2
 
    This document request an OID for the extension id-pe-ipAddrBlocks-v2
-   (id-pe TBD2).
+   (id-pe TBD2).  This OID MUST only be used in conjunction with the
+   alternative Certificate Policy OID defined in Section 4.2.1.
 
    The following is an amended specification to be used as an
    alternative to the specification in section 2.2.1 of [RFC3779].
@@ -333,7 +374,22 @@ Internet-Draft               RPKI Validation                October 2017
 
 
 
-Huston, et al.            Expires April 8, 2018                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Huston, et al.            Expires April 8, 2018                 [Page 7]
 
 Internet-Draft               RPKI Validation                October 2017
 
@@ -367,7 +423,9 @@ Internet-Draft               RPKI Validation                October 2017
 4.2.2.3.  OID for id-pe-autonomousSysIds-v2
 
    This document request an OID for the extension id-pe-
-   autonomousSysIds-v2 ( id-pe TBD3).
+   autonomousSysIds-v2 ( id-pe TBD3).  This OID MUST only be used in
+   conjunction with the alternative Certificate Policy OID defined in
+   Section 4.2.1.
 
    The following is an amended specification to be used as an
    alternative to the specification in section 3.2.1 of [RFC3779].
@@ -387,9 +445,7 @@ Internet-Draft               RPKI Validation                October 2017
 
 
 
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 7]
+Huston, et al.            Expires April 8, 2018                 [Page 8]
 
 Internet-Draft               RPKI Validation                October 2017
 
@@ -420,18 +476,14 @@ Internet-Draft               RPKI Validation                October 2017
 4.2.2.5.  Amended IP Address Delegation Extension Certification Path
           Validation
 
-   If the extension OID defined in Section 4.2.2.1 is used, then
    Certificate path validation is performed as specified in
-   Section 4.2.4.4 rather than the procedure described in section 2.3 of
-   [RFC3779].
+   Section 4.2.4.4.
 
 4.2.2.6.  Amended Autonomous System Identifier Delegation Extension
           Certification Path Validation
 
-   If the extension OID defined in Section 4.2.2.3 is used, then
    Certificate path validation is performed as specified in
-   Section 4.2.4.4 of rather than the procedure described in section 3.3
-   of [RFC3779].
+   Section 4.2.4.4.
 
 4.2.2.7.  Amended ASN.1 module
 
@@ -442,60 +494,8 @@ Internet-Draft               RPKI Validation                October 2017
       internet(1) security(5) mechanisms(5) pkix(7) mod(0)
       id-mod-ip-addr-and-as-ident-v2(TBD4) }
 
-
-
-
-Huston, et al.            Expires April 8, 2018                 [Page 8]
-
-Internet-Draft               RPKI Validation                October 2017
-
-
    The following is an amended specification to be used as an
    alternative to the specification in section appendix A of [RFC3779].
-
-   This normative appendix describes the IP address and AS identifiers
-   extensions used by conforming PKI components in ASN.1 syntax.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -505,6 +505,9 @@ Huston, et al.            Expires April 8, 2018                 [Page 9]
 
 Internet-Draft               RPKI Validation                October 2017
 
+
+   This normative appendix describes the IP address and AS identifiers
+   extensions used by conforming PKI components in ASN.1 syntax.
 
    IPAddrAndASCertExtn-v2 { iso(1) identified-organization(3) dod(6)
       internet(1) security(5) mechanisms(5) pkix(7) mod(0)
@@ -549,9 +552,6 @@ Internet-Draft               RPKI Validation                October 2017
    -- Syntax is imported from [RFC3779] --
 
    END
-
-
-
 
 
 

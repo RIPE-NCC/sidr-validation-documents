@@ -102,11 +102,18 @@ reduces aspects of operational fragility in the management of
 certificates in the RPKI, while retaining essential security
 features.</t>
 
-<t>The use of this updated procedure is signalled by form of a set of
-alternative Object Identifiers (OIDs) indicating that the alternative
-version of RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers,
-and certificate policy for the Resource Public Key Infrastructure (RFC 6484)
-defined in this document should be used.</t>
+<t>Where the procedure specified in RFC 6487 requires that Resource
+Certificates are rejecting entirely if they are found to over-claim any resources not
+contained on the issuing certificate, the validation process defined
+here allows an issuing Certificate Authority to chose to communicate
+that such Resource Certificates should be accepted for the intersection
+of their resources and the issuing certificate.</t>
+
+<t>This choice is signalled by form of a set of alternative Object Identifiers (OIDs) of
+RFC 3779 X.509 Extensions for IP Addresses and AS Identifiers, and certificate policy for
+the Resource Public Key Infrastructure (RFC 6484). It should be noted that in case these
+OIDs are not used for any certificate under a Trust Anchor, the validation procedure
+defined here has the same outcome as the procedure defined in RFC 6487</t>
 
 <t>Furthermore this document provides an alternative to ROA (RFC 6482), and BGPSec Router
 Certificate (BGPSec PKI Profiles - publication requested) validation.</t>
@@ -279,8 +286,8 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
 ]]></artwork></figure>
 
 <t>This alternative Certificate Policy is the same as the Certificate Policy described in
-   <xref target="RFC6484" />, except that it indicates that the validation rules described
-   in <xref target="reconsidered_path_validation" /> are to be used.</t>
+   <xref target="RFC6484" />, except that it is used to drive the decision in step 8
+   of the validation procedure described in <xref target="reconsidered_path_validation" />.</t>
 
 </section>
 
@@ -292,7 +299,9 @@ id-cp-ipAddr-asNumber-v2 OBJECT IDENTIFIER ::= { iso(1)
 
    <section title="OID for id-pe-ipAddrBlocks-v2" anchor="amended_ip_ext">
 
-    <t>This document request an OID for the extension id-pe-ipAddrBlocks-v2 (id-pe TBD2).</t>
+    <t>This document request an OID for the extension id-pe-ipAddrBlocks-v2 (id-pe TBD2).
+    This OID MUST only be used in conjunction with the alternative Certificate Policy
+    OID defined in <xref target="amended_validation_policy" />.</t>
     
     <t>The following is an amended specification to be used as an alternative to the
     specification in section 2.2.1 of <xref target="RFC3779" />.</t>
@@ -346,7 +355,9 @@ IPAddress           ::= BIT STRING
 
 <section title="OID for id-pe-autonomousSysIds-v2" anchor="amended_as_ext">
 
-  <t>This document request an OID for the extension id-pe-autonomousSysIds-v2 ( id-pe TBD3).</t>
+  <t>This document request an OID for the extension id-pe-autonomousSysIds-v2 ( id-pe TBD3).
+  This OID MUST only be used in conjunction with the alternative Certificate Policy
+    OID defined in <xref target="amended_validation_policy" />.</t>
 
   <t>The following is an amended specification to be used as an alternative to the
     specification in section 3.2.1 of <xref target="RFC3779" />.</t>
@@ -395,19 +406,17 @@ ASId                ::= INTEGER
 
 <section title="Amended IP Address Delegation Extension Certification Path Validation">
 
-  <t>If the extension OID defined in <xref target="amended_ip_ext" /> is used, then Certificate
-  path validation is performed as specified in <xref target="reconsidered_path_validation" />
-  rather than the procedure described in section 2.3 of <xref target="RFC3779" />.</t>
+  <t>Certificate path validation is performed as specified in
+  <xref target="reconsidered_path_validation" />.</t>
 
 </section>
 
 <section title="Amended Autonomous System Identifier Delegation Extension Certification
 Path Validation">
 
-  <t>If the extension OID defined in <xref target="amended_as_ext" /> is used, then Certificate
-  path validation is performed as specified in <xref target="reconsidered_path_validation" />
-  of rather than the procedure described in section 3.3 of <xref target="RFC3779" />.</t>
-
+  <t>Certificate path validation is performed as specified in
+  <xref target="reconsidered_path_validation" />.</t>
+  
 </section>
 
 <section title="Amended ASN.1 module" anchor="amended_3779_module">
